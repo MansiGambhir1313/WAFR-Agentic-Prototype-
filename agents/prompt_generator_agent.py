@@ -1,8 +1,10 @@
 """
-Smart Prompt Generator Agent - Generates context-aware prompts for gaps
-Uses Strands framework
+Smart Prompt Generator Agent - Generates context-aware prompts for gaps.
+
+Uses Strands framework to create intelligent prompts that guide users
+in answering WAFR questions.
 """
-import json
+
 import logging
 from typing import Any, Dict, List, Optional
 
@@ -12,12 +14,39 @@ from agents.config import DEFAULT_MODEL_ID
 from agents.model_config import get_strands_model
 from agents.wafr_context import load_wafr_schema
 
+# -----------------------------------------------------------------------------
+# Constants
+# -----------------------------------------------------------------------------
+
+MAX_HINTS_TO_DISPLAY = 3
+MAX_QUICK_OPTIONS = 5
+
+AGENT_NAME = "PromptGeneratorAgent"
+
+# -----------------------------------------------------------------------------
+# Logging
+# -----------------------------------------------------------------------------
+
 logger = logging.getLogger(__name__)
 
+# -----------------------------------------------------------------------------
+# System Prompt
+# -----------------------------------------------------------------------------
 
-def get_prompt_generator_system_prompt(wafr_schema: Optional[Dict[str, Any]] = None) -> str:
-    """Generate enhanced system prompt with WAFR context."""
-    base_prompt = """
+
+def get_prompt_generator_system_prompt(
+    wafr_schema: Optional[Dict[str, Any]] = None,
+) -> str:
+    """
+    Generate enhanced system prompt with WAFR context.
+
+    Args:
+        wafr_schema: Optional WAFR schema for additional context.
+
+    Returns:
+        System prompt string for the agent.
+    """
+    return """
 You are an expert at generating intelligent, context-aware prompts to help users
 answer WAFR (AWS Well-Architected Framework Review) questions.
 
@@ -44,8 +73,11 @@ PROMPT STRUCTURE:
 Use generate_smart_prompt() to create comprehensive prompts that guide users
 to provide complete, WAFR-aligned answers.
 """
-    
-    return base_prompt
+
+
+# -----------------------------------------------------------------------------
+# Tool Definition
+# -----------------------------------------------------------------------------
 
 
 @tool
@@ -55,25 +87,25 @@ def generate_smart_prompt(
     pillar: str,
     criticality: str,
     hints: List[str],
-    example_answer: str = None,
-    context_hint: str = None,
-    quick_options: List[str] = None
-) -> Dict:
+    example_answer: Optional[str] = None,
+    context_hint: Optional[str] = None,
+    quick_options: Optional[List[str]] = None,
+) -> Dict[str, Any]:
     """
     Generate a smart prompt for a gap question.
-    
+
     Args:
-        question_id: Question identifier
-        question_text: Full question text
-        pillar: Pillar name
-        criticality: Criticality level
-        hints: List of hints based on best practices
-        example_answer: Example good answer
-        context_hint: Context from transcript if available
-        quick_options: Quick-select answer options
-        
+        question_id: Question identifier.
+        question_text: Full question text.
+        pillar: Pillar name.
+        criticality: Criticality level.
+        hints: List of hints based on best practices.
+        example_answer: Example good answer.
+        context_hint: Context from transcript if available.
+        quick_options: Quick-select answer options.
+
     Returns:
-        Prompt dictionary
+        Prompt dictionary with all components.
     """
     return {
         "question_id": question_id,
@@ -85,154 +117,295 @@ def generate_smart_prompt(
         "context_hint": context_hint,
         "quick_options": quick_options or [],
         "prompt_text": _format_prompt_text(
-            question_text, pillar, hints, example_answer, context_hint
-        )
+            question_text=question_text,
+            pillar=pillar,
+            hints=hints,
+            example_answer=example_answer,
+            context_hint=context_hint,
+        ),
     }
+
+
+# -----------------------------------------------------------------------------
+# Helper Functions
+# -----------------------------------------------------------------------------
 
 
 def _format_prompt_text(
     question_text: str,
     pillar: str,
     hints: List[str],
-    example_answer: str = None,
-    context_hint: str = None
+    example_answer: Optional[str] = None,
+    context_hint: Optional[str] = None,
 ) -> str:
-    """Format prompt text from components."""
+    """
+    Format prompt text from components.
+
+    Args:
+        question_text: The question to display.
+        pillar: The WAFR pillar name.
+        hints: List of hints to include.
+        example_answer: Optional example answer.
+        context_hint: Optional context from transcript.
+
+    Returns:
+        Formatted prompt text string.
+    """
     lines = [
         f"**{pillar} Question:**",
         question_text,
         "",
-        "**Hints:**"
+        "**Hints:**",
     ]
-    
-    for i, hint in enumerate(hints[:3], 1):
+
+    for i, hint in enumerate(hints[:MAX_HINTS_TO_DISPLAY], 1):
         lines.append(f"{i}. {hint}")
-    
+
     if context_hint:
         lines.append("")
         lines.append(f"**Context:** {context_hint}")
-    
+
     if example_answer:
         lines.append("")
         lines.append("**Example Answer:**")
         lines.append(example_answer)
-    
+
     return "\n".join(lines)
+
+
+# -----------------------------------------------------------------------------
+# Agent Class
+# -----------------------------------------------------------------------------
 
 
 class PromptGeneratorAgent:
     """Agent that generates smart prompts for gap questions."""
-    
+
     def __init__(self, wafr_schema: Optional[Dict] = None):
         """
         Initialize Prompt Generator Agent.
-        
+
         Args:
-            wafr_schema: Optional WAFR schema for context
+            wafr_schema: Optional WAFR schema for context.
         """
         if wafr_schema is None:
             wafr_schema = load_wafr_schema()
-        
+
         self.wafr_schema = wafr_schema
-        system_prompt = get_prompt_generator_system_prompt(wafr_schema)
-        
+        self.agent = self._initialize_agent()
+
+    def _initialize_agent(self) -> Optional[Agent]:
+        """
+        Initialize the Strands agent with tools.
+
+        Returns:
+            Configured Agent instance or None if initialization fails.
+        """
+        system_prompt = get_prompt_generator_system_prompt(self.wafr_schema)
+
         try:
             model = get_strands_model(DEFAULT_MODEL_ID)
+
             agent_kwargs = {
-                'system_prompt': system_prompt,
-                'name': 'PromptGeneratorAgent'
+                "system_prompt": system_prompt,
+                "name": AGENT_NAME,
             }
+
             if model:
-                agent_kwargs['model'] = model
-            
-            self.agent = Agent(**agent_kwargs)
-            # Try to add tool if method exists
-            try:
-                try:
-                    self.agent.add_tool(generate_smart_prompt)
-                except AttributeError:
-                    try:
-                        self.agent.register_tool(generate_smart_prompt)
-                    except AttributeError:
-                        pass  # Tools may be auto-detected
-            except Exception as e:
-                logger.warning(f"Could not add tools to prompt generator agent: {e}")
+                agent_kwargs["model"] = model
+
+            agent = Agent(**agent_kwargs)
+            self._register_tools(agent)
+
+            return agent
+
         except Exception as e:
-            logger.warning(f"Strands Agent initialization issue: {e}, using direct Bedrock")
-            self.agent = None
-    
+            logger.warning(
+                f"Strands Agent initialization issue: {e}, using direct Bedrock"
+            )
+            return None
+
+    def _register_tools(self, agent: Agent) -> None:
+        """
+        Register tools with the agent.
+
+        Args:
+            agent: The Agent instance to register tools with.
+        """
+        try:
+            # Try add_tool method first
+            agent.add_tool(generate_smart_prompt)
+        except AttributeError:
+            try:
+                # Fall back to register_tool method
+                agent.register_tool(generate_smart_prompt)
+            except AttributeError:
+                # Tools may be auto-detected
+                pass
+        except Exception as e:
+            logger.warning(f"Could not add tools to prompt generator agent: {e}")
+
     def process(self, gap: Dict, wafr_question: Dict) -> Dict[str, Any]:
         """
         Generate smart prompt for a gap.
-        
+
         Args:
-            gap: Gap dictionary from gap detection
-            wafr_question: Full WAFR question schema data
-            
+            gap: Gap dictionary from gap detection.
+            wafr_question: Full WAFR question schema data.
+
         Returns:
-            Generated prompt dictionary
+            Generated prompt dictionary.
         """
-        logger.info(f"PromptGeneratorAgent: Generating prompt for question {gap['question_id']}")
-        
-        # Extract hints from best practices
-        hints = [
-            bp.get('text', '') 
-            for bp in wafr_question.get('best_practices', [])[:3]
+        question_id = gap["question_id"]
+        logger.info(f"PromptGeneratorAgent: Generating prompt for question {question_id}")
+
+        # Extract components from question data
+        hints = self._extract_hints(wafr_question)
+        example_answer = self._extract_example_answer(wafr_question)
+        quick_options = self._extract_quick_options(wafr_question)
+
+        # Try agent-based generation first
+        if self.agent:
+            response = self._generate_with_agent(gap, hints)
+            if self._is_valid_prompt_response(response):
+                return response
+
+        # Fallback to manual construction
+        return self._generate_fallback_prompt(gap, hints, example_answer, quick_options)
+
+    def _extract_hints(self, wafr_question: Dict) -> List[str]:
+        """
+        Extract hints from best practices.
+
+        Args:
+            wafr_question: WAFR question schema data.
+
+        Returns:
+            List of hint strings.
+        """
+        best_practices = wafr_question.get("best_practices", [])
+        return [
+            bp.get("text", "")
+            for bp in best_practices[:MAX_HINTS_TO_DISPLAY]
         ]
-        
-        # Get example answer
-        example_answer = None
-        best_practices = wafr_question.get('best_practices', [])
-        if best_practices and len(best_practices) > 0:
-            example_answer = best_practices[0].get('example_good_answer')
-        
-        # Generate quick options based on best practices
-        quick_options = [
-            bp.get('text', '') 
-            for bp in best_practices[:5]
-            if bp.get('text')
+
+    def _extract_example_answer(self, wafr_question: Dict) -> Optional[str]:
+        """
+        Extract example answer from best practices.
+
+        Args:
+            wafr_question: WAFR question schema data.
+
+        Returns:
+            Example answer string or None.
+        """
+        best_practices = wafr_question.get("best_practices", [])
+        if best_practices:
+            return best_practices[0].get("example_good_answer")
+        return None
+
+    def _extract_quick_options(self, wafr_question: Dict) -> List[str]:
+        """
+        Extract quick options from best practices.
+
+        Args:
+            wafr_question: WAFR question schema data.
+
+        Returns:
+            List of quick option strings.
+        """
+        best_practices = wafr_question.get("best_practices", [])
+        return [
+            bp.get("text", "")
+            for bp in best_practices[:MAX_QUICK_OPTIONS]
+            if bp.get("text")
         ]
-        
-        # Use agent to generate prompt
+
+    def _generate_with_agent(self, gap: Dict, hints: List[str]) -> Any:
+        """
+        Generate prompt using the Strands agent.
+
+        Args:
+            gap: Gap dictionary with question details.
+            hints: List of hints from best practices.
+
+        Returns:
+            Agent response.
+        """
         prompt = f"""
         Generate a smart prompt for this WAFR question gap:
-        
+
         Question: {gap['question_text']}
         Pillar: {gap['pillar']}
         Criticality: {gap['criticality']}
-        
+
         Best Practices Hints: {hints}
         Context: {gap.get('context_hint', 'None')}
-        
+
         Use generate_smart_prompt() to create the prompt with all components.
         Make it user-friendly and actionable.
         """
-        
-        response = self.agent(prompt)
-        
-        # Parse response
-        if isinstance(response, dict) and 'question_id' in response:
-            return response
-        
-        # Fallback to manual construction
+
+        return self.agent(prompt)
+
+    def _is_valid_prompt_response(self, response: Any) -> bool:
+        """
+        Check if agent response is a valid prompt dictionary.
+
+        Args:
+            response: Response from the agent.
+
+        Returns:
+            True if response is a valid prompt dictionary.
+        """
+        return isinstance(response, dict) and "question_id" in response
+
+    def _generate_fallback_prompt(
+        self,
+        gap: Dict,
+        hints: List[str],
+        example_answer: Optional[str],
+        quick_options: List[str],
+    ) -> Dict[str, Any]:
+        """
+        Generate prompt using direct tool call (fallback method).
+
+        Args:
+            gap: Gap dictionary with question details.
+            hints: List of hints from best practices.
+            example_answer: Optional example answer.
+            quick_options: List of quick option strings.
+
+        Returns:
+            Generated prompt dictionary.
+        """
         return generate_smart_prompt(
-            question_id=gap['question_id'],
-            question_text=gap['question_text'],
-            pillar=gap['pillar'],
-            criticality=gap['criticality'],
+            question_id=gap["question_id"],
+            question_text=gap["question_text"],
+            pillar=gap["pillar"],
+            criticality=gap["criticality"],
             hints=hints,
             example_answer=example_answer,
-            context_hint=gap.get('context_hint'),
-            quick_options=quick_options
+            context_hint=gap.get("context_hint"),
+            quick_options=quick_options,
         )
 
 
-def create_prompt_generator_agent(wafr_schema: Optional[Dict] = None) -> PromptGeneratorAgent:
+# -----------------------------------------------------------------------------
+# Factory Function
+# -----------------------------------------------------------------------------
+
+
+def create_prompt_generator_agent(
+    wafr_schema: Optional[Dict] = None,
+) -> PromptGeneratorAgent:
     """
     Factory function to create Prompt Generator Agent.
-    
+
     Args:
-        wafr_schema: Optional WAFR schema for context
+        wafr_schema: Optional WAFR schema for context.
+
+    Returns:
+        Configured PromptGeneratorAgent instance.
     """
     return PromptGeneratorAgent(wafr_schema)
-
