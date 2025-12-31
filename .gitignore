@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+ENV/
+
+# Build outputs
+dist/
+build/
+*.zip
+.cdk.staging/
+cdk.out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+debug.log
+
+# AWS
+.aws-sam/
+.sam/
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend
+frontend/dist/
+frontend/.vite/
+
+# Generated files and results
+*.pdf
+wafr_report_*.pdf
+*_results.json
+*_wafr_results.json
+full_pipeline_results.json
+all_aws_lenses.json
+genai_lens_details.json
+
+# Test/example files
+transcript_*.txt
+transcript_input.txt
+
+# Generated documentation (keep manual docs)
+# CODE_QUALITY_REPORT.md - keep this
+# FINAL_CODE_QUALITY_SUMMARY.md - keep this
+

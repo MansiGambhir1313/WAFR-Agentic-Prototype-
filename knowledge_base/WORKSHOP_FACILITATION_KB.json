@@ -1,0 +1,839 @@
+{
+  "knowledgeBase": "Workshop Facilitation & Client Engagement",
+  "version": "1.0",
+  "source": "https://catalog.workshops.aws/well-architected-tool/en-US/0-hosting",
+  "purpose": "Teach agents how to facilitate WAFR workshops with clients - the soft skills, engagement techniques, and workshop delivery best practices",
+  "relevance": "CRITICAL - Your agents need to know HOW to conduct workshops, not just WHAT to ask. This is about facilitation, engagement, and client experience.",
+  
+  "workshop_overview": {
+    "target_audience": [
+      "Solutions Architects",
+      "Technical Account Managers",
+      "Partner SAs",
+      "Customer success teams",
+      "Any customer-facing technical role"
+    ],
+    "workshop_purpose": "Learn how to facilitate Well-Architected reviews using the AWS WA Tool",
+    "duration": "2-3 hours (for learning), actual client workshops: 4-8 hours",
+    "format": "Hands-on, interactive, self-paced"
+  },
+  
+  "hosting_options": {
+    "option_1_self_paced": {
+      "description": "Individuals go through workshop at their own pace",
+      "duration": "2-3 hours",
+      "requirements": [
+        "AWS account",
+        "IAM permissions for WA Tool",
+        "Quiet workspace"
+      ],
+      "pros": [
+        "Flexible timing",
+        "Learn at own pace",
+        "Can pause and resume"
+      ],
+      "cons": [
+        "No live Q&A",
+        "No peer learning",
+        "Requires self-motivation"
+      ],
+      "your_platform_equivalent": "Client self-service mode (automated assessment)"
+    },
+    
+    "option_2_instructor_led": {
+      "description": "Facilitator guides group through workshop",
+      "duration": "3-4 hours",
+      "requirements": [
+        "Facilitator with WAFR experience",
+        "Dedicated AWS account per participant",
+        "Virtual meeting platform (Zoom, Teams)",
+        "Screen sharing capabilities"
+      ],
+      "roles": {
+        "facilitator": [
+          "Explain concepts",
+          "Answer questions",
+          "Guide exercises",
+          "Share best practices",
+          "Keep group on track"
+        ],
+        "participants": [
+          "Follow along",
+          "Complete exercises",
+          "Ask questions",
+          "Share experiences"
+        ]
+      },
+      "pros": [
+        "Live Q&A",
+        "Peer learning",
+        "Structured pace",
+        "Facilitator guidance"
+      ],
+      "cons": [
+        "Requires coordination",
+        "Fixed schedule",
+        "More expensive"
+      ],
+      "your_platform_equivalent": "Guided workshop mode (agent facilitates, client participates)"
+    },
+    
+    "option_3_hybrid": {
+      "description": "Combination of self-paced + instructor-led",
+      "format": [
+        "Pre-work: Self-paced modules (1-2 hours)",
+        "Live session: Facilitator-led discussion (2 hours)",
+        "Post-work: Apply learnings to real workload"
+      ],
+      "pros": [
+        "Best of both worlds",
+        "Efficient use of facilitator time",
+        "Flexible yet structured"
+      ],
+      "your_platform_equivalent": "Your recommended approach: AI self-service + optional live review"
+    }
+  },
+  
+  "workshop_preparation": {
+    "facilitator_prep": {
+      "1_week_before": [
+        "Review workshop materials",
+        "Test all exercises in AWS console",
+        "Prepare AWS accounts for participants",
+        "Send calendar invites with Zoom links",
+        "Share pre-requisites with participants"
+      ],
+      
+      "3_days_before": [
+        "Send reminder email with agenda",
+        "Share any pre-reading materials",
+        "Test screen sharing and recording",
+        "Prepare backup slides (in case demos fail)"
+      ],
+      
+      "1_day_before": [
+        "Re-test all demos",
+        "Review participant list",
+        "Prepare breakout room assignments (if applicable)",
+        "Test audio/video"
+      ],
+      
+      "day_of": [
+        "Join 15 minutes early",
+        "Test screen sharing one more time",
+        "Have AWS console open and ready",
+        "Smile and be enthusiastic!"
+      ]
+    },
+    
+    "participant_prep": {
+      "required": [
+        "AWS account access",
+        "IAM permissions for WA Tool",
+        "Laptop with browser",
+        "Stable internet connection"
+      ],
+      "recommended": [
+        "Second monitor (for following along)",
+        "Quiet workspace",
+        "Headphones with microphone",
+        "Notepad for questions"
+      ]
+    },
+    
+    "your_platform_automation": {
+      "what_you_automate": [
+        "✅ No AWS account setup needed (your platform handles it)",
+        "✅ No IAM permissions needed (your platform's service account)",
+        "✅ No facilitator scheduling (AI available 24/7)",
+        "✅ No pre-reading (AI explains as you go)",
+        "✅ Instant start (no setup time)"
+      ],
+      "what_clients_still_need": [
+        "Laptop with browser",
+        "Stable internet",
+        "20 minutes of time",
+        "Workload information ready"
+      ]
+    }
+  },
+  
+  "workshop_agenda": {
+    "typical_4_hour_workshop": {
+      "00_introduction": {
+        "duration": "15 minutes",
+        "topics": [
+          "Introductions (who's in the room)",
+          "Workshop objectives",
+          "Agenda overview",
+          "Housekeeping (breaks, questions, parking lot)"
+        ],
+        "facilitator_tips": [
+          "Start on time",
+          "Be enthusiastic and welcoming",
+          "Set expectations (not an audit!)",
+          "Encourage questions throughout"
+        ],
+        "your_platform_equivalent": {
+          "agent_action": "Welcome message with objectives",
+          "example": "Hi! I'm here to guide you through your Well-Architected Review. This will take about 20 minutes. Think of this as a helpful conversation, not an audit. Ready to get started?"
+        }
+      },
+      
+      "01_wafr_overview": {
+        "duration": "30 minutes",
+        "topics": [
+          "What is Well-Architected Framework?",
+          "The 6 pillars explained",
+          "Why WAFR matters (real-world examples)",
+          "WA Tool demonstration"
+        ],
+        "facilitator_tips": [
+          "Use analogies (building a house, etc.)",
+          "Share real customer stories",
+          "Show sample reports",
+          "Emphasize continuous improvement, not perfection"
+        ],
+        "interactive_elements": [
+          "Poll: Who has done a WAFR before?",
+          "Q&A: What challenges do you face?",
+          "Discussion: Which pillar is most important to you?"
+        ],
+        "your_platform_equivalent": {
+          "agent_action": "Brief explainer with examples",
+          "example": "The Well-Architected Framework has 6 pillars - think of them like the foundation of a building. If security is weak, the whole system is at risk. Let me explain each one briefly...",
+          "duration": "2-3 minutes (not 30!)"
+        }
+      },
+      
+      "02_define_workload": {
+        "duration": "30 minutes",
+        "topics": [
+          "What is a workload?",
+          "How to scope your review",
+          "Identifying stakeholders",
+          "The 10 critical questions (from KB #7)"
+        ],
+        "hands_on_exercise": {
+          "task": "Define your workload in WA Tool",
+          "steps": [
+            "Create new workload",
+            "Fill in workload details",
+            "Identify owner (STO)",
+            "Choose relevant lenses",
+            "Tag appropriately"
+          ],
+          "facilitator_tips": [
+            "Walk through step-by-step",
+            "Pause for questions",
+            "Check that everyone is keeping up",
+            "Use screen sharing to demonstrate"
+          ]
+        },
+        "your_platform_equivalent": {
+          "agent_action": "Conversational discovery (KB #7)",
+          "duration": "5-10 minutes",
+          "automation": "AI asks 10 questions, auto-creates workload via WA Tool API"
+        }
+      },
+      
+      "03_break": {
+        "duration": "10 minutes",
+        "facilitator_tips": [
+          "Announce break clearly",
+          "Tell them when to return",
+          "Encourage them to stretch",
+          "Turn off camera during break"
+        ]
+      },
+      
+      "04_perform_review": {
+        "duration": "90 minutes",
+        "topics": [
+          "How to answer questions",
+          "Best practices for each pillar",
+          "Using notes effectively",
+          "The 'Maybe == No' rule (from KB #7)"
+        ],
+        "hands_on_exercise": {
+          "task": "Complete review for one pillar",
+          "facilitator_guidance": [
+            "Choose one pillar to do together (e.g., Security)",
+            "Read each question aloud",
+            "Discuss as group: How would you answer?",
+            "Demonstrate using notes field",
+            "Show how to mark as 'Not applicable'",
+            "Emphasize: Document WHY, not just WHAT"
+          ],
+          "common_mistakes": [
+            "Rushing through questions",
+            "Not using notes field",
+            "Accepting 'maybe' as 'yes' (KB #7!)",
+            "Not involving right stakeholders",
+            "Solutioning during data collection"
+          ],
+          "facilitator_tips": [
+            "This is the most important section - take your time",
+            "Encourage discussion and questions",
+            "Share real-world examples for each question",
+            "Remind them: This is current state, not future state"
+          ]
+        },
+        "your_platform_equivalent": {
+          "agent_action": "Automated assessment (KB #2 + #3)",
+          "duration": "10-15 minutes",
+          "automation": [
+            "AI asks questions conversationally",
+            "Enforces 'Maybe == No' rule automatically",
+            "Auto-collects data from AWS APIs",
+            "Generates rich notes with context"
+          ]
+        }
+      },
+      
+      "05_break": {
+        "duration": "10 minutes"
+      },
+      
+      "06_review_results": {
+        "duration": "30 minutes",
+        "topics": [
+          "Understanding the report",
+          "High-risk vs. medium-risk issues",
+          "Prioritization strategies",
+          "Creating improvement plans"
+        ],
+        "hands_on_exercise": {
+          "task": "Generate and analyze report",
+          "facilitator_guidance": [
+            "Show how to generate PDF report",
+            "Walk through report sections",
+            "Explain risk levels (HRI, MRI)",
+            "Demonstrate milestone feature",
+            "Show how to share workload"
+          ]
+        },
+        "facilitator_tips": [
+          "Don't overwhelm with too many recommendations",
+          "Help them prioritize (quick wins vs. long-term)",
+          "Emphasize: This is a journey, not a destination",
+          "Show example improvement roadmap (90 days)"
+        ],
+        "your_platform_equivalent": {
+          "agent_action": "Automated report generation (KB #8)",
+          "outputs": [
+            "Official AWS WA Tool PDF",
+            "Custom enhanced HTML report",
+            "JSON outputs (api-full.json, api-raw.json)",
+            "90-day improvement roadmap"
+          ]
+        }
+      },
+      
+      "07_next_steps": {
+        "duration": "15 minutes",
+        "topics": [
+          "How to track improvements",
+          "When to re-assess (quarterly)",
+          "Resources for learning more",
+          "Q&A"
+        ],
+        "facilitator_tips": [
+          "End on a positive note",
+          "Encourage them to start using WAFR",
+          "Share contact info for follow-up",
+          "Send follow-up email with resources"
+        ],
+        "your_platform_equivalent": {
+          "agent_action": "Next steps email",
+          "content": [
+            "Summary of findings",
+            "Prioritized recommendations",
+            "90-day roadmap",
+            "Link to schedule quarterly review",
+            "Support resources"
+          ]
+        }
+      }
+    }
+  },
+  
+  "facilitation_best_practices": {
+    "1_set_the_tone": {
+      "principle": "Create a safe, collaborative environment",
+      "techniques": [
+        "Start with positive intent: 'This is to help, not judge'",
+        "Use 'we' language: 'Let's explore together'",
+        "Celebrate good practices: 'Great job on encryption!'",
+        "Frame issues as opportunities: 'Chance to improve'",
+        "Acknowledge trade-offs: 'Every decision has pros/cons'"
+      ],
+      "avoid": [
+        "❌ 'You did this wrong'",
+        "❌ 'This is a serious problem'",
+        "❌ 'Why didn't you implement this?'",
+        "❌ 'This is basic security 101'"
+      ],
+      "your_agent_behavior": {
+        "discovery_agent": "Warm, curious, non-judgmental tone",
+        "assessment_agent": "Encouraging, explains WHY questions matter",
+        "report_agent": "Constructive, focuses on opportunities not failures"
+      }
+    },
+    
+    "2_manage_pace": {
+      "principle": "Keep workshop moving without rushing",
+      "techniques": [
+        "Use a visible timer for exercises",
+        "Announce time remaining: '5 minutes left'",
+        "Have a 'parking lot' for tangential discussions",
+        "Politely redirect off-topic conversations",
+        "Build in buffer time (things always take longer)"
+      ],
+      "time_management_tips": [
+        "Start on time (respects attendees)",
+        "Take breaks (attention spans ~45 minutes)",
+        "End on time (or early, never late)",
+        "If running behind, skip optional content, not core exercises"
+      ],
+      "your_platform_advantage": {
+        "no_time_pressure": "AI works at client's pace",
+        "pause_resume": "Client can take breaks anytime",
+        "no_coordination": "No need to schedule multiple stakeholders",
+        "efficient": "20 minutes vs. 4-8 hours"
+      }
+    },
+    
+    "3_encourage_participation": {
+      "principle": "Get everyone involved, not just the vocal ones",
+      "techniques": [
+        "Ask open-ended questions: 'What challenges have you faced?'",
+        "Use polls (Zoom, Mentimeter): 'Which pillar interests you most?'",
+        "Call on quiet participants: 'Sarah, what's your experience with...?'",
+        "Use breakout rooms (for large groups)",
+        "Encourage chat questions (for introverts)"
+      ],
+      "question_handling": [
+        "Repeat question for everyone: 'Great question about...'",
+        "Validate all questions: 'That's an important point'",
+        "Defer deep dives: 'Let's take that offline'",
+        "Turn questions back to group: 'Has anyone else faced this?'"
+      ],
+      "your_platform_equivalent": {
+        "1_on_1_conversation": "AI gives full attention to each client",
+        "no_peer_pressure": "Client doesn't fear looking uninformed",
+        "safe_space": "Private conversation, no judgment",
+        "unlimited_questions": "AI never gets impatient"
+      }
+    },
+    
+    "4_handle_difficult_situations": {
+      "scenario_1_client_defensive": {
+        "situation": "Client feels attacked by findings",
+        "response": [
+          "Acknowledge their concern: 'I understand this feels overwhelming'",
+          "Reframe: 'This shows areas to improve, which is the goal'",
+          "Normalize: 'No workload is perfect, even AWS's own systems have room to improve'",
+          "Focus on wins: 'You have strong encryption - that's great!'",
+          "Emphasize: 'This is confidential, not a compliance audit'"
+        ],
+        "your_agent_behavior": {
+          "tone": "Extra gentle and supportive",
+          "example": "I see you have some areas flagged as high-risk. This is normal! Every workload has trade-offs. Let's focus on the quick wins first..."
+        }
+      },
+      
+      "scenario_2_client_argues": {
+        "situation": "Client disagrees with AWS best practice",
+        "response": [
+          "Listen fully: 'Tell me more about your approach'",
+          "Acknowledge trade-offs: 'You're right, that's a valid reason'",
+          "Explain AWS reasoning: 'The concern is...'",
+          "Document exception: 'Let's note your specific context'",
+          "Offer alternatives: 'Have you considered...?'",
+          "Respect decision: 'Ultimately it's your call'"
+        ],
+        "your_agent_behavior": {
+          "not_rigid": "AI explains reasoning, doesn't force compliance",
+          "suppression_support": "Use KB #8 suppression for accepted risks"
+        }
+      },
+      
+      "scenario_3_client_overwhelmed": {
+        "situation": "Too many recommendations, client doesn't know where to start",
+        "response": [
+          "Validate feelings: 'Yes, it's a lot!'",
+          "Prioritize: 'Let's focus on top 3 high-risk items'",
+          "Quick wins: 'Some are easy fixes, like enabling CloudTrail'",
+          "Roadmap: '90-day plan, not all at once'",
+          "Celebrate progress: 'You've taken the first step by doing this review!'",
+          "Offer support: 'We can help you implement these'"
+        ],
+        "your_agent_behavior": {
+          "auto_prioritization": "Report Agent sorts by impact and effort",
+          "90_day_roadmap": "Breaks into monthly milestones",
+          "cost_calculator": "Shows ROI for each recommendation"
+        }
+      },
+      
+      "scenario_4_technical_question_you_dont_know": {
+        "situation": "Client asks technical question you can't answer",
+        "response": [
+          "Be honest: 'Great question - I don't know off the top of my head'",
+          "Document it: 'Let me write that down'",
+          "Follow up: 'I'll research and email you by tomorrow'",
+          "Crowdsource: 'Has anyone else encountered this?'",
+          "Redirect: 'Let's continue and I'll circle back'"
+        ],
+        "your_agent_behavior": {
+          "rag_powered": "AI has 8 knowledge bases to reference",
+          "citations": "AI provides links to official AWS docs",
+          "escalation": "For complex questions, offer human SA consultation"
+        }
+      }
+    },
+    
+    "5_use_visual_aids": {
+      "principle": "People remember visuals better than words",
+      "recommended_visuals": [
+        "Architecture diagrams (client's workload)",
+        "Pillar icons (6 pillars)",
+        "Before/after comparisons",
+        "Sample reports (anonymized)",
+        "Improvement roadmap (timeline)",
+        "Cost savings charts"
+      ],
+      "screen_sharing_tips": [
+        "Close unnecessary tabs",
+        "Increase font size (150%+)",
+        "Use dark mode (easier on eyes)",
+        "Disable notifications",
+        "Share specific window, not entire screen"
+      ],
+      "your_platform_visuals": {
+        "dashboard": "Real-time progress indicator",
+        "pillar_icons": "Visual representation of each pillar",
+        "risk_gauge": "Visual risk level (high/medium/low)",
+        "cost_chart": "Potential savings visualization",
+        "roadmap_timeline": "90-day improvement plan"
+      }
+    }
+  },
+  
+  "engagement_techniques": {
+    "storytelling": {
+      "why": "Stories are memorable and relatable",
+      "examples": [
+        "Share anonymized customer success stories",
+        "Explain 'what could go wrong' scenarios",
+        "Use analogies (WAFR = annual health checkup)",
+        "Reference well-known outages (learning opportunities)"
+      ],
+      "your_agent_implementation": {
+        "discovery_agent": "I worked with an e-commerce company that didn't have multi-region backups. During Black Friday, their database went down and they lost $500K in sales. Multi-region is critical for revenue-critical workloads.",
+        "assessment_agent": "Think of encryption like locking your house. You might live in a safe neighborhood, but you still lock your doors, right?",
+        "report_agent": "One of our clients implemented these 3 recommendations and saved $15K per month. Let's see which ones apply to you."
+      }
+    },
+    
+    "social_proof": {
+      "why": "People trust what others have done",
+      "examples": [
+        "85% of AWS customers use multi-AZ for production",
+        "Top-performing startups do WAFR quarterly",
+        "AWS's own services follow these practices",
+        "Your competitors are likely doing this"
+      ],
+      "your_agent_implementation": {
+        "benchmarking": "Customer History MCP (MCP Tool #5) shows how client compares to peers",
+        "industry_stats": "Agent cites AWS statistics and case studies",
+        "peer_comparison": "Companies your size typically score 75% in Security pillar"
+      }
+    },
+    
+    "gamification": {
+      "why": "Makes assessment more engaging",
+      "examples": [
+        "Pillar scores (0-100%)",
+        "Progress bar (questions completed)",
+        "Badges (Completed all 6 pillars!)",
+        "Improvement tracker (before/after scores)"
+      ],
+      "your_platform_implementation": {
+        "progress_bar": "15 of 50 questions complete (30%)",
+        "pillar_scores": "Security: 85%, Cost: 60%, Reliability: 92%",
+        "achievements": "🎉 Completed your first WAFR!",
+        "improvement_tracking": "Your Security score improved from 65% to 85% since last quarter!"
+      }
+    }
+  },
+  
+  "post_workshop_follow_up": {
+    "immediate": {
+      "timing": "Within 24 hours",
+      "actions": [
+        "Send thank you email",
+        "Share workshop recording (if recorded)",
+        "Share links to resources mentioned",
+        "Share completed WA Tool workload link",
+        "Ask for feedback (survey)"
+      ]
+    },
+    
+    "1_week_later": {
+      "timing": "1 week after workshop",
+      "actions": [
+        "Check in: 'How's it going?'",
+        "Answer any follow-up questions",
+        "Offer to review their improvement plan",
+        "Share relevant case studies or blogs"
+      ]
+    },
+    
+    "1_month_later": {
+      "timing": "1 month after workshop",
+      "actions": [
+        "Ask about progress on improvements",
+        "Celebrate any implemented changes",
+        "Offer support if stuck",
+        "Remind about quarterly re-assessment"
+      ]
+    },
+    
+    "quarterly": {
+      "timing": "Every 3 months",
+      "actions": [
+        "Schedule quarterly review",
+        "Track improvement progress",
+        "Update milestone in WA Tool",
+        "Compare before/after scores"
+      ]
+    },
+    
+    "your_platform_automation": {
+      "immediate": "Auto-send email with report and next steps",
+      "1_week": "Auto-send check-in email",
+      "1_month": "Auto-send progress reminder",
+      "quarterly": "Auto-schedule next assessment (optional client approval)"
+    }
+  },
+  
+  "success_metrics": {
+    "during_workshop": [
+      "Participation rate (questions asked, exercises completed)",
+      "Time on task (are they keeping pace?)",
+      "Mood indicators (engaged vs. disengaged)"
+    ],
+    
+    "post_workshop": [
+      "Feedback survey score (1-5 stars)",
+      "Completion rate (% who finish)",
+      "Implementation rate (% who implement recommendations)",
+      "Re-assessment rate (% who do quarterly reviews)"
+    ],
+    
+    "business_impact": [
+      "Cost savings realized",
+      "Security improvements (reduced risks)",
+      "Reliability improvements (reduced downtime)",
+      "Time saved (vs. manual WAFR)"
+    ],
+    
+    "your_platform_metrics": {
+      "completion_rate": "Target: 90%+ (vs. 60% for manual)",
+      "time_to_complete": "Target: 20 minutes (vs. 8 hours manual)",
+      "client_satisfaction": "Target: 4.5/5 stars",
+      "quarterly_adoption": "Target: 50%+ do quarterly reviews (vs. 10% manual)"
+    }
+  },
+  
+  "integration_with_your_agents": {
+    "orchestrator_agent": {
+      "responsibilities": [
+        "Set welcoming tone (KB #9 Facilitation)",
+        "Explain objectives upfront",
+        "Manage overall flow",
+        "Coordinate other agents",
+        "Provide progress updates"
+      ],
+      "kb_9_usage": [
+        "Opening message: Use 'Set the Tone' techniques",
+        "Pace management: 'You're 50% complete, about 10 minutes left'",
+        "Encouragement: 'Great progress! Let's keep going'",
+        "Handle pauses: 'Take your time, I'm here when you're ready'"
+      ]
+    },
+    
+    "discovery_agent": {
+      "responsibilities": [
+        "Conversational discovery (KB #7 questions)",
+        "Build rapport with client",
+        "Encourage detailed answers",
+        "Handle defensive responses"
+      ],
+      "kb_9_usage": [
+        "Storytelling: Share relevant examples",
+        "Social proof: 'Most companies in your industry...'",
+        "Open questions: 'Tell me more about...'",
+        "Active listening: 'So what I'm hearing is...'",
+        "Handle objections: Use KB #9 'Difficult Situations'"
+      ]
+    },
+    
+    "assessment_agent": {
+      "responsibilities": [
+        "Ask WAFR questions conversationally",
+        "Explain WHY each question matters",
+        "Enforce 'Maybe == No' rule (KB #7)",
+        "Provide context for each best practice"
+      ],
+      "kb_9_usage": [
+        "Visual aids: Show architecture diagrams",
+        "Storytelling: 'Here's why this matters...'",
+        "Analogies: 'Think of backups like insurance'",
+        "Encouragement: 'You're doing great on Security!'",
+        "Gamification: Show progress bar"
+      ]
+    },
+    
+    "validation_agent": {
+      "responsibilities": [
+        "Cross-check answers with AWS APIs",
+        "Apply suppression rules (KB #8)",
+        "Identify inconsistencies gently"
+      ],
+      "kb_9_usage": [
+        "Gentle clarification: 'I noticed a discrepancy...'",
+        "No blame: 'This is common, let's clarify'",
+        "Offer help: 'Would you like me to check your AWS config?'"
+      ]
+    },
+    
+    "report_agent": {
+      "responsibilities": [
+        "Generate multiple report formats (KB #8)",
+        "Prioritize recommendations",
+        "Create 90-day roadmap",
+        "Provide cost impact estimates"
+      ],
+      "kb_9_usage": [
+        "Manage overwhelm: 'Let's focus on top 3'",
+        "Quick wins: 'Some are easy, like enabling CloudTrail'",
+        "Celebrate wins: 'Your encryption is excellent!'",
+        "Realistic framing: 'No workload is perfect'",
+        "Next steps: 'Here's your 90-day plan'"
+      ]
+    }
+  },
+  
+  "workshop_on_your_platform": {
+    "self_service_mode": {
+      "description": "Client completes assessment independently with AI guidance",
+      "duration": "15-20 minutes",
+      "ideal_for": [
+        "Tech-savvy clients",
+        "Small workloads",
+        "Budget-conscious clients",
+        "Quick assessments"
+      ],
+      "agent_behavior": [
+        "Warm welcome with objectives",
+        "Conversational discovery (KB #7 + KB #9)",
+        "Progress indicators (KB #9 gamification)",
+        "Encouragement throughout",
+        "Clear next steps at end"
+      ]
+    },
+    
+    "guided_mode": {
+      "description": "Human SA joins AI-facilitated assessment (hybrid)",
+      "duration": "1-2 hours",
+      "ideal_for": [
+        "Complex workloads",
+        "Enterprise clients",
+        "First-time WAFR clients",
+        "High-value engagements"
+      ],
+      "workflow": [
+        "AI handles discovery & data collection (10 mins)",
+        "Human SA joins for discussion (45 mins)",
+        "AI generates report while SA discusses next steps (5 mins)",
+        "Follow-up scheduled automatically"
+      ],
+      "agent_behavior": [
+        "Prepare summary for SA before they join",
+        "Highlight areas needing human expertise",
+        "Take notes during SA discussion",
+        "Update workload based on SA insights"
+      ]
+    },
+    
+    "workshop_mode": {
+      "description": "Facilitated group session (multiple stakeholders)",
+      "duration": "2-4 hours",
+      "ideal_for": [
+        "Large organizations",
+        "Mission-critical workloads",
+        "Training purposes",
+        "Team alignment"
+      ],
+      "workflow": [
+        "Pre-work: Each stakeholder answers relevant questions (async)",
+        "Live session: SA facilitates discussion of findings",
+        "AI aggregates responses & generates consensus view",
+        "Live report review & prioritization"
+      ],
+      "agent_behavior": [
+        "Coordinate async data collection",
+        "Identify conflicting answers for discussion",
+        "Generate consolidated view",
+        "Support SA during live session (chat assistant)"
+      ]
+    }
+  },
+  
+  "client_onboarding": {
+    "first_time_client": {
+      "welcome_sequence": [
+        "1. Welcome email: What to expect",
+        "2. Video tutorial: 3-minute platform walkthrough",
+        "3. Sample workload: Try it with dummy data",
+        "4. Live assessment: Your real workload",
+        "5. Report review: Understanding results"
+      ],
+      "hand_holding": [
+        "Extra tooltips and explanations",
+        "Longer response times (don't rush)",
+        "More encouragement and validation",
+        "Offer human SA consultation"
+      ]
+    },
+    
+    "returning_client": {
+      "welcome_back": [
+        "Welcome back! Last assessment was 3 months ago",
+        "Quick recap of previous findings",
+        "Progress tracking: What's improved?",
+        "Streamlined questions (skip unchanged areas)"
+      ],
+      "efficiency": [
+        "Pre-fill known information",
+        "Focus on what's changed",
+        "Compare before/after scores",
+        "Celebrate improvements"
+      ]
+    }
+  },
+  
+  "key_takeaways_for_your_agents": {
+    "1_tone_matters": "Warm, supportive, non-judgmental. Say 'let's explore' not 'you failed'",
+    "2_storytelling_works": "Use examples, analogies, case studies. Make it relatable.",
+    "3_visual_aids_help": "Progress bars, pillar scores, diagrams. People are visual.",
+    "4_manage_overwhelm": "Prioritize top 3, quick wins, 90-day plan. Not all at once.",
+    "5_celebrate_wins": "Point out what they're doing well. Build confidence.",
+    "6_pace_matters": "Don't rush. Let client work at their pace. Pause/resume anytime.",
+    "7_follow_up_essential": "Workshop doesn't end at report. Check in, support, track progress.",
+    "8_make_it_safe": "This is to help, not judge. Private, confidential, collaborative."
+  }
+}
+

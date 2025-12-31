@@ -1,0 +1,783 @@
+{
+  "workshop_metadata": {
+    "title": "AWS Well-Architected Framework Review (WAFR) Discovery Automation",
+    "source_url": "https://catalog.workshops.aws/wafr-discovery-automation/en-US/",
+    "version": "2025",
+    "purpose": "Accelerate Well-Architected Framework Reviews through automation",
+    "description": "Fundamental concepts of how automation can improve speed and effectiveness when preparing for a Well-Architected review",
+    "contact": "aws-well-architected-labs@amazon.com"
+  },
+  "workshop_objectives": {
+    "primary_goals": [
+      "Speed up the discovery phase of WAFR with automated scanning",
+      "Collect objective information about workloads using least-privilege access",
+      "Earn trust with stakeholders by demonstrating quick and accurate information collection",
+      "Learn to automatically fill sections of Well-Architected Review Workload in the AWS WA Tool",
+      "Identify best-practice gaps through various scanning methods"
+    ],
+    "key_learnings": [
+      "Basic understanding of using AWS CLI and APIs to speed up routine tasks (eg creating a Well-Architected workload)",
+      "Best-practice of using Least-Privilege when working with Customer accounts",
+      "How to use S3 and CloudFront to securely collect reports that accelerate WAFR",
+      "How reports from scanning tools can be parsed and used to update checkboxes and fields within the AWS Well-Architected Tool"
+    ],
+    "time_savings": "Automation significantly reduces discovery phase time and effort while improving accuracy"
+  },
+  "discovery_phase_questions": {
+    "description": "Reflection questions to understand current WAFR practices",
+    "questions": [
+      {
+        "id": "q1",
+        "question": "Who is currently running WAFRs on their workloads?",
+        "category": "current_practice",
+        "purpose": "Identify WAFR practitioners"
+      },
+      {
+        "id": "q2",
+        "question": "Does the WAFR deal with objective or subjective data?",
+        "category": "data_type",
+        "purpose": "Understand data collection methodology",
+        "answer_guidance": "WAFR should include both: objective (measurable, automated scans) and subjective (team insights, business context)"
+      },
+      {
+        "id": "q3",
+        "question": "Who is currently collecting objective data during the discovery/scoping phase of their WAFRs?",
+        "category": "automation",
+        "purpose": "Assess automation maturity"
+      },
+      {
+        "id": "q4",
+        "question": "Who is currently using AWS Security Hub data when reviewing their Workloads?",
+        "category": "aws_tools",
+        "purpose": "Identify Security Hub usage",
+        "best_practice": "Security Hub provides consolidated security findings that should inform WAFR Security pillar"
+      },
+      {
+        "id": "q5",
+        "question": "Who is currently using AWS Trusted Advisor data when reviewing their Workloads?",
+        "category": "aws_tools",
+        "purpose": "Identify Trusted Advisor usage",
+        "integration": "Trusted Advisor has Well-Architected Tool integration for automated best practice checks"
+      },
+      {
+        "id": "q6",
+        "question": "Who is currently collecting and/or linking objective data to their reviews?",
+        "category": "data_management",
+        "purpose": "Understand evidence collection practices",
+        "best_practice": "Store links to internal documentation tools in the description or notes field of the Well-Architected tool"
+      }
+    ]
+  },
+  "automation_tools": {
+    "description": "Tools and methods to scan and collect objective information about a workload's environment",
+    "tools": [
+      {
+        "name": "Steampipe",
+        "type": "SQL-based cloud scanning",
+        "purpose": "Query cloud resources using SQL, run automated compliance scans",
+        "capabilities": [
+          "Automated scans with SQL queries",
+          "Interactive dashboards for findings exploration",
+          "Multi-cloud support",
+          "CIS benchmarks and compliance frameworks"
+        ],
+        "outputs": [
+          "JSON scan reports",
+          "CSV exports",
+          "Interactive dashboards"
+        ],
+        "wafr_pillars_addressed": ["security", "reliability", "operational_excellence", "cost_optimization"],
+        "use_cases": [
+          "IAM security assessment",
+          "Resource inventory",
+          "Compliance checks",
+          "Cost analysis"
+        ]
+      },
+      {
+        "name": "Prowler",
+        "type": "AWS security assessment tool",
+        "purpose": "Comprehensive security, compliance, and best practice checks",
+        "capabilities": [
+          "200+ security checks",
+          "CIS AWS Foundations Benchmark compliance",
+          "GDPR, HIPAA, PCI-DSS compliance checks",
+          "Multi-account support"
+        ],
+        "outputs": [
+          "JSON scan reports",
+          "HTML dashboards",
+          "CSV exports"
+        ],
+        "severity_levels": ["Critical", "High", "Medium", "Low"],
+        "wafr_mapping": {
+          "total_checks_mapped": 62,
+          "severity_filter": "Only Critical and High severity findings are mapped to WAFR",
+          "ignored_severities": ["Medium", "Low"],
+          "mapping_file": "well_architected_security_prowler_mapping.json"
+        },
+        "wafr_pillars_addressed": ["security"],
+        "security_questions_mapped": [
+          "Security Question 2",
+          "Security Question 3"
+        ]
+      },
+      {
+        "name": "Former2",
+        "type": "Infrastructure-as-Code generation tool",
+        "purpose": "Scan existing workload and generate IaC scripts and architecture diagrams",
+        "capabilities": [
+          "Scan AWS resources in account",
+          "Generate CloudFormation templates",
+          "Generate Terraform scripts",
+          "Generate Pulumi code",
+          "Create architecture diagrams"
+        ],
+        "outputs": [
+          "CloudFormation YAML/JSON",
+          "Terraform HCL",
+          "Architecture diagrams",
+          "Documentation"
+        ],
+        "wafr_pillars_addressed": ["operational_excellence", "reliability"],
+        "use_cases": [
+          "Document existing architecture",
+          "Create IaC from manual deployments",
+          "Architecture visualization",
+          "Migration planning"
+        ]
+      },
+      {
+        "name": "AWS Security Hub",
+        "type": "Native AWS security service",
+        "purpose": "Centralized security findings aggregation",
+        "capabilities": [
+          "Aggregates findings from multiple AWS services",
+          "Compliance standards (CIS, PCI-DSS, etc.)",
+          "Integration with WAFR",
+          "Automated remediation"
+        ],
+        "wafr_integration": "Direct integration with Well-Architected Tool for security findings",
+        "wafr_pillars_addressed": ["security"]
+      },
+      {
+        "name": "AWS Trusted Advisor",
+        "type": "Native AWS optimization service",
+        "purpose": "Best practice recommendations across all pillars",
+        "capabilities": [
+          "Cost optimization checks",
+          "Performance checks",
+          "Security checks",
+          "Fault tolerance checks",
+          "Service limits monitoring"
+        ],
+        "wafr_integration": "Well-Architected Tool integration for automated checks",
+        "wafr_pillars_addressed": ["all"],
+        "categories": [
+          "Cost Optimization",
+          "Performance",
+          "Security",
+          "Fault Tolerance",
+          "Service Limits"
+        ]
+      },
+      {
+        "name": "AWS IAM Credential Report",
+        "type": "Native AWS IAM reporting",
+        "purpose": "Audit IAM users, credentials, and access",
+        "capabilities": [
+          "List all IAM users",
+          "Credential status (password, access keys, MFA)",
+          "Last used timestamps",
+          "Compliance auditing"
+        ],
+        "wafr_pillars_addressed": ["security"],
+        "security_focus_areas": [
+          "MFA enforcement",
+          "Unused credentials",
+          "Password policies",
+          "Access key rotation"
+        ]
+      }
+    ]
+  },
+  "wafr_automation_workflow": {
+    "description": "End-to-end workflow for automated WAFR discovery and assessment",
+    "phases": [
+      {
+        "phase": "1_preparation",
+        "name": "Setup and Access Configuration",
+        "activities": [
+          "Configure least-privilege IAM roles for scanning",
+          "Set up S3 bucket for report storage",
+          "Configure CloudFront for secure report access",
+          "Create Well-Architected workload in AWS WA Tool"
+        ],
+        "best_practices": [
+          "Use IAM roles with minimum required permissions",
+          "Enable encryption for S3 buckets",
+          "Use VPC endpoints for secure API access"
+        ]
+      },
+      {
+        "phase": "2_discovery_scanning",
+        "name": "Automated Workload Scanning",
+        "activities": [
+          "Run IAM credential report",
+          "Execute Steampipe scans (security, compliance)",
+          "Execute Prowler scans (security best practices)",
+          "Run Former2 for architecture documentation",
+          "Collect logs and metrics from CloudWatch"
+        ],
+        "outputs": [
+          "IAM credential report (CSV)",
+          "Steampipe scan results (JSON, CSV)",
+          "Prowler findings (JSON, HTML, CSV)",
+          "Former2 IaC templates (CloudFormation, Terraform)",
+          "Architecture diagrams"
+        ],
+        "storage": "Store all reports in S3 bucket with organized structure"
+      },
+      {
+        "phase": "3_analysis_mapping",
+        "name": "Map Findings to WAFR",
+        "activities": [
+          "Parse Prowler JSON report",
+          "Apply severity filtering (Critical, High only)",
+          "Map findings to WAFR best practices using mapping dictionary",
+          "Identify affected resources",
+          "Categorize by pillar and question"
+        ],
+        "mapping_logic": {
+          "source": "Prowler check results",
+          "target": "AWS Well-Architected Tool best practices",
+          "mapping_file": "well_architected_security_prowler_mapping.json",
+          "total_mappings": 62,
+          "severity_threshold": "Critical or High",
+          "unmapped_handling": "Best practices not in mapping dictionary are set to 'Out of Scope'"
+        },
+        "api_integration": "Use AWS Well-Architected Tool API to update workload programmatically"
+      },
+      {
+        "phase": "4_workload_update",
+        "name": "Update WA Tool Workload",
+        "activities": [
+          "Update checkboxes in WAFR questions based on findings",
+          "Add metadata about risks in notes field",
+          "Document affected resources",
+          "Link to scan reports for evidence",
+          "Create milestone to track progress"
+        ],
+        "automation_tool": "wa_scan_mapper.py",
+        "inputs": [
+          "Workload ID",
+          "Prowler JSON report",
+          "Mapping dictionary JSON"
+        ],
+        "outputs": [
+          "Updated WAFR workload with findings",
+          "Milestone for progress tracking",
+          "Notes with resource details and evidence links"
+        ]
+      },
+      {
+        "phase": "5_review_remediation",
+        "name": "WAFR Review and Remediation",
+        "activities": [
+          "Review identified risks with stakeholders",
+          "Prioritize remediation based on severity",
+          "Execute remediation plans",
+          "Re-run scans to verify fixes",
+          "Update milestones to show progress"
+        ],
+        "iterative": true,
+        "milestone_tracking": "Each scan run creates a milestone to track risk remediation progress"
+      }
+    ]
+  },
+  "prowler_to_wafr_mapping": {
+    "description": "Mapping between Prowler security checks and WAFR best practices",
+    "total_mapped_checks": 62,
+    "severity_levels_mapped": ["Critical", "High"],
+    "severity_levels_ignored": ["Medium", "Low"],
+    "primary_pillar": "Security",
+    "mapping_approach": {
+      "source_of_truth": "Prowler check results marked as 'Fail'",
+      "target": "AWS Well-Architected Tool Security Pillar questions",
+      "out_of_scope_handling": "Any WAFR best practice not in mapping dictionary is marked as 'Out of Scope'",
+      "metadata_storage": "Findings and affected resources stored in notes field of WAFR questions"
+    },
+    "example_mappings": [
+      {
+        "prowler_check_id": "iam_user_mfa_enabled",
+        "prowler_check_title": "Ensure MFA is enabled for all IAM users",
+        "prowler_severity": "High",
+        "wafr_pillar": "Security",
+        "wafr_question": "SEC 2: How do you manage identities for people and machines?",
+        "wafr_best_practice": "Enforce MFA for IAM users",
+        "finding_action": "Update checkbox and add resource list to notes"
+      },
+      {
+        "prowler_check_id": "s3_bucket_public_access",
+        "prowler_check_title": "Ensure S3 buckets are not publicly accessible",
+        "prowler_severity": "Critical",
+        "wafr_pillar": "Security",
+        "wafr_question": "SEC 3: How do you detect and investigate security events?",
+        "wafr_best_practice": "Implement protective controls to limit access",
+        "finding_action": "Update checkbox and document publicly accessible buckets"
+      }
+    ],
+    "api_workflow": {
+      "step_1": "Parse Prowler JSON report",
+      "step_2": "Filter findings by severity (Critical, High)",
+      "step_3": "Look up each finding in mapping dictionary",
+      "step_4": "Call AWS WA Tool API: UpdateAnswer",
+      "step_5": "Update checkbox for best practice",
+      "step_6": "Add finding details to notes field",
+      "step_7": "Create milestone after all updates"
+    }
+  },
+  "wafr_pillars_discovery": {
+    "description": "Key discovery questions and automation approaches for each WAFR pillar",
+    "pillars": [
+      {
+        "pillar": "Operational Excellence",
+        "focus_areas": [
+          "Organization",
+          "Prepare",
+          "Operate",
+          "Evolve"
+        ],
+        "discovery_questions": [
+          "How do you determine what your priorities are?",
+          "How do you structure your organization to support your business outcomes?",
+          "How do you evaluate risk?",
+          "How do you design your workload so that you can understand its state?",
+          "How do you reduce defects, ease remediation, and improve flow into production?",
+          "How do you mitigate deployment risks?",
+          "How do you know that you are ready to support a workload?",
+          "How do you understand the health of your workload?",
+          "How do you evolve operations?"
+        ],
+        "automation_tools": [
+          "Steampipe (resource inventory)",
+          "Former2 (IaC generation)",
+          "AWS Config (configuration tracking)",
+          "CloudWatch (monitoring)",
+          "AWS Systems Manager (automation)"
+        ],
+        "objective_data_sources": [
+          "CloudWatch metrics and logs",
+          "AWS Config compliance timeline",
+          "CI/CD pipeline metrics",
+          "Incident response times",
+          "Change success rates"
+        ]
+      },
+      {
+        "pillar": "Security",
+        "focus_areas": [
+          "Security foundations",
+          "Identity and access management",
+          "Detection",
+          "Infrastructure protection",
+          "Data protection",
+          "Incident response"
+        ],
+        "discovery_questions": [
+          "How do you securely operate your workload?",
+          "How do you manage identities for people and machines?",
+          "How do you manage permissions for people and machines?",
+          "How do you detect and investigate security events?",
+          "How do you protect your network resources?",
+          "How do you protect your compute resources?",
+          "How do you classify your data?",
+          "How do you protect your data at rest?",
+          "How do you protect your data in transit?",
+          "How do you anticipate, respond to, and recover from incidents?"
+        ],
+        "automation_tools": [
+          "Prowler (comprehensive security assessment)",
+          "AWS Security Hub (centralized findings)",
+          "Steampipe (security compliance scans)",
+          "IAM Credential Report (identity audit)",
+          "AWS Config (security configuration)"
+        ],
+        "objective_data_sources": [
+          "Prowler scan results (62 checks mapped)",
+          "Security Hub findings",
+          "IAM credential report",
+          "GuardDuty alerts",
+          "CloudTrail logs",
+          "VPC Flow Logs",
+          "S3 bucket policies and ACLs"
+        ],
+        "critical_checks": [
+          "MFA enabled for all IAM users",
+          "Root account usage",
+          "S3 bucket public access",
+          "Security group open ports",
+          "Encryption at rest enabled",
+          "CloudTrail enabled",
+          "GuardDuty enabled"
+        ]
+      },
+      {
+        "pillar": "Reliability",
+        "focus_areas": [
+          "Foundations",
+          "Workload architecture",
+          "Change management",
+          "Failure management"
+        ],
+        "discovery_questions": [
+          "How do you manage service quotas and constraints?",
+          "How do you plan your network topology?",
+          "How do you design your workload service architecture?",
+          "How do you design interactions in a distributed system to prevent failures?",
+          "How do you design interactions in a distributed system to mitigate or withstand failures?",
+          "How do you monitor workload resources?",
+          "How do you design your workload to adapt to changes in demand?",
+          "How do you implement change?",
+          "How do you back up data?",
+          "How do you use fault isolation to protect your workload?",
+          "How do you design your workload to withstand component failures?",
+          "How do you test reliability?",
+          "How do you plan for disaster recovery (DR)?"
+        ],
+        "automation_tools": [
+          "Steampipe (multi-AZ checks, backup verification)",
+          "Former2 (architecture documentation)",
+          "AWS Config (configuration compliance)",
+          "Trusted Advisor (fault tolerance checks)"
+        ],
+        "objective_data_sources": [
+          "Multi-AZ deployment status",
+          "Backup configuration and frequency",
+          "RTO/RPO metrics",
+          "Auto Scaling configuration",
+          "Health check configurations",
+          "Service quota usage",
+          "Disaster recovery test results"
+        ]
+      },
+      {
+        "pillar": "Performance Efficiency",
+        "focus_areas": [
+          "Selection",
+          "Review",
+          "Monitoring",
+          "Tradeoffs"
+        ],
+        "discovery_questions": [
+          "How do you select appropriate cloud resources and architecture to meet your performance requirements?",
+          "How do you select your compute solution?",
+          "How do you select your storage solution?",
+          "How do you select your database solution?",
+          "How do you configure your networking solution?",
+          "How do you evolve your workload to take advantage of new releases?",
+          "How do you monitor your resources to ensure they are performing?",
+          "How do you use tradeoffs to improve performance?"
+        ],
+        "automation_tools": [
+          "Steampipe (resource sizing analysis)",
+          "CloudWatch (performance metrics)",
+          "AWS Compute Optimizer (rightsizing)"
+        ],
+        "objective_data_sources": [
+          "CloudWatch performance metrics",
+          "Compute Optimizer recommendations",
+          "Instance types and sizes",
+          "Database engine versions",
+          "Network throughput metrics",
+          "Cache hit rates",
+          "Query performance data"
+        ]
+      },
+      {
+        "pillar": "Cost Optimization",
+        "focus_areas": [
+          "Practice Cloud Financial Management",
+          "Expenditure and usage awareness",
+          "Cost-effective resources",
+          "Manage demand and supply resources",
+          "Optimize over time"
+        ],
+        "discovery_questions": [
+          "How do you implement cloud financial management?",
+          "How do you govern usage?",
+          "How do you monitor usage and cost?",
+          "How do you decommission resources?",
+          "How do you evaluate cost when you select services?",
+          "How do you meet cost targets when you select resource type, size and number?",
+          "How do you use pricing models to reduce cost?",
+          "How do you plan for data transfer charges?",
+          "How do you manage demand and supply resources?",
+          "How do you evaluate new services?"
+        ],
+        "automation_tools": [
+          "Steampipe (cost analysis queries)",
+          "AWS Cost Explorer",
+          "AWS Trusted Advisor (cost optimization)",
+          "AWS Compute Optimizer"
+        ],
+        "objective_data_sources": [
+          "Cost and Usage Reports",
+          "Trusted Advisor cost checks",
+          "Unused/underutilized resources",
+          "Reserved Instance coverage",
+          "Savings Plans utilization",
+          "Right-sizing recommendations",
+          "S3 storage class analysis"
+        ]
+      },
+      {
+        "pillar": "Sustainability",
+        "focus_areas": [
+          "Region selection",
+          "User behavior patterns",
+          "Software and architecture patterns",
+          "Data patterns",
+          "Hardware patterns",
+          "Development and deployment process"
+        ],
+        "discovery_questions": [
+          "How do you select Regions for your workload?",
+          "How do you take advantage of user behavior patterns to support your sustainability goals?",
+          "How do you take advantage of software and architecture patterns to support your sustainability goals?",
+          "How do you take advantage of data access and usage patterns to support your sustainability goals?",
+          "How do your hardware management and usage practices support your sustainability goals?",
+          "How do your development and deployment practices support your sustainability goals?"
+        ],
+        "automation_tools": [
+          "Steampipe (resource efficiency analysis)",
+          "CloudWatch (resource utilization)",
+          "AWS Compute Optimizer"
+        ],
+        "objective_data_sources": [
+          "Resource utilization metrics",
+          "Idle resource inventory",
+          "Graviton instance adoption",
+          "Storage efficiency (deduplication, compression)",
+          "Auto-scaling patterns",
+          "Serverless adoption rate"
+        ]
+      }
+    ]
+  },
+  "best_practices": {
+    "description": "Best practices for automated WAFR discovery and assessment",
+    "practices": [
+      {
+        "category": "Access and Security",
+        "practices": [
+          "Use least-privilege IAM roles for scanning tools",
+          "Never use long-lived access keys; prefer IAM roles and temporary credentials",
+          "Run scans from within VPC using VPC endpoints for API access",
+          "Encrypt all scan reports at rest in S3",
+          "Use CloudFront with signed URLs for secure report distribution",
+          "Audit all scanning activities via CloudTrail"
+        ]
+      },
+      {
+        "category": "Data Collection",
+        "practices": [
+          "Collect both objective (automated scans) and subjective (stakeholder interviews) data",
+          "Store all scan reports in organized S3 structure (by date, workload, tool)",
+          "Link scan reports to WAFR workload notes for evidence",
+          "Version scan reports to track changes over time",
+          "Automate data collection on regular schedule (weekly, monthly)",
+          "Maintain audit trail of all scans and findings"
+        ]
+      },
+      {
+        "category": "Automation and Integration",
+        "practices": [
+          "Use AWS Well-Architected Tool API for programmatic updates",
+          "Maintain mapping dictionary between scanning tools and WAFR questions",
+          "Filter findings by severity (focus on Critical and High)",
+          "Create milestones after each scan to track progress",
+          "Automate scan execution with Lambda or Step Functions",
+          "Set up EventBridge rules for scheduled scans",
+          "Use SNS notifications for scan completion and critical findings"
+        ]
+      },
+      {
+        "category": "Review and Remediation",
+        "practices": [
+          "Review automated findings with human experts before finalizing",
+          "Prioritize remediation by severity and business impact",
+          "Re-run scans after remediation to verify fixes",
+          "Track remediation progress with milestones",
+          "Document false positives and exceptions",
+          "Conduct regular reviews (quarterly recommended)",
+          "Update architecture diagrams after changes"
+        ]
+      },
+      {
+        "category": "Stakeholder Communication",
+        "practices": [
+          "Present objective scan data to earn stakeholder trust",
+          "Use visualizations (dashboards, diagrams) for clarity",
+          "Provide context for findings (business impact, remediation effort)",
+          "Set realistic timelines for remediation",
+          "Celebrate progress with milestone comparisons",
+          "Get customer consent before running scans on their accounts"
+        ]
+      }
+    ]
+  },
+  "tools_and_scripts": {
+    "description": "Key scripts and tools for WAFR automation",
+    "scripts": [
+      {
+        "name": "wa_scan_mapper.py",
+        "purpose": "Parse Prowler reports and update WAFR workload",
+        "source_url": "https://static.us-east-1.prod.workshops.aws/public/04a9f32d-875e-4fec-9249-a0c59d90a06c/static/tools/wa_scan_mapper.py",
+        "language": "Python 3",
+        "inputs": [
+          "Workload ID (from AWS WA Tool)",
+          "Prowler JSON report path",
+          "Mapping dictionary JSON file"
+        ],
+        "outputs": [
+          "Updated WAFR workload with findings",
+          "Milestone created",
+          "Console output with update summary"
+        ],
+        "usage": "python3 wa_scan_mapper.py <workload_id> <mapping_file>"
+      },
+      {
+        "name": "well_architected_security_prowler_mapping.json",
+        "purpose": "Mapping dictionary between Prowler checks and WAFR best practices",
+        "source_url": "https://static.us-east-1.prod.workshops.aws/public/04a9f32d-875e-4fec-9249-a0c59d90a06c/static/tools/well_architected_security_prowler_mapping.json",
+        "format": "JSON",
+        "total_mappings": 62,
+        "structure": {
+          "prowler_check_id": "string",
+          "wafr_question_id": "string",
+          "wafr_best_practice_id": "string",
+          "severity": "Critical | High"
+        }
+      }
+    ],
+    "aws_cli_examples": [
+      {
+        "purpose": "Create WAFR workload",
+        "command": "aws wellarchitected create-workload --workload-name 'MyWorkload' --description 'Production workload' --environment PRODUCTION --review-owner 'john.doe@example.com' --lenses 'wellarchitected'"
+      },
+      {
+        "purpose": "List WAFR workloads",
+        "command": "aws wellarchitected list-workloads --query 'WorkloadSummaries[?WorkloadName==`MyWorkload`].WorkloadId' --output text"
+      },
+      {
+        "purpose": "Update WAFR answer",
+        "command": "aws wellarchitected update-answer --workload-id <id> --lens-alias wellarchitected --question-id <question_id> --selected-choices <choice_id> --notes 'Finding details from automated scan'"
+      },
+      {
+        "purpose": "Create milestone",
+        "command": "aws wellarchitected create-milestone --workload-id <id> --milestone-name 'After Prowler Scan' --notes 'Automated scan findings applied'"
+      },
+      {
+        "purpose": "Generate IAM credential report",
+        "command": "aws iam generate-credential-report && aws iam get-credential-report --query Content --output text | base64 -d > iam_credential_report.csv"
+      }
+    ]
+  },
+  "closing_questions": {
+    "description": "Reflection questions for workshop attendees to assess value and adoption",
+    "questions": [
+      {
+        "question": "Do you think these tools and techniques could save you time? If so, how much?",
+        "purpose": "Quantify time savings potential"
+      },
+      {
+        "question": "How much value could these automation approaches bring to your company and your customers?",
+        "purpose": "Assess business value"
+      },
+      {
+        "question": "If the Well-Architected tool and AWS Trusted Advisor did not exist today, what would be the ideal experience if a partner or a customer was to build it themselves?",
+        "purpose": "Gather innovation ideas"
+      },
+      {
+        "question": "Are you interested in incorporating these techniques into your own Well-Architected practice?",
+        "purpose": "Gauge adoption intent"
+      },
+      {
+        "question": "How open are your customers to having scans run on their accounts?",
+        "purpose": "Understand customer acceptance of automation"
+      }
+    ]
+  },
+  "reference_links": {
+    "aws_documentation": [
+      {
+        "title": "AWS Well-Architected Framework",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
+      },
+      {
+        "title": "AWS Well-Architected Tool API Reference",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/APIReference/Welcome.html"
+      },
+      {
+        "title": "AWS Security Hub",
+        "url": "https://docs.aws.amazon.com/securityhub/"
+      },
+      {
+        "title": "AWS Trusted Advisor",
+        "url": "https://docs.aws.amazon.com/awssupport/latest/user/trusted-advisor.html"
+      },
+      {
+        "title": "IAM Credential Reports",
+        "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html"
+      }
+    ],
+    "open_source_tools": [
+      {
+        "name": "Steampipe",
+        "url": "https://steampipe.io/",
+        "description": "SQL-based cloud asset inventory and compliance"
+      },
+      {
+        "name": "Prowler",
+        "url": "https://github.com/prowler-cloud/prowler",
+        "description": "AWS security assessment tool"
+      },
+      {
+        "name": "Former2",
+        "url": "https://former2.com/",
+        "description": "Generate IaC from existing AWS resources"
+      }
+    ]
+  },
+  "agent_usage_guidance": {
+    "for_discovery_agent": {
+      "use_these_questions": "discovery_phase_questions",
+      "recommend_tools": "automation_tools",
+      "focus_on": "Understand client's current WAFR practice and data collection maturity"
+    },
+    "for_assessment_agent": {
+      "use_these_sections": [
+        "wafr_pillars_discovery",
+        "prowler_to_wafr_mapping",
+        "automation_tools"
+      ],
+      "for_each_pillar": "Ask discovery questions and recommend objective data sources",
+      "scoring_guidance": "Reference automation tools and objective data when scoring answers"
+    },
+    "for_report_agent": {
+      "use_these_sections": [
+        "wafr_automation_workflow",
+        "best_practices",
+        "tools_and_scripts"
+      ],
+      "recommendations_to_include": [
+        "Automated scanning tools to implement",
+        "Mapping approach for scan findings",
+        "AWS CLI commands for automation",
+        "Best practices for least-privilege access"
+      ]
+    }
+  }
+}
+

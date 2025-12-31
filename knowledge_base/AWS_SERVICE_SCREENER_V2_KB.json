@@ -1,0 +1,498 @@
+{
+  "knowledgeBase": "AWS Service Screener V2 - Report Generation Framework",
+  "version": "2.0",
+  "source": "https://github.com/aws-samples/service-screener-v2",
+  "purpose": "Official AWS open-source tool for automated service configuration checks and report generation",
+  "relevance": "CRITICAL - AWS's own implementation of automated WAFR-style assessments with HTML report generation and WA Tool integration",
+  
+  "overview": {
+    "description": "Open source guidance tool for AWS environments that runs automated checks and provides recommendations based on AWS and community best practices",
+    "license": "Apache-2.0",
+    "cost": "FREE (covered under AWS Free Tier, <$0.01 per run if exceeded)",
+    "platform": "AWS CloudShell (browser-based shell)",
+    "output": "HTML report + JSON files (api-raw.json, api-full.json)",
+    "sample_report": "dev.d11el1twchxpia.amplifyapp.com/961319563195/index.html"
+  },
+  
+  "architecture": {
+    "execution_environment": "AWS CloudShell",
+    "runtime": "Python 3",
+    "dependencies": [
+      "boto3 (AWS SDK)",
+      "botocore",
+      "Custom Python modules"
+    ],
+    "api_approach": "Multiple 'describe' and 'get' API calls to determine environment configuration",
+    "report_format": "HTML dashboard with left navigation + JSON outputs"
+  },
+  
+  "well_architected_pillars_covered": [
+    "Security",
+    "Reliability", 
+    "Operational Excellence",
+    "Performance Efficiency",
+    "Cost Optimization"
+  ],
+  
+  "key_features": {
+    "1_automated_checks": {
+      "description": "Runs automated checks on AWS service configurations",
+      "approach": "Uses AWS APIs (describe/get calls) to collect configuration data",
+      "coverage": "Multiple AWS services (see services/ directory)"
+    },
+    
+    "2_html_report_generation": {
+      "description": "Generates interactive HTML dashboard",
+      "features": [
+        "Left navigation bar for services",
+        "Expandable checks with descriptions",
+        "Resource-level findings",
+        "Remediation recommendations"
+      ],
+      "output_location": "~/service-screener-v2/output.zip",
+      "files": [
+        "index.html - Main dashboard",
+        "api-raw.json - Raw findings",
+        "api-full.json - Full results in JSON"
+      ]
+    },
+    
+    "3_well_architected_tool_integration": {
+      "description": "Can create workloads and milestones directly in AWS WA Tool",
+      "parameters": {
+        "region": "AWS region where WA workload will be created",
+        "reportName": "Name of the workload (use existing name to update)",
+        "newMileStone": "1 to create new milestone each time, 0 to create only if none exists"
+      },
+      "example_command": "screener --regions ap-southeast-1 --beta 1 --others '{\"WA\": {\"region\": \"ap-southeast-1\", \"reportName\": \"SS_Report\", \"newMileStone\": 1}}'",
+      "why_critical": "This proves AWS's own tool integrates with WA Tool - validates your approach!"
+    },
+    
+    "4_suppression_mechanism": {
+      "description": "Allows ignoring specific findings via JSON file",
+      "format": {
+        "metadata": {
+          "version": "1.0",
+          "description": "Suppression description"
+        },
+        "suppressions": [
+          {
+            "service": "s3",
+            "rule": "BucketReplication"
+          },
+          {
+            "service": "s3", 
+            "rule": "BucketVersioning",
+            "resource_id": ["Bucket::my-bucket-name"]
+          }
+        ]
+      },
+      "use_case": "Clients can suppress false positives or accepted risks",
+      "command": "screener --regions us-east-1 --services s3 --suppress_file ./suppressions.json"
+    },
+    
+    "5_tag_based_filtering": {
+      "description": "Filter resources based on AWS tags",
+      "example": "screener --regions ap-southeast-1 --tags env=prod%department=hr,coe",
+      "use_case": "Assess only production workloads or specific departments"
+    },
+    
+    "6_multi_region_support": {
+      "description": "Can run across multiple regions or all regions",
+      "examples": [
+        "Single region: --regions ap-southeast-1",
+        "Multiple regions: --regions ap-southeast-1,us-east-1",
+        "All regions: --regions ALL"
+      ]
+    },
+    
+    "7_service_selection": {
+      "description": "Can check all services or specific services",
+      "examples": [
+        "All services: --regions ap-southeast-1",
+        "Specific service: --regions ap-southeast-1 --services s3",
+        "Multiple services: --regions ap-southeast-1 --services rds,iam"
+      ],
+      "service_mapping": "See SERVICES_IDENTIFIER_MAPPING in Config.py"
+    },
+    
+    "8_beta_features": {
+      "description": "Opt-in to beta checks for latest features",
+      "command": "--beta 1",
+      "recommendation": "AWS recommends running with --beta 1"
+    },
+    
+    "9_migration_evaluation_support": {
+      "description": "For AWS Partners conducting migration evaluations",
+      "format": {
+        "mpe": {
+          "id": "aaaa-1111-cccc"
+        }
+      },
+      "use_case": "Track assessments for AWS Migration Acceleration Program"
+    }
+  },
+  
+  "report_structure": {
+    "dashboard_components": [
+      "Left navigation pane - List of services checked",
+      "Main content area - Findings and recommendations",
+      "Expandable checks - Click to see details",
+      "Resource list - Which resources were flagged",
+      "Remediation guidance - How to fix issues"
+    ],
+    
+    "json_outputs": {
+      "api_raw_json": {
+        "description": "Raw findings from all API calls",
+        "use_case": "Programmatic access to findings"
+      },
+      "api_full_json": {
+        "description": "Full results in structured JSON format",
+        "use_case": "Integration with other tools, data processing"
+      }
+    },
+    
+    "hosting_requirements": {
+      "critical_note": "Generated report MUST be hosted locally and MUST NOT be internet accessible",
+      "reason": "Security - report may contain sensitive infrastructure details"
+    }
+  },
+  
+  "prerequisites": {
+    "aws_account": "Existing AWS Account required",
+    "iam_permissions": [
+      "Read permissions for all services (sample policy provided)",
+      "AWSCloudShellFullAccess",
+      "cloudformation:CreateStack",
+      "cloudformation:DeleteStack",
+      "iam:SetSecurityTokenServicePreferences (for cross-account)"
+    ],
+    "cost": "Free under AWS Free Tier, <$0.01 if exceeded"
+  },
+  
+  "installation": {
+    "steps": [
+      "1. Log in to AWS account",
+      "2. Launch AWS CloudShell in any region",
+      "3. Run installation script",
+      "4. Install dependencies",
+      "5. Create alias for easy execution"
+    ],
+    "installation_script": "cd /tmp\npython3 -m venv .\nsource bin/activate\npython3 -m pip install --upgrade pip\nrm -rf service-screener-v2\ngit clone https://github.com/aws-samples/service-screener-v2.git\ncd service-screener-v2\npip install -r requirements.txt\npython3 unzip_botocore_lambda_runtime.py\nalias screener='python3 $(pwd)/main.py'"
+  },
+  
+  "usage_examples": [
+    {
+      "name": "Recommended: All services with beta features",
+      "command": "screener --regions ap-southeast-1 --beta 1"
+    },
+    {
+      "name": "Stable releases only",
+      "command": "screener --regions ap-southeast-1"
+    },
+    {
+      "name": "Single service (S3)",
+      "command": "screener --regions ap-southeast-1 --services s3"
+    },
+    {
+      "name": "Multiple regions",
+      "command": "screener --regions ap-southeast-1,us-east-1"
+    },
+    {
+      "name": "Multiple services",
+      "command": "screener --regions ap-southeast-1,us-east-1 --services rds,iam"
+    },
+    {
+      "name": "Tag-based filtering",
+      "command": "screener --regions ap-southeast-1 --tags env=prod%department=hr,coe"
+    },
+    {
+      "name": "All regions and services",
+      "command": "screener --regions ALL"
+    },
+    {
+      "name": "With suppression file",
+      "command": "screener --regions us-east-1 --services s3 --suppress_file ./suppressions.json"
+    },
+    {
+      "name": "With WA Tool integration",
+      "command": "screener --regions ap-southeast-1 --beta 1 --others '{\"WA\": {\"region\": \"ap-southeast-1\", \"reportName\": \"SS_Report\", \"newMileStone\": 1}}'"
+    },
+    {
+      "name": "Combined: WA Tool + MPE",
+      "command": "screener --regions ap-southeast-1 --others '{\"WA\": {\"region\": \"ap-southeast-1\", \"reportName\": \"SS_Report\", \"newMileStone\": 1}, \"mpe\": {\"id\": \"aaaa-1111-cccc\"}}'"
+    }
+  ],
+  
+  "integration_with_your_platform": {
+    "why_service_screener_matters": [
+      "1. AWS's official open-source implementation (validates your approach)",
+      "2. Already has WA Tool integration (you can use same API approach)",
+      "3. HTML report generation (proven UI/UX pattern)",
+      "4. Suppression mechanism (clients need this)",
+      "5. Tag-based filtering (enterprise requirement)",
+      "6. Multi-region support (your platform needs this)",
+      "7. JSON outputs (for programmatic access)"
+    ],
+    
+    "what_to_adopt": {
+      "1_report_ui_pattern": {
+        "feature": "Left navigation + expandable checks",
+        "why": "AWS-validated UX for WAFR reports",
+        "implementation": "Use Service Screener's HTML template as reference"
+      },
+      
+      "2_suppression_mechanism": {
+        "feature": "JSON-based suppression file",
+        "why": "Clients need to suppress false positives",
+        "implementation": "Same JSON structure in your Report Agent"
+      },
+      
+      "3_json_outputs": {
+        "feature": "api-raw.json + api-full.json",
+        "why": "Programmatic access for CI/CD integration",
+        "implementation": "Generate both formats from your Report Agent"
+      },
+      
+      "4_wa_tool_api_calls": {
+        "feature": "CreateWorkload + CreateMilestone",
+        "why": "AWS's own tool does this - validates your KB #2",
+        "implementation": "Study Service Screener's WA Tool integration code"
+      },
+      
+      "5_tag_filtering": {
+        "feature": "Filter resources by AWS tags",
+        "why": "Enterprises need to assess specific environments",
+        "implementation": "Add to Discovery Agent"
+      },
+      
+      "6_beta_flag": {
+        "feature": "Opt-in to latest checks",
+        "why": "Innovation vs. stability choice",
+        "implementation": "Add --beta flag to your platform"
+      }
+    },
+    
+    "your_competitive_advantages_over_service_screener": {
+      "1_conversational_discovery": {
+        "service_screener": "Manual workload definition required",
+        "your_platform": "AI-powered conversational discovery (KB #7)"
+      },
+      
+      "2_genai_lens": {
+        "service_screener": "No GenAI-specific checks",
+        "your_platform": "Full GenAI Lens assessment (KB #4)"
+      },
+      
+      "3_automated_answering": {
+        "service_screener": "Only checks configuration, doesn't answer WAFR questions",
+        "your_platform": "Answers 50+ WAFR questions + creates WA Tool workload"
+      },
+      
+      "4_multi_agent_intelligence": {
+        "service_screener": "Single-pass script",
+        "your_platform": "Multi-agent system with Discovery, Assessment, Validation, Report agents"
+      },
+      
+      "5_client_interface": {
+        "service_screener": "Technical users only (CloudShell, CLI)",
+        "your_platform": "User-friendly web interface (Next.js)"
+      },
+      
+      "6_continuous_assessment": {
+        "service_screener": "One-time manual runs",
+        "your_platform": "Automated quarterly assessments with tracking"
+      },
+      
+      "7_cost_optimization_calculator": {
+        "service_screener": "Identifies issues only",
+        "your_platform": "Calculates $ savings + ROI (MCP Tool #3)"
+      }
+    }
+  },
+  
+  "code_repository_structure": {
+    "key_directories": [
+      "services/ - Service-specific check modules",
+      "frameworks/ - Framework definitions",
+      "templates/ - Report templates",
+      "utils/ - Utility functions",
+      "adminlte/aws/res - Report UI assets",
+      "docs/ - Documentation"
+    ],
+    
+    "key_files": [
+      "main.py - Entry point",
+      "Config.py - Service mappings and configurations",
+      "requirements.txt - Python dependencies",
+      "suppressions-example.json - Suppression file example"
+    ]
+  },
+  
+  "development_guide": {
+    "available": true,
+    "location": "docs/Development_Guide.md",
+    "purpose": "Guide for contributing new service checks"
+  },
+  
+  "community": {
+    "stars": "518 stars on GitHub",
+    "forks": "119 forks",
+    "contributors": "22+ contributors",
+    "license": "Apache-2.0 (open source)",
+    "actively_maintained": true
+  },
+  
+  "comparison_matrix": {
+    "feature": "Service Screener V2 vs. Your Platform",
+    "table": [
+      {
+        "feature": "Target Audience",
+        "service_screener": "Technical users (SA, DevOps)",
+        "your_platform": "Business users + Technical users"
+      },
+      {
+        "feature": "Interface",
+        "service_screener": "CLI (CloudShell)",
+        "your_platform": "Web UI + API"
+      },
+      {
+        "feature": "Discovery",
+        "service_screener": "Manual AWS API calls",
+        "your_platform": "Conversational AI + AWS APIs"
+      },
+      {
+        "feature": "WAFR Questions",
+        "service_screener": "N/A (only checks configs)",
+        "your_platform": "50+ core + 40+ GenAI"
+      },
+      {
+        "feature": "GenAI Lens",
+        "service_screener": "No",
+        "your_platform": "Yes (KB #4)"
+      },
+      {
+        "feature": "WA Tool Integration",
+        "service_screener": "Yes (creates workload + milestone)",
+        "your_platform": "Yes (same + answers questions)"
+      },
+      {
+        "feature": "Report Format",
+        "service_screener": "HTML + JSON",
+        "your_platform": "HTML + JSON + PDF"
+      },
+      {
+        "feature": "Suppression",
+        "service_screener": "Yes (JSON file)",
+        "your_platform": "Yes (can adopt same format)"
+      },
+      {
+        "feature": "Tag Filtering",
+        "service_screener": "Yes",
+        "your_platform": "Can adopt"
+      },
+      {
+        "feature": "Cost",
+        "service_screener": "Free (open source)",
+        "your_platform": "$99-$2,999 (SaaS)"
+      },
+      {
+        "feature": "Deployment",
+        "service_screener": "Self-hosted (CloudShell)",
+        "your_platform": "SaaS (instant)"
+      },
+      {
+        "feature": "Automation",
+        "service_screener": "Manual runs",
+        "your_platform": "Automated quarterly"
+      }
+    ]
+  },
+  
+  "key_learnings_for_your_platform": {
+    "1_wa_tool_integration_is_proven": {
+      "insight": "AWS's own open-source tool integrates with WA Tool",
+      "validation": "Your KB #2 approach is AWS-validated",
+      "action": "Study Service Screener's WA Tool integration code"
+    },
+    
+    "2_html_json_dual_output": {
+      "insight": "AWS provides both human-readable (HTML) and machine-readable (JSON) outputs",
+      "validation": "Your Report Agent should do the same",
+      "action": "Generate HTML dashboard + api-full.json + api-raw.json"
+    },
+    
+    "3_suppression_is_essential": {
+      "insight": "Enterprise clients need to suppress known issues",
+      "validation": "Not a nice-to-have, it's a must-have",
+      "action": "Implement suppression mechanism (same JSON format)"
+    },
+    
+    "4_tag_filtering_for_enterprises": {
+      "insight": "Large organizations use tags to separate environments",
+      "validation": "Your platform needs tag-based filtering",
+      "action": "Add to Discovery Agent (filter by env=prod, department, etc.)"
+    },
+    
+    "5_report_must_be_local": {
+      "insight": "AWS emphasizes: 'MUST NOT be internet accessible'",
+      "validation": "Security is paramount for infrastructure reports",
+      "action": "Add security disclaimer + client-side-only option"
+    },
+    
+    "6_beta_flag_for_innovation": {
+      "insight": "AWS uses --beta flag to test new features",
+      "validation": "Clients want choice: stable vs. latest features",
+      "action": "Implement feature flags in your platform"
+    }
+  },
+  
+  "implementation_checklist": {
+    "phase_1_study": [
+      "Clone Service Screener V2 repository",
+      "Run it on a test AWS account",
+      "Study the generated HTML report structure",
+      "Review WA Tool integration code",
+      "Examine suppression mechanism"
+    ],
+    
+    "phase_2_adopt": [
+      "Adopt HTML report UI pattern (left nav + expandable checks)",
+      "Implement suppression mechanism (JSON format)",
+      "Add JSON outputs (api-raw.json, api-full.json)",
+      "Study WA Tool API calls (CreateWorkload, CreateMilestone)",
+      "Add tag-based filtering to Discovery Agent"
+    ],
+    
+    "phase_3_differentiate": [
+      "Add conversational discovery (your advantage)",
+      "Integrate GenAI Lens (your advantage)",
+      "Add cost optimization calculator (your advantage)",
+      "Build user-friendly web UI (your advantage)",
+      "Implement automated quarterly assessments (your advantage)"
+    ]
+  },
+  
+  "marketing_messages": {
+    "positioning": "Built on AWS's proven open-source framework, enhanced with AI-powered discovery and GenAI assessment",
+    
+    "proof_points": [
+      "Based on AWS Service Screener V2 (518 stars, 22+ contributors)",
+      "Uses same WA Tool integration as AWS's official tool",
+      "Adds conversational AI discovery (10x faster)",
+      "Only platform with GenAI Lens assessment",
+      "Enterprise-ready (suppression, tag filtering, multi-region)"
+    ],
+    
+    "competitive_angle": "Service Screener V2 is for DevOps teams who love CLI. We're for business stakeholders who need results in 20 minutes, not 8 hours."
+  },
+  
+  "resources": {
+    "github_repo": "https://github.com/aws-samples/service-screener-v2",
+    "sample_report": "dev.d11el1twchxpia.amplifyapp.com/961319563195/index.html",
+    "development_guide": "Available in repo docs/",
+    "community": "GitHub Issues for support"
+  }
+}
+

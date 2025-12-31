@@ -1,0 +1,800 @@
+{
+  "knowledge_base": {
+    "source": "AWS Workshop + EB Khiyami Blog Part 1 + Official Framework Docs",
+    "primary_url": "https://catalog.workshops.aws/howto-wafr/en-US",
+    "additional_sources": [
+      "https://aws.amazon.com/blogs/mt/how-to-perform-a-well-architected-framework-review-part1/",
+      "https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html"
+    ],
+    "description": "Complete operational guide for WAFR - how to prepare, conduct, and improve reviews",
+    "last_updated": "2025-12-17",
+    "version": "2.0",
+    "key_insight": "This is the COMPLETE operational playbook for WAFR - combining AWS workshop, EB Khiyami's best practices, and official framework structure"
+  },
+  "executive_summary": {
+    "what": "Step-by-step guide for running WAFR reviews across 3 phases: Prepare → Review → Improve",
+    "why_critical_for_agents": "Your Discovery Agent needs to follow AWS's best practices for conducting reviews - not just ask questions, but create the right environment and approach",
+    "3_phases": {
+      "prepare": "Define workload, scope, people, culture, documentation",
+      "review": "Conduct the actual assessment with 11 best practices",
+      "improve": "Act on findings systematically"
+    },
+    "key_principles": [
+      "WAFR is not an audit - it's about architectural health",
+      "Create a safe space - no blame culture",
+      "Maybe == No (capture current state, not intended state)",
+      "Team sport (requires STO + pillar champions)",
+      "Conversational (focus on discussion, not tool)"
+    ],
+    "eb_khiyami_definition": {
+      "source": "https://aws.amazon.com/blogs/mt/how-to-perform-a-well-architected-framework-review-part1/",
+      "author": "Ebrahim (EB) Khiyami, Senior Solutions Architect, AWS Well-Architected Specialist",
+      "what_is_wafr": "The consistent process of LEARNING AWS best practices, MEASURING architecture against these best practices, identifying architecture risks and creating an IMPROVEMENT plan to address them",
+      "analogy": "Building a technology system is not different from building any other product. There are practices and codes to follow to ensure alignment with industry standards.",
+      "mechanisms": "You need mechanisms to ensure teams are AWARE of practices and FOLLOWING them",
+      "goal": "The ultimate goal is to IMPROVE your systems' architectures so they can better support business needs"
+    }
+  },
+  "aws_wellarchitected_framework": {
+    "official_documentation": "https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html",
+    "analogy": "Creating a software system is a lot like constructing a building. If the foundation is not solid, structural problems can undermine the integrity and function of the building.",
+    "importance": "When architecting technology solutions, if you neglect the six pillars, it can become challenging to build a system that delivers on your expectations and requirements.",
+    "benefit": "Incorporating these pillars into your architecture will help you produce stable and efficient systems. This allows you to focus on other aspects of design, such as functional requirements.",
+    "6_pillars": {
+      "pillar_1": {
+        "name": "Operational Excellence",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html",
+        "focus": "Run and monitor systems, continually improve processes and procedures",
+        "key_topics": ["Organization", "Prepare", "Operate", "Evolve"],
+        "business_value": "Provides insight into system status, enables effective operation and event response, supports continuous improvement"
+      },
+      "pillar_2": {
+        "name": "Security",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html",
+        "focus": "Protect data, systems, and assets; control access; respond to security events",
+        "key_topics": ["Identity and Access Management", "Detection", "Infrastructure Protection", "Data Protection", "Incident Response"],
+        "business_value": "Protects your data and systems, controls access, responds automatically to security events"
+      },
+      "pillar_3": {
+        "name": "Reliability",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html",
+        "focus": "Ensure workload performs its intended function correctly and consistently",
+        "key_topics": ["Foundations", "Workload Architecture", "Change Management", "Failure Management"],
+        "business_value": "Strong foundations, resilient architecture, consistent change management, proven failure recovery processes"
+      },
+      "pillar_4": {
+        "name": "Performance Efficiency",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html",
+        "focus": "Use computing resources efficiently to meet requirements and maintain efficiency as demand changes",
+        "key_topics": ["Selection", "Review", "Monitoring", "Tradeoffs"],
+        "business_value": "Delivers sustained performance over time, adapts to changing requirements"
+      },
+      "pillar_5": {
+        "name": "Cost Optimization",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html",
+        "focus": "Run systems to deliver business value at the lowest price point",
+        "key_topics": ["Practice Cloud Financial Management", "Expenditure and usage awareness", "Cost-effective resources", "Manage demand and supply resources", "Optimize over time"],
+        "business_value": "In-depth guidance for building capability, designing workload, selecting services, configuring and operating services, applying cost optimization techniques"
+      },
+      "pillar_6": {
+        "name": "Sustainability",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/sustainability-pillar/sustainability-pillar.html",
+        "focus": "Minimize environmental impacts of running cloud workloads",
+        "key_topics": ["Region selection", "Alignment to demand", "Software and architecture", "Data", "Hardware and services", "Process and culture"],
+        "business_value": "Design principles, operational guidance, best practices, potential trade-offs, and improvement plans for sustainability targets"
+      }
+    },
+    "order_of_review": "Recommended to follow the order: Operational Excellence → Security → Reliability → Performance Efficiency → Cost Optimization → Sustainability",
+    "note_on_order": "However, your organization's priority might be different. You can choose to review specific pillars based on business needs."
+  },
+  "phase_1_prepare": {
+    "overview": "Before running WAFR, invest time in understanding and documenting workload components. This saves time during review when more people are involved.",
+    "eb_khiyami_best_practices": {
+      "source": "https://aws.amazon.com/blogs/mt/how-to-perform-a-well-architected-framework-review-part1/",
+      "preparation_timeline": "Preparation typically starts about 3 weeks before actual review date",
+      "depends_on": [
+        "Time to assemble review team",
+        "How many pillars to review",
+        "Priority given to complete review by organization"
+      ],
+      "5_preparation_steps": {
+        "step_1": {
+          "name": "Define a workload",
+          "description": "A workload is a set of components (technology, people, processes) that delivers business value to your organization",
+          "level": "The level of business and technology that leaders communicate about",
+          "example": "A website where customers place and track orders, along with infrastructure and processes that support its back-end",
+          "components": ["Technology", "People", "Processes"],
+          "delivers": "Business value"
+        },
+        "step_2": {
+          "name": "Define core team (sponsors)",
+          "importance": "Key component to successful WAFR is engaging the right people from beginning",
+          "workload_sponsor": {
+            "definition": "Person (or team) ultimately responsible for success (or failure) of workload",
+            "authority": "Should have right level of authority to influence and take actions to address risks",
+            "example_actions": ["Shifting teams' priorities", "Hiring external party", "Allocating budget"],
+            "critical": "This is the Single Threaded Owner (STO)"
+          },
+          "pillar_sponsors": {
+            "definition": "Sponsor for each pillar",
+            "variations": [
+              "One person responsible for multiple pillars",
+              "Multiple teams responsible for one pillar",
+              "Mix of both"
+            ],
+            "goal": "Ensure right person to answer review questions for each pillar AND address risks later",
+            "examples": {
+              "reliability_pillar": "May need SMEs on: database, networking, security, operations",
+              "operational_excellence_pillar": "May need: Enterprise Architects, Application Development, business/finance"
+            }
+          }
+        },
+        "step_3": {
+          "name": "Decide on the pillars and lenses",
+          "ideal": "Get comprehensive look at workload from all six pillars perspective",
+          "pragmatic": "May need to focus only on specific pillars based on priorities",
+          "example": "If you changed security practice, you may review only Security Pillar",
+          "recommended_order": "Follow pillars order as listed: Operational Excellence → Security → Reliability → Performance Efficiency → Cost Optimization → Sustainability",
+          "flexibility": "Your organization's priority might be different - decide on order based on needs",
+          "lenses": {
+            "definition": "Lenses extend guidance to specific industry and technology domains",
+            "examples": [
+              {
+                "lens": "Serverless Application Lens",
+                "use_when": "Workload primarily uses serverless"
+              },
+              {
+                "lens": "Data Analytics Lens",
+                "use_when": "Run data analytics workload"
+              },
+              {
+                "lens": "SaaS Lens",
+                "use_when": "Building multi-tenant SaaS applications"
+              },
+              {
+                "lens": "Machine Learning Lens",
+                "use_when": "Building ML workloads"
+              }
+            ],
+            "check_available_lenses": "https://aws.amazon.com/architecture/well-architected/#AWS_Well-Architected_Lenses"
+          }
+        },
+        "step_4": {
+          "name": "Decide on session's type",
+          "factors": ["Selected pillars", "Teams' availability", "Geographic distribution"],
+          "options": {
+            "full_day_review": {
+              "duration": "One full day for all six pillars",
+              "pros": [
+                "All stakeholders get together",
+                "Most valuable format",
+                "Helps uncover improvement opportunities the most",
+                "Comprehensive discussion of best practices"
+              ],
+              "cons": ["Usually harder to schedule"],
+              "recommended_for": "Co-located teams, high-priority workloads"
+            },
+            "multiple_sessions": {
+              "duration": "Several sessions over several days for selected pillars",
+              "pros": [
+                "Good for geographically distributed teams",
+                "Good for larger teams",
+                "Easier to schedule",
+                "Easier to maintain"
+              ],
+              "cons": ["May require extra work to update different teams on different milestones"],
+              "recommended_for": "Distributed teams, complex workloads"
+            }
+          },
+          "communication_is_key": "Communication across teams during review is crucial - helps answer questions and uncover issues collectively",
+          "live_vs_async": {
+            "recommended": "Conduct WAFR as LIVE session",
+            "not_recommended": "Asynchronously (teams answering questions in WA Tool separately and sharing later)",
+            "reason": "Live sessions enable real-time collaboration and discussion"
+          }
+        },
+        "step_5": {
+          "name": "Collect the necessary data for the review",
+          "what_to_collect": [
+            "Architecture diagrams",
+            "Documents explaining main components of system",
+            "Back-end architecture details",
+            "Main processes documentation",
+            "Teams responsible for operating the workload"
+          ],
+          "for_complex_workloads": {
+            "use": "AWS Trusted Advisor",
+            "benefit": "Automatic evaluation against best practices",
+            "checks_for": ["Cost optimization", "Performance", "Security", "Fault tolerance", "Service limits"],
+            "enable_for": "All accounts in AWS Organization",
+            "integration": "Use Trusted Advisor actions to understand compliance with best practices and incorporate into review",
+            "example": "How to use AWS Well Architected with AWS Trusted Advisor for data-driven cost optimization",
+            "url": "https://aws.amazon.com/trusted-advisor/"
+          }
+        }
+      }
+    },
+    "4_prepare_steps": {
+      "step_1": {
+        "name": "Define: Workload and Scope",
+        "url": "https://catalog.workshops.aws/howto-wafr/en-US/1-prepare/10-define-workload-and-scope",
+        "workload_definition": {
+          "official": "A workload identifies a set of components that together deliver business value. The workload is usually the level of detail that business and technology leaders communicate about.",
+          "examples": ["marketing websites", "e-commerce websites", "back-ends for mobile app", "analytic platforms"],
+          "complexity": "Workloads vary from static websites to architectures with multiple data stores and many components"
+        },
+        "workload_is_more_than_tech": {
+          "components": [
+            "Cloud services or resources",
+            "People and teams",
+            "Processes and runbooks",
+            "Technology and infrastructure"
+          ],
+          "all_deliver": "Business value"
+        },
+        "group_discussion_questions": {
+          "q1": {
+            "question": "Who owns the workload?",
+            "details": "Who's responsible if disruption of the workload impacts the business?"
+          },
+          "q2": {
+            "question": "What is the purpose of the workload?",
+            "options": ["Serving internal/external customers?", "BI/analytics for the business?", "Sandbox/training?", "Logging?"]
+          },
+          "q3": {
+            "question": "Does this workload need to exist?",
+            "test": "What happens if you shut it down?"
+          },
+          "q4": "Is the workload customer facing or internal?",
+          "q5": "Is the workload production or non-production?",
+          "q6": "What phase is the workload in its lifecycle?",
+          "q7": "What is the impact if the workload had a disruption?",
+          "q8": "What are the boundaries of the workload?",
+          "q9": "What other workloads depend on this workload to function?",
+          "q10": "What dependencies does this workload have?"
+        },
+        "requirement": "If you cannot clearly answer most of these questions, address this before continuing with WAFR",
+        "choosing_workload": {
+          "context": "Large organizations have thousands of workloads",
+          "priority": "Workloads critical to business (if they went offline, business would stop existing)",
+          "culture": "Implementing continuous improvement and consistent WAFRs across teams is crucial"
+        },
+        "scope_definition": {
+          "ideal": "Run full WAFR across all six pillars to identify trade-offs and understand context",
+          "pragmatic": "Focusing on specific prioritized pillar(s) or area is a good way to start",
+          "rationale": "Time is valuable - delivering well-defined slice of larger review with actionable results delivers more value",
+          "iteration": "Iterate and expand scope over time"
+        },
+        "learning_objectives": [
+          "Answered questions to understand the workload better",
+          "Defined boundaries and dependencies to keep WAFR in scope"
+        ]
+      },
+      "step_2": {
+        "name": "Discuss: People and Culture",
+        "url": "https://catalog.workshops.aws/howto-wafr/en-US/1-prepare/20-define-people-and-culture",
+        "ownership": {
+          "requirement": "Every workload needs an owner",
+          "sto_definition": {
+            "role": "Single Threaded Owner (STO)",
+            "must_have": [
+              "Ability to make decisions",
+              "Control of budget",
+              "Control of headcount",
+              "Control of roadmap"
+            ],
+            "examples": ["Product Owner", "Product Manager", "Head Architect", "Engineering Manager"],
+            "accountability_question": "Who is responsible if the workload no longer functions as intended?"
+          },
+          "sto_critical_importance": {
+            "without_sto": "Running WAFR without STO results in poor outcomes",
+            "consequences": [
+              "Improvement items won't get prioritized in product roadmap",
+              "Won't get funding or resources",
+              "Unachievable list of backlog items that never get acted on"
+            ],
+            "sto_must_own": "The STO must own the WAFR and be invested in the process"
+          }
+        },
+        "required_stakeholders": {
+          "reality": "STO cannot answer all questions",
+          "involved_parties": ["Architects", "Developers", "Security teams", "Operations teams"],
+          "discussion_questions": [
+            "Who needs to be present to answer each category of questions?",
+            "Which stakeholders are required during which parts of WAFR?",
+            "How can you inform different stakeholders of questions in advance?"
+          ]
+        },
+        "pillar_sponsors": {
+          "definition": "Pillar-specific sponsors or champions",
+          "benefit": "Can accelerate and increase value of WAFR process",
+          "responsibilities": [
+            "Attend specific parts of WAFR to provide information or guidance",
+            "Own the outcomes for their subject matter area",
+            "Define, influence and communicate strategic cross-organizational changes"
+          ],
+          "cloud_center_of_excellence": {
+            "question": "Does your organization have a Cloud Center of Excellence or Cloud Community of Practice?",
+            "recommendation": "Start small and grow a group of like-minded people for architectural health discussions"
+          }
+        },
+        "create_safe_space": {
+          "culture_importance": "Developing healthy organizational culture is crucial for productive technology discussions",
+          "participants_may_be": ["New or old to workload", "Different tenure/seniority", "Partners and 3rd parties"],
+          "risk": "If people feel their homework is being marked, they become defensive and productive conversations shut down",
+          "positive_intent": {
+            "requirement": "Set positive intent from beginning and re-emphasize throughout",
+            "reality": "Those who built the workload did the best they could with resources and knowledge available at the time",
+            "evolution": "Technology and best practices evolve",
+            "frame": "WAFR must be framed as opportunity to discover improvements"
+          },
+          "not_an_audit": {
+            "what_wafr_is_not": "A WAFR is NOT an audit",
+            "compliance": "Although findings can help meet compliance standards, it's not there to score your workload",
+            "focus": "Focus on increasing Architectural Health"
+          },
+          "two_key_questions": {
+            "where_are_we": "WAFR is a chance to ask 'Where are we?' and capture point-in-time view",
+            "where_should_we_go": "Use findings to make informed decision to answer 'Where should we go?'"
+          },
+          "journey": "Architectural improvement is a journey AWS Well-Architected can guide you on",
+          "practice_exercise": {
+            "activity": "Work as group and practice communicating positive intent",
+            "questions": [
+              "Why are you running the WAFR?",
+              "What do you hope to get out of it?",
+              "How will the experience benefit everyone?",
+              "Where are you now, and where do you want to get to?"
+            ]
+          }
+        },
+        "learning_objectives": [
+          "Defined Single Threaded Owner (STO) to own workload, WAFR and improvements",
+          "Defined which people and teams can help answering WAFR questions",
+          "Defined pillar champions who can provide SME guidance in specialism area",
+          "Reinforced positive intent focusing on architectural health and optimization",
+          "Discussed where you are and where you hope to go with workload"
+        ],
+        "additional_resources": [
+          {
+            "title": "Accountability Blog Post",
+            "url": "https://aws.amazon.com/blogs/enterprise-strategy/two-pizza-teams-are-just-the-start-accountability-and-empowerment-are-key-to-high-performing-agile-organizations-part-2/"
+          },
+          {
+            "title": "Amazon Two Pizza Teams",
+            "url": "https://aws.amazon.com/executive-insights/content/amazon-two-pizza-team/"
+          }
+        ]
+      },
+      "step_3": {
+        "name": "Discover: Documentation and Infrastructure",
+        "url": "https://catalog.workshops.aws/howto-wafr/en-US/1-prepare/30-discover-docs-and-infra",
+        "purpose": "Gather documentation and understand infrastructure before review",
+        "key_activities": [
+          "Collect architecture diagrams",
+          "Review runbooks and processes",
+          "Understand AWS resource inventory",
+          "Document dependencies",
+          "Review monitoring and observability setup"
+        ]
+      },
+      "step_4": {
+        "name": "Create: Workload in WA Tool",
+        "url": "https://catalog.workshops.aws/howto-wafr/en-US/1-prepare/40-hands-on-create-workload",
+        "purpose": "Create workload in AWS WA Tool programmatically or via console",
+        "importance": "Essential for capturing and tracking review results"
+      }
+    }
+  },
+  "phase_2_review": {
+    "overview": "Now that preparation is complete, it's time to run the WAFR with tips and tricks for efficiency",
+    "url": "https://catalog.workshops.aws/howto-wafr/en-US/2-review",
+    "pre_wafr": {
+      "before_group_discussion": "Go over tips and tricks together",
+      "rules_of_engagement": "Discuss at start, agree on approach, get consensus",
+      "define_roles": {
+        "activity": "Role Play",
+        "questions": [
+          "Who is leading the WAFR?",
+          "Who will be sharing their screen and what will they be sharing?",
+          "Who will be taking notes in WA Tool or another format?",
+          "Which pillars will you be reviewing and in which order?",
+          "Do you have the right people in the room to answer questions?",
+          "How will you capture out of scope items and parking lot them?",
+          "How much time allocated for each section/pillar review?",
+          "What do you want to achieve in the time allocated?"
+        ]
+      }
+    },
+    "11_review_tips": {
+      "overview": "Plan meeting(s) focused on capturing data points about workload architectural choices",
+      "tip_1": {
+        "name": "Communicate Positive Intent",
+        "details": "Revisit positive intent with participants. Those present may feel threatened by having work questioned, so reaffirm WAFR is purely to find improvement opportunities and reinforce no blame culture.",
+        "risk": "If people are defensive you will not capture required data points, leading to poor outcomes",
+        "for_discovery_agent": "Start every assessment by explicitly stating this is not an audit, it's about discovering improvements"
+      },
+      "tip_2": {
+        "name": "Bring a Supporter",
+        "details": "Navigating complex architecture, asking questions, moderating responses and taking notes is challenging for one person.",
+        "team_sport": "Successful WAFR is a team sport",
+        "roles": "Having someone to alternate roles allows one person to run review while other takes notes, checks documentation, monitors chat",
+        "for_discovery_agent": "In automated platform, agents handle these roles (Orchestrator + Discovery + Assessment)"
+      },
+      "tip_3": {
+        "name": "Stay On Topic",
+        "details": "Easy to get off topic when having group conversations around architectural decisions.",
+        "time_efficiency": "To be efficient with time, hold each other accountable to stay on topic",
+        "parking_lot": "Use parking lot area to capture concepts and ideas for future discussion",
+        "for_discovery_agent": "If client goes off topic, acknowledge but redirect: 'That's important - let me note that for later discussion. For this question...'"
+      },
+      "tip_4": {
+        "name": "Take Good Notes",
+        "details": "Simply ticking boxes in WA Tool provides no context to someone revisiting WAFR in later milestones.",
+        "best_practice": "Use notes box or external document linked from WAFR notes if you exceed character limit",
+        "key_principle": "Context is key",
+        "for_discovery_agent": "Every answer should include context - not just 'yes/no' but 'yes because...' or 'no because...'"
+      },
+      "tip_5": {
+        "name": "No Solutioning",
+        "details": "Focus on capturing data points about workload, don't get drawn into solutioning.",
+        "problems": [
+          "Eats up lot of time during session",
+          "Won't have all data points to make best decisions",
+          "Not best use of other participants' time"
+        ],
+        "for_discovery_agent": "If client asks 'What should we do?', defer: 'We'll provide recommendations after completing assessment. For now, let's understand current state.'"
+      },
+      "tip_6": {
+        "name": "Focus on the Workload, Not the Tool",
+        "details": "Common to share screen showing WA Tool in AWS Console. Although capturing data in tool is crucial, don't get too caught up with it.",
+        "priority": "Focus energy on having discussion about architecture",
+        "conversational": "Keep review conversational and paraphrase questions to align with context",
+        "for_discovery_agent": "Your conversational approach is perfect - don't show WA Tool UI, just have natural dialogue"
+      },
+      "tip_7": {
+        "name": "Slice It Up",
+        "details": "Do you need to do all six pillars in one sitting?",
+        "recommendation": "Spread review out in smaller sessions",
+        "benefits": [
+          "Allows more topic targeted approach",
+          "Easier to schedule with desired participants"
+        ],
+        "for_discovery_agent": "Offer to focus on specific pillars first: 'Would you like to start with Security and Reliability, or review all pillars?'"
+      },
+      "tip_8": {
+        "name": "Take Breaks",
+        "details": "Reviewing architecture thoroughly is tiring for participants, concentration lapses over time.",
+        "best_practice": "Take control of WAFR with frequent scheduled breaks",
+        "time_respect": "Be frugal with participants' time - suggest people drop out when no longer required. Time is money.",
+        "for_discovery_agent": "In automated platform, users can pause/resume. Remind them: 'Feel free to take a break and resume later.'"
+      },
+      "tip_9": {
+        "name": "Maybe == No",
+        "details": "If answer for question is 'maybe', 'kind of', or 'we have something in backlog to address that', then answer is 'No'.",
+        "key_principle": "WAFR is about capturing honest current state of workload, not intended state",
+        "for_discovery_agent": "CRITICAL: If client says 'we're planning to...', 'we have a ticket for...', 'it's on our roadmap...', mark as NO. Explain: 'For WAFR, we assess current state. We'll note your planned improvements separately.'"
+      },
+      "tip_10": {
+        "name": "Trade Offs",
+        "details": "Being Well-Architected is about making trade offs between pillars.",
+        "example": "To make workload more resilient will probably cost you more money",
+        "purpose": "Pillars provide structure for conversations and help make informed architectural choices",
+        "for_discovery_agent": "When identifying gaps, acknowledge trade-offs: 'Improving reliability here may increase costs. That's normal - it's about making informed trade-offs.'"
+      },
+      "tip_11": {
+        "name": "Perfection is an Illusion",
+        "details": "Don't let perfection be the enemy of good.",
+        "reality": "Workloads are rarely perfect, and often do not need to be",
+        "avoid": "Turning this into exercise of 'Gold Plating' everything",
+        "focus": "Make workload function safely and efficiently for its intended business purpose",
+        "for_discovery_agent": "Reassure clients: 'No workload is perfect. We're finding opportunities to improve what matters most for your business.'"
+      }
+    },
+    "additional_resources": [
+      {
+        "title": "How to perform a Well-Architected Framework Review Part 2",
+        "url": "https://aws.amazon.com/blogs/mt/how-to-perform-a-well-architected-framework-review-part2/"
+      }
+    ]
+  },
+  "phase_3_improve": {
+    "url": "https://catalog.workshops.aws/howto-wafr/en-US/3-improve",
+    "purpose": "Act on WAFR findings systematically",
+    "key_activities": [
+      "Prioritize improvement items",
+      "Create improvement plan",
+      "Assign ownership",
+      "Track progress",
+      "Re-measure (milestones)"
+    ]
+  },
+  "key_concepts_for_discovery_agent": {
+    "workload_definition": {
+      "what_to_ask": "Components that together deliver business value",
+      "examples": ["e-commerce site", "mobile app backend", "analytics platform"],
+      "complexity_levels": ["Simple (static website)", "Medium (microservices)", "Complex (multi-data store architecture)"],
+      "beyond_tech": "Not just AWS resources - includes people, processes, runbooks"
+    },
+    "10_critical_questions": {
+      "use_these_in_discovery": [
+        "Who owns this workload? (Who's responsible if it breaks?)",
+        "What is the purpose? (Customers? Analytics? Training?)",
+        "Does this workload need to exist? (What happens if you shut it down?)",
+        "Customer facing or internal?",
+        "Production or non-production?",
+        "What phase in lifecycle? (Design, Active Development, Production, Decommissioning)",
+        "Impact if disrupted? (Business stops? Minor inconvenience?)",
+        "What are the boundaries? (What's included vs. excluded?)",
+        "What workloads depend on this?",
+        "What are this workload's dependencies?"
+      ]
+    },
+    "safe_space_principles": {
+      "always_communicate": [
+        "This is not an audit - it's about architectural health",
+        "We're not grading your work",
+        "Those who built this did the best they could at the time",
+        "Technology evolves - let's find opportunities to improve",
+        "This is a conversation, not an interrogation"
+      ],
+      "two_framework_questions": {
+        "where_are_we": "Current state of workload (point-in-time)",
+        "where_should_we_go": "Informed decisions about improvements"
+      }
+    },
+    "maybe_equals_no_rule": {
+      "critical": "THIS IS THE MOST IMPORTANT RULE FOR ASSESSMENT AGENT",
+      "examples": {
+        "maybe": "Mark as NO",
+        "kind_of": "Mark as NO",
+        "we're planning to": "Mark as NO (current state only)",
+        "we have a ticket for that": "Mark as NO",
+        "it's on our roadmap": "Mark as NO",
+        "we're working on it": "Mark as NO"
+      },
+      "rationale": "WAFR captures honest current state, not intended state",
+      "how_to_communicate": "Explain: 'For this assessment, we evaluate what's implemented today. We'll note your planned improvements separately for the roadmap.'"
+    },
+    "conversational_approach": {
+      "do": [
+        "Paraphrase questions to align with context",
+        "Keep it conversational",
+        "Focus on architecture discussion, not tool navigation",
+        "Take good notes with context",
+        "Stay on topic (use parking lot for tangents)",
+        "Acknowledge trade-offs between pillars"
+      ],
+      "dont": [
+        "Make it feel like homework being marked",
+        "Show WA Tool UI (keep conversational)",
+        "Get drawn into solutioning during discovery",
+        "Aim for perfection (focus on business purpose)",
+        "Accept 'maybe' as yes (maybe == no)"
+      ]
+    },
+    "roles_in_automated_platform": {
+      "orchestrator_agent": "Coordinates overall flow, sets positive intent at start",
+      "discovery_agent": {
+        "role": "Leads conversation (equivalent to 'leading the WAFR')",
+        "techniques": [
+          "Use 10 critical questions to define workload and scope",
+          "Communicate positive intent at start",
+          "Keep conversation on topic (parking lot for tangents)",
+          "Take detailed notes with context",
+          "Paraphrase questions to align with client's context"
+        ]
+      },
+      "assessment_agent": {
+        "role": "Takes notes and answers questions (equivalent to 'supporter')",
+        "critical_rules": [
+          "Maybe == No (only assess current state)",
+          "Take good notes (context is key)",
+          "No solutioning (defer to Report Agent)",
+          "Check documentation (validation)"
+        ]
+      },
+      "validation_agent": "Cross-checks answers with AWS APIs (equivalent to 'checking documentation')",
+      "report_agent": "Provides solutions and recommendations (after assessment complete)"
+    }
+  },
+  "integration_with_your_platform": {
+    "discovery_agent_implementation": {
+      "phase_1_prepare": {
+        "step_1": "Define workload and scope (use 10 critical questions)",
+        "step_2": "Identify STO (if not obvious, ask who owns business impact)",
+        "step_3": "Set positive intent (explain: not audit, about architectural health)",
+        "step_4": "Create workload in WA Tool via API"
+      },
+      "phase_2_review": {
+        "apply_11_tips": {
+          "tip_1": "Start with positive intent statement",
+          "tip_3": "If off-topic, use: 'Let me note that for later. For this question...'",
+          "tip_4": "Capture context in notes, not just yes/no",
+          "tip_5": "Defer solutions: 'We'll provide recommendations after assessment'",
+          "tip_6": "Keep conversational, don't show WA Tool UI",
+          "tip_7": "Offer to focus on specific pillars first",
+          "tip_8": "Remind users can pause/resume",
+          "tip_9": "CRITICAL: Maybe == No. Explain current vs. intended state.",
+          "tip_10": "Acknowledge trade-offs: 'Improving X may increase Y. That's normal.'",
+          "tip_11": "Reassure: 'No workload is perfect. Focus on what matters for your business.'"
+        }
+      },
+      "phase_3_improve": {
+        "report_agent": "Prioritize improvements, create 90-day plan, track via milestones"
+      }
+    },
+    "conversation_flow": {
+      "opening": {
+        "orchestrator": "Sets context and positive intent",
+        "example": "Welcome! This Well-Architected review is about discovering opportunities to improve your architecture. This is not an audit - we're here to help you understand where you are and where you could go. Let's start by understanding your workload."
+      },
+      "discovery_10_questions": {
+        "discovery_agent": "Asks 10 critical questions from Step 1",
+        "example_q1": "Who owns this workload? Specifically, who's responsible if it stops delivering business value?",
+        "example_q7": "What would be the business impact if this workload had a disruption? Would the business stop, or is it more of an inconvenience?"
+      },
+      "assessment_apply_maybe_no": {
+        "assessment_agent": "For each WAFR question, applies 'Maybe == No' rule",
+        "client_says": "We're planning to implement backups next quarter.",
+        "agent_response": "Thanks for sharing that plan. For this assessment, we evaluate what's implemented today. I'll mark backups as 'not implemented' but note your Q1 plan in the improvement roadmap.",
+        "mark_as": "NO (with note: 'Backups planned for Q1')"
+      },
+      "handling_tangents": {
+        "client_goes_off_topic": "...and that reminds me, we're also thinking about migrating to containers...",
+        "discovery_agent_response": "That's an interesting direction! Let me note that as a potential future topic. For this current question about data backup, can you tell me..."
+      },
+      "closing": {
+        "report_agent": "Delivers findings with reassurance",
+        "example": "We've identified 12 opportunities to improve your architecture. Remember, no workload is perfect. These recommendations will help you make informed trade-offs between cost, performance, and reliability."
+      }
+    }
+  },
+  "sample_conversation": {
+    "scenario": "E-commerce platform WAFR",
+    "orchestrator_opening": "Welcome! I'm here to help you conduct a Well-Architected review of your e-commerce platform. This is not an audit - we're discovering opportunities to improve your architecture. Let's start by understanding your workload. This will take about 15-20 minutes. Sound good?",
+    "discovery_q1": "Let's start with ownership. Who owns this e-commerce platform? Specifically, who's accountable if the platform goes down and revenue stops?",
+    "client_answer_1": "That would be our VP of Engineering, Sarah.",
+    "discovery_q2": "Perfect. And what's the primary purpose of this workload?",
+    "client_answer_2": "It serves our external customers - they use it to browse products and make purchases.",
+    "discovery_q3": "Got it. What would happen if we shut this platform down?",
+    "client_answer_3": "The business would stop completely. We're 100% online - no physical stores.",
+    "discovery_notes": "Owner: VP Eng (Sarah). Purpose: External customers, e-commerce. Impact if down: Business stops (critical workload).",
+    "discovery_q7": "What phase is this workload in?",
+    "client_answer_7": "It's been in production for 3 years, but we're actively developing new features.",
+    "discovery_q8": "Can you describe the boundaries? What's included in 'the e-commerce platform' vs. what's separate?",
+    "client_answer_8": "Includes the website, product catalog, shopping cart, checkout, and payment processing. Excludes our warehouse management system and customer support system.",
+    "assessment_q_security": "For security, do you have backups configured for your database?",
+    "client_answer_security": "We're planning to implement automated backups next quarter. Right now we have manual backups running weekly.",
+    "assessment_agent_applies_maybe_no": "Thanks for sharing your plan. For this assessment, we need to evaluate what's implemented today. I'll mark automated backups as 'not implemented' but note your Q1 automation plan. For now, you have manual weekly backups - is that correct?",
+    "client_confirms": "Yes, that's correct.",
+    "assessment_notes": "Backups: Manual weekly (not automated). Planned: Automate Q1. Mark as NO for automated, YES for backups exist.",
+    "report_closing": "We've completed the assessment! I've identified 12 opportunities to improve your e-commerce platform across the 6 pillars. The good news: your platform is serving customers well. These recommendations will help you make informed decisions about trade-offs between cost, reliability, and performance. No workload is perfect - let's focus on what matters most for your business."
+  },
+  "prompts_for_agents": {
+    "discovery_agent_system_prompt": {
+      "role": "You are a friendly AWS Well-Architected expert conducting a workload discovery conversation.",
+      "principles": [
+        "This is NOT an audit - it's about architectural health",
+        "Create a safe space - no blame culture",
+        "Keep it conversational - paraphrase questions to align with context",
+        "Stay on topic - use parking lot for tangents",
+        "Take good notes with context"
+      ],
+      "task": "Ask the 10 critical questions to understand the workload, then hand off to Assessment Agent",
+      "10_questions": [
+        "Who owns this workload? (Who's responsible if it breaks?)",
+        "What is the purpose?",
+        "Does this workload need to exist? (What if you shut it down?)",
+        "Customer facing or internal?",
+        "Production or non-production?",
+        "What phase in lifecycle?",
+        "Impact if disrupted?",
+        "What are the boundaries?",
+        "What workloads depend on this?",
+        "What are this workload's dependencies?"
+      ]
+    },
+    "assessment_agent_system_prompt": {
+      "role": "You are an AWS Well-Architected expert assessing workloads against WAFR best practices.",
+      "critical_rules": [
+        "Maybe == No: If answer is 'maybe', 'kind of', 'planning to', 'on roadmap' → mark as NO",
+        "Current state only: Assess what's implemented today, not intended future state",
+        "Take good notes: Capture context, not just yes/no",
+        "No solutioning: Defer recommendations to Report Agent",
+        "Acknowledge trade-offs: Improving one pillar may impact another"
+      ],
+      "task": "For each WAFR question, determine: (1) Answer (yes/no), (2) Context/notes, (3) Risk level",
+      "example": {
+        "question": "Do you have automated backups?",
+        "client": "We're planning to implement that next quarter.",
+        "assessment": {
+          "answer": "NO",
+          "notes": "Manual weekly backups currently. Automated backups planned for Q1.",
+          "risk": "MEDIUM",
+          "explanation": "For this assessment, we evaluate current state. Automated backups are not implemented today."
+        }
+      }
+    },
+    "orchestrator_opening_statement": "Welcome! I'm here to help you conduct a Well-Architected review of your [WORKLOAD]. This is not an audit - we're here to discover opportunities to improve your architecture. Think of this as asking 'Where are we?' and 'Where should we go?' This is a journey, and AWS Well-Architected can guide you. Let's get started!",
+    "report_agent_closing_statement": "We've completed your Well-Architected assessment! I've identified [N] opportunities to improve your [WORKLOAD] across [X] pillars. Remember: no workload is perfect, and that's okay. These recommendations will help you make informed trade-offs between cost, performance, reliability, and other factors. Let's focus on what matters most for your business purpose."
+  },
+  "comparison_manual_vs_automated": {
+    "manual_wafr": {
+      "duration": "4-8 hours with multiple stakeholders",
+      "roles": {
+        "leader": "SA or Architect asks questions",
+        "supporter": "Takes notes, checks documentation",
+        "sto": "Makes decisions, provides context",
+        "pillar_champions": "Provide SME guidance"
+      },
+      "challenges": [
+        "Scheduling 4-8 hour blocks with multiple people",
+        "People become defensive if feels like audit",
+        "Easy to get off topic (no structured flow)",
+        "Maybe accepted as Yes (captures intended, not current state)",
+        "Notes often lack context"
+      ]
+    },
+    "your_automated_platform": {
+      "duration": "15-20 minutes (96% time savings)",
+      "roles": {
+        "orchestrator": "Sets context, coordinates flow",
+        "discovery_agent": "Asks 10 critical questions (conversational)",
+        "assessment_agent": "Answers WAFR questions via AWS APIs + applies 'Maybe == No' rule",
+        "validation_agent": "Cross-checks with Config/Security Hub",
+        "report_agent": "Delivers prioritized recommendations"
+      },
+      "advantages": [
+        "No scheduling complexity (self-service)",
+        "Consistent positive framing (not an audit)",
+        "Structured flow (10 questions → 50+ WAFR questions → report)",
+        "Enforces 'Maybe == No' rule (captures current state accurately)",
+        "Always takes good notes with context (AI-generated)",
+        "No human bias or fatigue"
+      ],
+      "applies_11_review_tips": {
+        "tip_1": "Positive intent (opening statement)",
+        "tip_2": "Team sport (5 specialized agents)",
+        "tip_3": "Stay on topic (parking lot)",
+        "tip_4": "Good notes (AI-generated with context)",
+        "tip_5": "No solutioning (deferred to Report Agent)",
+        "tip_6": "Focus on workload (conversational, no WA Tool UI shown)",
+        "tip_7": "Slice it up (offer pillar selection)",
+        "tip_8": "Take breaks (pause/resume functionality)",
+        "tip_9": "Maybe == No (enforced by Assessment Agent)",
+        "tip_10": "Trade-offs (acknowledged in reports)",
+        "tip_11": "Perfection illusion (reassured in closing)"
+      }
+    }
+  },
+  "key_takeaways": {
+    "for_discovery_agent": [
+      "Use 10 critical questions to define workload and scope",
+      "Always set positive intent at start: 'This is not an audit'",
+      "Keep it conversational - paraphrase questions to client's context",
+      "Take detailed notes with context (not just yes/no)",
+      "Use parking lot for tangents to stay on topic"
+    ],
+    "for_assessment_agent": [
+      "CRITICAL: Maybe == No (only current state, not intended)",
+      "Examples of 'No': 'maybe', 'kind of', 'planning to', 'on roadmap', 'have ticket for'",
+      "Explain: 'We assess what's implemented today. We'll note planned improvements separately.'",
+      "Take good notes: Capture WHY, not just WHAT",
+      "No solutioning during assessment - defer to Report Agent"
+    ],
+    "for_report_agent": [
+      "Acknowledge trade-offs between pillars (cost vs. reliability, etc.)",
+      "Reassure: 'No workload is perfect. Focus on business purpose.'",
+      "Prioritize improvements (not just list everything)",
+      "Create actionable 90-day roadmap"
+    ],
+    "for_all_agents": [
+      "This is a journey toward architectural health",
+      "Two key questions: 'Where are we?' (current) and 'Where should we go?' (future)",
+      "WAFR is team sport - everyone plays a role",
+      "Time is valuable - be efficient and respectful"
+    ]
+  }
+}
+

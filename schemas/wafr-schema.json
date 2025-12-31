@@ -1,0 +1,267 @@
+{
+  "version": "2024-01",
+  "description": "AWS Well-Architected Framework Review Question Schema",
+  "pillars": [
+    {
+      "id": "OPS",
+      "name": "Operational Excellence",
+      "description": "Focus on running and monitoring systems to deliver business value",
+      "questions": [
+        {
+          "id": "OPS_01",
+          "text": "How do you determine what your priorities are?",
+          "criticality": "high",
+          "category": "Workload Management",
+          "keywords": ["priorities", "requirements", "stakeholders", "goals"],
+          "best_practices": [
+            {
+              "id": "OPS_01_BP01",
+              "text": "Evaluate internal customer needs",
+              "example_good_answer": "We conduct quarterly stakeholder interviews and use OKRs to prioritize workload improvements based on internal team needs and pain points.",
+              "keywords": ["stakeholder", "interviews", "OKR"]
+            },
+            {
+              "id": "OPS_01_BP02",
+              "text": "Evaluate external customer needs",
+              "example_good_answer": "We monitor customer feedback channels, analyze support tickets, and conduct user surveys to prioritize features that address customer pain points.",
+              "keywords": ["customer", "feedback", "support"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["CloudWatch", "Service Catalog"]
+        },
+        {
+          "id": "OPS_02",
+          "text": "How do you design your workload so that you can understand its state?",
+          "criticality": "critical",
+          "category": "Observability",
+          "keywords": ["monitoring", "observability", "logging", "metrics", "tracing"],
+          "best_practices": [
+            {
+              "id": "OPS_02_BP01",
+              "text": "Implement application telemetry",
+              "example_good_answer": "We use CloudWatch Metrics and custom application metrics embedded in our code. All services emit structured logs to CloudWatch Logs.",
+              "keywords": ["telemetry", "metrics", "CloudWatch"]
+            },
+            {
+              "id": "OPS_02_BP02",
+              "text": "Generate log insights",
+              "example_good_answer": "We use CloudWatch Logs Insights for querying and analyzing log data. Critical errors trigger CloudWatch Alarms.",
+              "keywords": ["logs", "CloudWatch Logs", "insights"]
+            },
+            {
+              "id": "OPS_02_BP03",
+              "text": "Implement distributed tracing",
+              "example_good_answer": "We use AWS X-Ray for distributed tracing across our microservices to track requests end-to-end.",
+              "keywords": ["X-Ray", "tracing", "distributed"]
+            }
+          ],
+          "hri_indicators": [
+            "No monitoring or logging",
+            "No alerting configured",
+            "Cannot trace requests across services"
+          ],
+          "related_services": ["CloudWatch", "X-Ray", "CloudWatch Logs"]
+        }
+      ]
+    },
+    {
+      "id": "SEC",
+      "name": "Security",
+      "description": "Protect information, systems, and assets",
+      "questions": [
+        {
+          "id": "SEC_01",
+          "text": "How do you manage identities for people and machines?",
+          "criticality": "critical",
+          "category": "Identity and Access Management",
+          "keywords": ["IAM", "identity", "authentication", "credentials", "MFA", "SSO"],
+          "best_practices": [
+            {
+              "id": "SEC_01_BP01",
+              "text": "Use strong sign-in mechanisms",
+              "example_good_answer": "We enforce MFA for all human users via IAM Identity Center with SAML federation to our corporate IdP.",
+              "keywords": ["MFA", "SSO", "IAM Identity Center", "federation"]
+            },
+            {
+              "id": "SEC_01_BP02",
+              "text": "Use temporary credentials",
+              "example_good_answer": "All services use IAM roles. No access keys exist - we use IRSA for EKS and instance profiles for EC2.",
+              "keywords": ["IAM roles", "STS", "IRSA", "instance profiles"]
+            },
+            {
+              "id": "SEC_01_BP03",
+              "text": "Store and use secrets securely",
+              "example_good_answer": "Database credentials are in Secrets Manager with 30-day automatic rotation. Applications retrieve secrets at runtime.",
+              "keywords": ["Secrets Manager", "Parameter Store", "rotation"]
+            }
+          ],
+          "hri_indicators": [
+            "Long-lived access keys in use",
+            "No MFA enforcement",
+            "Shared credentials across services",
+            "Secrets in code or environment variables"
+          ],
+          "related_services": ["IAM", "IAM Identity Center", "Secrets Manager", "STS"]
+        },
+        {
+          "id": "SEC_02",
+          "text": "How do you manage permissions?",
+          "criticality": "critical",
+          "category": "Access Control",
+          "keywords": ["permissions", "IAM policies", "least privilege", "RBAC"],
+          "best_practices": [
+            {
+              "id": "SEC_02_BP01",
+              "text": "Implement least privilege",
+              "example_good_answer": "We implement least privilege using IAM policies with permission boundaries. Policies are scoped to specific resource ARNs.",
+              "keywords": ["least privilege", "permission boundaries"]
+            },
+            {
+              "id": "SEC_02_BP02",
+              "text": "Regular access reviews",
+              "example_good_answer": "We conduct quarterly IAM access reviews using Access Analyzer. Unused permissions are automatically flagged.",
+              "keywords": ["access review", "Access Analyzer"]
+            }
+          ],
+          "hri_indicators": [
+            "Overly permissive IAM policies",
+            "No access reviews",
+            "Administrator access granted broadly"
+          ],
+          "related_services": ["IAM", "IAM Access Analyzer"]
+        }
+      ]
+    },
+    {
+      "id": "REL",
+      "name": "Reliability",
+      "description": "Recover from failures and meet demand",
+      "questions": [
+        {
+          "id": "REL_01",
+          "text": "How do you manage service quotas and constraints?",
+          "criticality": "high",
+          "category": "Service Management",
+          "keywords": ["quotas", "limits", "service quotas", "capacity"],
+          "best_practices": [
+            {
+              "id": "REL_01_BP01",
+              "text": "Monitor service quotas",
+              "example_good_answer": "We monitor service quotas using Service Quotas dashboard and set CloudWatch alarms for quota utilization above 80%.",
+              "keywords": ["Service Quotas", "monitoring"]
+            },
+            {
+              "id": "REL_01_BP02",
+              "text": "Plan for quota increases",
+              "example_good_answer": "We proactively request quota increases via Service Quotas API when approaching limits, with approval workflows.",
+              "keywords": ["quota increase", "Service Quotas API"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["Service Quotas", "CloudWatch"]
+        },
+        {
+          "id": "REL_02",
+          "text": "How do you design for failure?",
+          "criticality": "critical",
+          "category": "Fault Tolerance",
+          "keywords": ["failure", "fault tolerance", "HA", "multi-AZ", "backup"],
+          "best_practices": [
+            {
+              "id": "REL_02_BP01",
+              "text": "Use multi-AZ deployments",
+              "example_good_answer": "All critical databases use RDS Multi-AZ. Application load balancers distribute traffic across multiple Availability Zones.",
+              "keywords": ["Multi-AZ", "RDS", "Availability Zones"]
+            },
+            {
+              "id": "REL_02_BP02",
+              "text": "Implement automatic failover",
+              "example_good_answer": "RDS Multi-AZ provides automatic failover. Auto Scaling groups replace unhealthy instances automatically.",
+              "keywords": ["failover", "Auto Scaling", "health checks"]
+            }
+          ],
+          "hri_indicators": [
+            "Single point of failure",
+            "No backup or DR plan",
+            "Single AZ deployment"
+          ],
+          "related_services": ["RDS", "Auto Scaling", "Route 53"]
+        }
+      ]
+    },
+    {
+      "id": "PERF",
+      "name": "Performance Efficiency",
+      "description": "Use resources efficiently",
+      "questions": [
+        {
+          "id": "PERF_01",
+          "text": "How do you select appropriate resource types?",
+          "criticality": "medium",
+          "category": "Resource Selection",
+          "keywords": ["resource types", "compute", "storage", "right-sizing"],
+          "best_practices": [
+            {
+              "id": "PERF_01_BP01",
+              "text": "Right-size resources",
+              "example_good_answer": "We use Compute Optimizer to recommend EC2 instance types. We regularly review and adjust based on utilization metrics.",
+              "keywords": ["Compute Optimizer", "right-sizing"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["Compute Optimizer", "CloudWatch"]
+        }
+      ]
+    },
+    {
+      "id": "COST",
+      "name": "Cost Optimization",
+      "description": "Manage costs effectively",
+      "questions": [
+        {
+          "id": "COST_01",
+          "text": "How do you implement cloud financial management?",
+          "criticality": "high",
+          "category": "Financial Management",
+          "keywords": ["cost", "billing", "budget", "FinOps"],
+          "best_practices": [
+            {
+              "id": "COST_01_BP01",
+              "text": "Set up cost allocation tags",
+              "example_good_answer": "All resources are tagged with CostCenter, Environment, and Application tags. We use Cost Explorer to analyze spending by tag.",
+              "keywords": ["cost allocation", "tags", "Cost Explorer"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["Cost Explorer", "AWS Budgets"]
+        }
+      ]
+    },
+    {
+      "id": "SUS",
+      "name": "Sustainability",
+      "description": "Minimize environmental impact",
+      "questions": [
+        {
+          "id": "SUS_01",
+          "text": "How do you select Regions?",
+          "criticality": "medium",
+          "category": "Region Selection",
+          "keywords": ["regions", "sustainability", "carbon footprint"],
+          "best_practices": [
+            {
+              "id": "SUS_01_BP01",
+              "text": "Consider carbon footprint",
+              "example_good_answer": "We prioritize regions with lower carbon intensity. We use AWS Carbon Footprint Tool to track emissions.",
+              "keywords": ["carbon footprint", "sustainability"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["AWS Carbon Footprint Tool"]
+        }
+      ]
+    }
+  ]
+}
+

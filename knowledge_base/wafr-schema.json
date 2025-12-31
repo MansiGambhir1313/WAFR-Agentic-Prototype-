@@ -1,0 +1,421 @@
+{
+  "version": "2024-01",
+  "description": "AWS Well-Architected Framework Review Question Schema - Complete Knowledge Base",
+  "last_updated": "2024-12-22",
+  "pillars": [
+    {
+      "id": "OPS",
+      "name": "Operational Excellence",
+      "description": "Focus on running and monitoring systems to deliver business value",
+      "questions": [
+        {
+          "id": "OPS_01",
+          "text": "How do you determine what your priorities are?",
+          "criticality": "high",
+          "category": "Workload Management",
+          "keywords": ["priorities", "requirements", "stakeholders", "goals", "objectives"],
+          "best_practices": [
+            {
+              "id": "OPS_01_BP01",
+              "text": "Evaluate internal customer needs",
+              "example_good_answer": "We conduct quarterly stakeholder interviews and use OKRs to prioritize workload improvements based on internal team needs and pain points.",
+              "keywords": ["stakeholder", "interviews", "OKR", "internal"]
+            },
+            {
+              "id": "OPS_01_BP02",
+              "text": "Evaluate external customer needs",
+              "example_good_answer": "We monitor customer feedback channels, analyze support tickets, and conduct user surveys to prioritize features that address customer pain points.",
+              "keywords": ["customer", "feedback", "support", "surveys"]
+            },
+            {
+              "id": "OPS_01_BP03",
+              "text": "Evaluate governance requirements",
+              "example_good_answer": "We maintain a compliance matrix and regularly review regulatory requirements to ensure our priorities align with governance needs.",
+              "keywords": ["governance", "compliance", "regulatory"]
+            }
+          ],
+          "hri_indicators": [],
+          "remediation_guidance": "Establish a structured prioritization process involving stakeholders from business, IT, and compliance teams.",
+          "related_services": ["CloudWatch", "Service Catalog", "AWS Organizations"]
+        },
+        {
+          "id": "OPS_02",
+          "text": "How do you design your workload so that you can understand its state?",
+          "criticality": "critical",
+          "category": "Observability",
+          "keywords": ["monitoring", "observability", "logging", "metrics", "tracing", "telemetry"],
+          "best_practices": [
+            {
+              "id": "OPS_02_BP01",
+              "text": "Implement application telemetry",
+              "example_good_answer": "We use CloudWatch Metrics and custom application metrics embedded in our code. All services emit structured logs to CloudWatch Logs with consistent formatting.",
+              "keywords": ["telemetry", "metrics", "CloudWatch", "logging"]
+            },
+            {
+              "id": "OPS_02_BP02",
+              "text": "Generate log insights",
+              "example_good_answer": "We use CloudWatch Logs Insights for querying and analyzing log data. Critical errors trigger CloudWatch Alarms that notify our on-call team.",
+              "keywords": ["logs", "CloudWatch Logs", "insights", "alarms"]
+            },
+            {
+              "id": "OPS_02_BP03",
+              "text": "Implement distributed tracing",
+              "example_good_answer": "We use AWS X-Ray for distributed tracing across our microservices to track requests end-to-end and identify bottlenecks.",
+              "keywords": ["X-Ray", "tracing", "distributed", "microservices"]
+            }
+          ],
+          "hri_indicators": [
+            "No monitoring or logging configured",
+            "No alerting for critical errors",
+            "Cannot trace requests across services",
+            "No visibility into application performance"
+          ],
+          "remediation_guidance": "Implement comprehensive observability using CloudWatch for metrics and logs, and X-Ray for distributed tracing.",
+          "related_services": ["CloudWatch", "X-Ray", "CloudWatch Logs", "CloudWatch Alarms"]
+        },
+        {
+          "id": "OPS_03",
+          "text": "How do you understand the health of your workload?",
+          "criticality": "high",
+          "category": "Health Monitoring",
+          "keywords": ["health", "monitoring", "dashboards", "alerts", "SLAs"],
+          "best_practices": [
+            {
+              "id": "OPS_03_BP01",
+              "text": "Define health metrics",
+              "example_good_answer": "We define health metrics including availability (99.9% target), response time (p95 < 200ms), and error rate (< 0.1%). These are tracked in CloudWatch dashboards.",
+              "keywords": ["health metrics", "SLA", "availability", "response time"]
+            },
+            {
+              "id": "OPS_03_BP02",
+              "text": "Automate health checks",
+              "example_good_answer": "We use Route 53 health checks and Application Load Balancer health checks to automatically detect and route traffic away from unhealthy instances.",
+              "keywords": ["health checks", "Route 53", "ALB", "automation"]
+            }
+          ],
+          "hri_indicators": [
+            "No health metrics defined",
+            "Manual health checks only",
+            "No automated failover"
+          ],
+          "related_services": ["CloudWatch", "Route 53", "Application Load Balancer"]
+        }
+      ]
+    },
+    {
+      "id": "SEC",
+      "name": "Security",
+      "description": "Protect information, systems, and assets",
+      "questions": [
+        {
+          "id": "SEC_01",
+          "text": "How do you manage identities for people and machines?",
+          "criticality": "critical",
+          "category": "Identity and Access Management",
+          "keywords": ["IAM", "identity", "authentication", "credentials", "MFA", "SSO", "federation"],
+          "best_practices": [
+            {
+              "id": "SEC_01_BP01",
+              "text": "Use strong sign-in mechanisms",
+              "example_good_answer": "We enforce MFA for all human users via IAM Identity Center with SAML federation to our corporate IdP. No password-only authentication is allowed.",
+              "keywords": ["MFA", "SSO", "IAM Identity Center", "federation", "SAML"]
+            },
+            {
+              "id": "SEC_01_BP02",
+              "text": "Use temporary credentials",
+              "example_good_answer": "All services use IAM roles. No access keys exist - we use IRSA for EKS pods and instance profiles for EC2. Temporary credentials are obtained via STS.",
+              "keywords": ["IAM roles", "STS", "IRSA", "instance profiles", "temporary credentials"]
+            },
+            {
+              "id": "SEC_01_BP03",
+              "text": "Store and use secrets securely",
+              "example_good_answer": "Database credentials are in Secrets Manager with 30-day automatic rotation. Applications retrieve secrets at runtime using IAM roles.",
+              "keywords": ["Secrets Manager", "Parameter Store", "rotation", "secrets"]
+            }
+          ],
+          "hri_indicators": [
+            "Long-lived access keys in use",
+            "No MFA enforcement",
+            "Shared credentials across services",
+            "Secrets in code or environment variables",
+            "Password-only authentication"
+          ],
+          "remediation_guidance": "Implement IAM Identity Center for human access and IAM roles for service-to-service authentication. Use Secrets Manager for all secrets with automatic rotation.",
+          "related_services": ["IAM", "IAM Identity Center", "Secrets Manager", "STS", "Parameter Store"]
+        },
+        {
+          "id": "SEC_02",
+          "text": "How do you manage permissions?",
+          "criticality": "critical",
+          "category": "Access Control",
+          "keywords": ["permissions", "IAM policies", "least privilege", "RBAC", "access control"],
+          "best_practices": [
+            {
+              "id": "SEC_02_BP01",
+              "text": "Implement least privilege",
+              "example_good_answer": "We implement least privilege using IAM policies with permission boundaries. Policies are scoped to specific resource ARNs and actions. No wildcard permissions are used.",
+              "keywords": ["least privilege", "permission boundaries", "IAM policies", "resource ARNs"]
+            },
+            {
+              "id": "SEC_02_BP02",
+              "text": "Regular access reviews",
+              "example_good_answer": "We conduct quarterly IAM access reviews using Access Analyzer. Unused permissions are automatically flagged and removed after 90 days of inactivity.",
+              "keywords": ["access review", "Access Analyzer", "unused permissions"]
+            },
+            {
+              "id": "SEC_02_BP03",
+              "text": "Use permission boundaries",
+              "example_good_answer": "All IAM users and roles have permission boundaries attached to prevent privilege escalation. Boundaries are defined at the organizational level.",
+              "keywords": ["permission boundaries", "privilege escalation", "IAM"]
+            }
+          ],
+          "hri_indicators": [
+            "Overly permissive IAM policies",
+            "No access reviews",
+            "Administrator access granted broadly",
+            "Wildcard permissions in use",
+            "No permission boundaries"
+          ],
+          "remediation_guidance": "Implement least privilege policies, use permission boundaries, and conduct regular access reviews using IAM Access Analyzer.",
+          "related_services": ["IAM", "IAM Access Analyzer", "AWS Organizations"]
+        },
+        {
+          "id": "SEC_03",
+          "text": "How do you detect and investigate security events?",
+          "criticality": "critical",
+          "category": "Security Monitoring",
+          "keywords": ["security", "monitoring", "detection", "incident response", "threat detection"],
+          "best_practices": [
+            {
+              "id": "SEC_03_BP01",
+              "text": "Enable security monitoring",
+              "example_good_answer": "We use GuardDuty for threat detection, Security Hub for centralized security findings, and CloudTrail for audit logging. All logs are sent to CloudWatch Logs.",
+              "keywords": ["GuardDuty", "Security Hub", "CloudTrail", "security monitoring"]
+            },
+            {
+              "id": "SEC_03_BP02",
+              "text": "Automate incident response",
+              "example_good_answer": "We have automated response playbooks using EventBridge and Lambda. Suspicious activities trigger automatic remediation actions like isolating affected resources.",
+              "keywords": ["incident response", "EventBridge", "Lambda", "automation"]
+            }
+          ],
+          "hri_indicators": [
+            "No security monitoring",
+            "No threat detection",
+            "Manual incident response only",
+            "No audit logging"
+          ],
+          "related_services": ["GuardDuty", "Security Hub", "CloudTrail", "EventBridge", "CloudWatch"]
+        }
+      ]
+    },
+    {
+      "id": "REL",
+      "name": "Reliability",
+      "description": "Recover from failures and meet demand",
+      "questions": [
+        {
+          "id": "REL_01",
+          "text": "How do you manage service quotas and constraints?",
+          "criticality": "high",
+          "category": "Service Management",
+          "keywords": ["quotas", "limits", "service quotas", "capacity", "scaling"],
+          "best_practices": [
+            {
+              "id": "REL_01_BP01",
+              "text": "Monitor service quotas",
+              "example_good_answer": "We monitor service quotas using Service Quotas dashboard and set CloudWatch alarms for quota utilization above 80%. Alerts notify us before hitting limits.",
+              "keywords": ["Service Quotas", "monitoring", "CloudWatch alarms"]
+            },
+            {
+              "id": "REL_01_BP02",
+              "text": "Plan for quota increases",
+              "example_good_answer": "We proactively request quota increases via Service Quotas API when approaching limits, with approval workflows documented in our runbooks.",
+              "keywords": ["quota increase", "Service Quotas API", "proactive"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["Service Quotas", "CloudWatch"]
+        },
+        {
+          "id": "REL_02",
+          "text": "How do you design for failure?",
+          "criticality": "critical",
+          "category": "Fault Tolerance",
+          "keywords": ["failure", "fault tolerance", "HA", "multi-AZ", "backup", "disaster recovery"],
+          "best_practices": [
+            {
+              "id": "REL_02_BP01",
+              "text": "Use multi-AZ deployments",
+              "example_good_answer": "All critical databases use RDS Multi-AZ. Application load balancers distribute traffic across multiple Availability Zones. EC2 instances are in Auto Scaling groups across AZs.",
+              "keywords": ["Multi-AZ", "RDS", "Availability Zones", "high availability"]
+            },
+            {
+              "id": "REL_02_BP02",
+              "text": "Implement automatic failover",
+              "example_good_answer": "RDS Multi-AZ provides automatic failover. Auto Scaling groups replace unhealthy instances automatically. Route 53 health checks route traffic away from failed regions.",
+              "keywords": ["failover", "Auto Scaling", "health checks", "Route 53"]
+            },
+            {
+              "id": "REL_02_BP03",
+              "text": "Design for graceful degradation",
+              "example_good_answer": "Our application uses circuit breakers and fallback mechanisms. If a service is unavailable, we serve cached content or simplified functionality rather than failing completely.",
+              "keywords": ["circuit breakers", "graceful degradation", "fallback"]
+            }
+          ],
+          "hri_indicators": [
+            "Single point of failure",
+            "No backup or DR plan",
+            "Single AZ deployment",
+            "No automatic failover",
+            "No redundancy"
+          ],
+          "remediation_guidance": "Implement multi-AZ deployments, automatic failover, and design for graceful degradation with circuit breakers.",
+          "related_services": ["RDS", "Auto Scaling", "Route 53", "ElastiCache"]
+        },
+        {
+          "id": "REL_03",
+          "text": "How do you plan your network topology?",
+          "criticality": "high",
+          "category": "Network Design",
+          "keywords": ["network", "VPC", "subnets", "routing", "connectivity"],
+          "best_practices": [
+            {
+              "id": "REL_03_BP01",
+              "text": "Design for scalability",
+              "example_good_answer": "We use VPC with multiple subnets across AZs. Network ACLs and security groups provide defense in depth. We plan for future growth with CIDR blocks that allow expansion.",
+              "keywords": ["VPC", "subnets", "scalability", "CIDR"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["VPC", "Route 53", "Direct Connect"]
+        }
+      ]
+    },
+    {
+      "id": "PERF",
+      "name": "Performance Efficiency",
+      "description": "Use resources efficiently",
+      "questions": [
+        {
+          "id": "PERF_01",
+          "text": "How do you select appropriate resource types?",
+          "criticality": "medium",
+          "category": "Resource Selection",
+          "keywords": ["resource types", "compute", "storage", "right-sizing", "optimization"],
+          "best_practices": [
+            {
+              "id": "PERF_01_BP01",
+              "text": "Right-size resources",
+              "example_good_answer": "We use Compute Optimizer to recommend EC2 instance types. We regularly review and adjust based on utilization metrics. Underutilized instances are downsized.",
+              "keywords": ["Compute Optimizer", "right-sizing", "utilization"]
+            },
+            {
+              "id": "PERF_01_BP02",
+              "text": "Use appropriate storage types",
+              "example_good_answer": "We use S3 Intelligent-Tiering for variable access patterns, EBS gp3 for general purpose, and io2 for high-performance databases. Lifecycle policies move data to cheaper tiers automatically.",
+              "keywords": ["S3", "EBS", "storage tiers", "lifecycle"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["Compute Optimizer", "CloudWatch", "S3", "EBS"]
+        },
+        {
+          "id": "PERF_02",
+          "text": "How do you select your compute solution?",
+          "criticality": "medium",
+          "category": "Compute Selection",
+          "keywords": ["compute", "EC2", "Lambda", "containers", "serverless"],
+          "best_practices": [
+            {
+              "id": "PERF_02_BP01",
+              "text": "Choose appropriate compute model",
+              "example_good_answer": "We use Lambda for event-driven workloads, ECS Fargate for containers, and EC2 for long-running processes. We evaluate workload characteristics to choose the best fit.",
+              "keywords": ["Lambda", "ECS", "Fargate", "EC2", "compute model"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["Lambda", "ECS", "EC2", "Fargate"]
+        }
+      ]
+    },
+    {
+      "id": "COST",
+      "name": "Cost Optimization",
+      "description": "Manage costs effectively",
+      "questions": [
+        {
+          "id": "COST_01",
+          "text": "How do you implement cloud financial management?",
+          "criticality": "high",
+          "category": "Financial Management",
+          "keywords": ["cost", "billing", "budget", "FinOps", "financial management"],
+          "best_practices": [
+            {
+              "id": "COST_01_BP01",
+              "text": "Set up cost allocation tags",
+              "example_good_answer": "All resources are tagged with CostCenter, Environment, and Application tags. We use Cost Explorer to analyze spending by tag and identify optimization opportunities.",
+              "keywords": ["cost allocation", "tags", "Cost Explorer", "tagging"]
+            },
+            {
+              "id": "COST_01_BP02",
+              "text": "Use budgets and alerts",
+              "example_good_answer": "We set up AWS Budgets with alerts at 50%, 80%, and 100% of budget. Teams receive notifications when approaching limits to prevent overspending.",
+              "keywords": ["AWS Budgets", "alerts", "cost monitoring"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["Cost Explorer", "AWS Budgets", "Cost and Usage Reports"]
+        },
+        {
+          "id": "COST_02",
+          "text": "How do you monitor usage and cost?",
+          "criticality": "high",
+          "category": "Cost Monitoring",
+          "keywords": ["cost monitoring", "usage", "spending", "optimization"],
+          "best_practices": [
+            {
+              "id": "COST_02_BP01",
+              "text": "Regular cost reviews",
+              "example_good_answer": "We conduct monthly cost reviews using Cost Explorer. Unused resources are identified and terminated. Reserved Instances are purchased for predictable workloads.",
+              "keywords": ["Cost Explorer", "cost reviews", "Reserved Instances"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["Cost Explorer", "AWS Budgets"]
+        }
+      ]
+    },
+    {
+      "id": "SUS",
+      "name": "Sustainability",
+      "description": "Minimize environmental impact",
+      "questions": [
+        {
+          "id": "SUS_01",
+          "text": "How do you select Regions?",
+          "criticality": "medium",
+          "category": "Region Selection",
+          "keywords": ["regions", "sustainability", "carbon footprint", "energy"],
+          "best_practices": [
+            {
+              "id": "SUS_01_BP01",
+              "text": "Consider carbon footprint",
+              "example_good_answer": "We prioritize regions with lower carbon intensity. We use AWS Carbon Footprint Tool to track emissions and make data-driven decisions about region selection.",
+              "keywords": ["carbon footprint", "sustainability", "regions"]
+            },
+            {
+              "id": "SUS_01_BP02",
+              "text": "Optimize for efficiency",
+              "example_good_answer": "We use Graviton processors where possible for better performance per watt. We right-size resources to minimize waste and use serverless where appropriate.",
+              "keywords": ["Graviton", "efficiency", "serverless"]
+            }
+          ],
+          "hri_indicators": [],
+          "related_services": ["AWS Carbon Footprint Tool", "Compute Optimizer"]
+        }
+      ]
+    }
+  ]
+}
+

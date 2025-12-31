@@ -1,0 +1,1020 @@
+{
+  "knowledge_base": {
+    "source_1": "AWS Blog - Customize Well-Architected Reviews using Custom Lenses",
+    "url_1": "https://aws.amazon.com/blogs/mt/customize-well-architected-reviews-using-custom-lenses-and-the-aws-well-architected-tool/",
+    "author_1": "Mahanth Jayadeva, Solutions Architect, AWS",
+    "date_1": "March 3, 2022",
+    "source_2": "AWS Well-Architected Framework - Generative AI Lens",
+    "description": "Comprehensive knowledge base for Custom Lenses and GenAI Lens to help clients assess their GenAI applications and products",
+    "last_updated": "2025-12-17",
+    "version": "1.0"
+  },
+  "custom_lenses_overview": {
+    "definition": "Custom lenses let you incorporate organizational and internal best practices (governance, legal, compliance) into AWS WA Review in addition to the AWS WA Framework",
+    "purpose": "Create custom pillars, questions, best practices, helpful resources, and improvement plans tailored to specific needs",
+    "use_cases": [
+      "Organizational governance requirements",
+      "Legal and compliance standards",
+      "Industry-specific best practices",
+      "Technology-specific guidance (e.g., Lambda, Kubernetes, GenAI)",
+      "Internal development standards",
+      "Regulatory frameworks (HIPAA, PCI-DSS, GDPR)",
+      "GenAI application best practices"
+    ],
+    "benefits": [
+      "Central location to measure workloads against all relevant best practices",
+      "Extend AWS WA Framework with organization-specific needs",
+      "Share standards across teams via AWS Organizations",
+      "Consistent governance at scale",
+      "Tailored improvement plans"
+    ]
+  },
+  "custom_lens_structure": {
+    "schema_version": "2021-11-01",
+    "required_fields": [
+      {
+        "field": "schemaVersion",
+        "type": "string",
+        "example": "2021-11-01",
+        "description": "Version of the lens schema"
+      },
+      {
+        "field": "name",
+        "type": "string",
+        "example": "Lambda lens",
+        "description": "Name of the custom lens"
+      },
+      {
+        "field": "description",
+        "type": "string",
+        "example": "Best practices for developing and deploying AWS Lambda functions",
+        "description": "Description explaining the purpose of this lens"
+      },
+      {
+        "field": "pillars",
+        "type": "array",
+        "description": "Array of pillars, each containing questions"
+      }
+    ],
+    "pillar_structure": {
+      "fields": [
+        {
+          "field": "id",
+          "type": "string",
+          "example": "lambda_ops",
+          "description": "Unique identifier for the pillar"
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "example": "Operational Excellence",
+          "description": "Display name for the pillar"
+        },
+        {
+          "field": "questions",
+          "type": "array",
+          "description": "Array of questions for this pillar"
+        }
+      ]
+    },
+    "question_structure": {
+      "fields": [
+        {
+          "field": "id",
+          "type": "string",
+          "example": "lambda_ops_q1",
+          "description": "Unique identifier for the question"
+        },
+        {
+          "field": "title",
+          "type": "string",
+          "example": "How do you understand the health of your Lambda functions?",
+          "description": "Question text"
+        },
+        {
+          "field": "description",
+          "type": "string",
+          "optional": true,
+          "description": "Additional context for the question"
+        },
+        {
+          "field": "choices",
+          "type": "array",
+          "description": "Array of best practice choices for this question"
+        },
+        {
+          "field": "riskRules",
+          "type": "array",
+          "description": "Rules defining risk evaluation based on selected choices"
+        }
+      ]
+    },
+    "choice_structure": {
+      "fields": [
+        {
+          "field": "id",
+          "type": "string",
+          "example": "ops_q1_choice1",
+          "description": "Unique identifier for the choice"
+        },
+        {
+          "field": "title",
+          "type": "string",
+          "example": "Review metrics and establish alarms",
+          "description": "Best practice description"
+        },
+        {
+          "field": "helpfulResource",
+          "type": "object",
+          "description": "Context and documentation for this best practice",
+          "properties": {
+            "displayText": "Explanatory text",
+            "url": "Documentation URL"
+          }
+        },
+        {
+          "field": "improvementPlan",
+          "type": "object",
+          "description": "Guidance for implementing this best practice",
+          "properties": {
+            "displayText": "Implementation guidance",
+            "url": "Additional resources URL (optional)"
+          }
+        },
+        {
+          "field": "additionalResources",
+          "type": "array",
+          "optional": true,
+          "description": "Multiple helpful resources or improvement plan links"
+        }
+      ]
+    },
+    "risk_rules": {
+      "description": "Define how user choices are evaluated and what risk rating is generated",
+      "operators": ["&&", "||", "!", "default"],
+      "risk_levels": ["NO_RISK", "MEDIUM_RISK", "HIGH_RISK"],
+      "example": [
+        {
+          "condition": "choice1 && choice2",
+          "risk": "NO_RISK"
+        },
+        {
+          "condition": "choice1 && !choice2",
+          "risk": "MEDIUM_RISK"
+        },
+        {
+          "condition": "default",
+          "risk": "HIGH_RISK"
+        }
+      ]
+    }
+  },
+  "custom_lens_lifecycle": {
+    "phase_1_create": {
+      "steps": [
+        {
+          "step": 1,
+          "action": "Navigate to AWS WA Tool → Custom lenses",
+          "description": "Access the custom lens authoring interface"
+        },
+        {
+          "step": 2,
+          "action": "Choose 'Create custom lens'",
+          "description": "Start the custom lens creation wizard"
+        },
+        {
+          "step": 3,
+          "action": "Download template",
+          "description": "Get the JSON template that defines lens structure"
+        },
+        {
+          "step": 4,
+          "action": "Author lens content",
+          "description": "Fill in metadata, pillars, questions, choices, helpful resources, improvement plans, and risk rules"
+        },
+        {
+          "step": 5,
+          "action": "Upload JSON file",
+          "description": "Import the custom lens into WA Tool"
+        },
+        {
+          "step": 6,
+          "action": "Preview lens",
+          "description": "Review how the lens appears in the tool, iterate until satisfied"
+        }
+      ],
+      "status": "DRAFT",
+      "notes": "Lens must be published before use"
+    },
+    "phase_2_publish": {
+      "steps": [
+        {
+          "step": 1,
+          "action": "Select lens in DRAFT status"
+        },
+        {
+          "step": 2,
+          "action": "Choose 'Publish lens'"
+        },
+        {
+          "step": 3,
+          "action": "Specify version number",
+          "description": "Version helps users identify which lens version is applied to workload"
+        },
+        {
+          "step": 4,
+          "action": "Confirm publish"
+        }
+      ],
+      "status": "PUBLISHED",
+      "notes": "Lens is now available for workload reviews"
+    },
+    "phase_3_update": {
+      "major_version": {
+        "when": "Substantial changes that impact lens meaning",
+        "behavior": "Notifies users of previous version that new version is available, but NOT automatically applied",
+        "use_cases": [
+          "New pillars added",
+          "Significant question changes",
+          "Risk rule modifications",
+          "New compliance requirements"
+        ]
+      },
+      "minor_version": {
+        "when": "Small changes like text updates or URL changes",
+        "behavior": "Automatically applied to workloads using the lens",
+        "use_cases": [
+          "Text clarifications",
+          "URL updates",
+          "Typo fixes",
+          "Additional resource links"
+        ]
+      }
+    },
+    "phase_4_share": {
+      "sharing_targets": [
+        "AWS Account IDs",
+        "IAM user ARNs",
+        "AWS Organizations (entire org)",
+        "Organization Units (OUs)"
+      ],
+      "prerequisite": "Lens must be in PUBLISHED state",
+      "workflow": {
+        "step_1": "Navigate to Custom lenses → Select lens",
+        "step_2": "Specify 12-digit AWS account ID or IAM ARN",
+        "step_3": "Create share",
+        "step_4": "Share invite status: PENDING",
+        "step_5": "Target account accepts invite",
+        "step_6": "Lens appears under 'Shared with me' tab",
+        "step_7": "Target account can now use lens for workload reviews"
+      }
+    }
+  },
+  "genai_lens_overview": {
+    "official_name": "AWS Well-Architected Framework - Generative AI Lens",
+    "purpose": "Specialized lens for reviewing Generative AI applications and products built on AWS",
+    "description": "Provides best practices for designing, deploying, and architecting generative AI workloads on AWS",
+    "target_audience": [
+      "Organizations building GenAI applications",
+      "Teams deploying LLMs (Large Language Models)",
+      "Companies integrating AI/ML into products",
+      "Developers creating AI-powered features",
+      "Enterprises assessing GenAI readiness"
+    ],
+    "key_focus_areas": [
+      "Model selection and optimization",
+      "Prompt engineering and management",
+      "Data governance and privacy",
+      "Cost optimization for AI workloads",
+      "Security and compliance for AI",
+      "Operational excellence for ML systems",
+      "Performance and scalability",
+      "Responsible AI practices"
+    ]
+  },
+  "genai_lens_pillars": {
+    "pillar_1": {
+      "name": "Operational Excellence",
+      "focus": "Operating and monitoring GenAI systems",
+      "key_topics": [
+        "Monitoring LLM performance and quality",
+        "Prompt versioning and experimentation",
+        "Model drift detection",
+        "Observability for AI systems",
+        "Incident response for AI failures",
+        "Cost tracking and optimization",
+        "CI/CD for ML models"
+      ],
+      "example_questions": [
+        "How do you monitor the quality and accuracy of LLM outputs?",
+        "How do you version and manage prompts across environments?",
+        "How do you detect and respond to model drift or degradation?",
+        "How do you track costs associated with LLM inference?"
+      ]
+    },
+    "pillar_2": {
+      "name": "Security",
+      "focus": "Protecting GenAI systems and data",
+      "key_topics": [
+        "Data privacy and PII handling",
+        "Prompt injection prevention",
+        "Model security and access control",
+        "Input validation and sanitization",
+        "Output filtering and content moderation",
+        "Secrets management for API keys",
+        "Audit logging for AI decisions"
+      ],
+      "example_questions": [
+        "How do you prevent prompt injection attacks?",
+        "How do you ensure customer data privacy when using LLMs?",
+        "How do you validate and sanitize user inputs to LLMs?",
+        "How do you audit and log AI-generated content?"
+      ]
+    },
+    "pillar_3": {
+      "name": "Reliability",
+      "focus": "Ensuring GenAI systems work as expected",
+      "key_topics": [
+        "Fallback mechanisms for LLM failures",
+        "Retry logic and timeout handling",
+        "Multi-model redundancy",
+        "Graceful degradation",
+        "Testing strategies for AI systems",
+        "Chaos engineering for ML pipelines",
+        "Disaster recovery for AI workloads"
+      ],
+      "example_questions": [
+        "How do you handle LLM API failures or timeouts?",
+        "What fallback mechanisms do you have when primary LLM is unavailable?",
+        "How do you test the reliability of AI-generated outputs?",
+        "How do you ensure consistent performance under load?"
+      ]
+    },
+    "pillar_4": {
+      "name": "Performance Efficiency",
+      "focus": "Optimizing GenAI resource usage",
+      "key_topics": [
+        "Model selection (size vs. performance trade-offs)",
+        "Inference optimization (quantization, caching)",
+        "Batch processing vs. real-time inference",
+        "GPU/accelerator utilization",
+        "Prompt optimization for token efficiency",
+        "Embedding and vector search optimization",
+        "Right-sizing compute resources"
+      ],
+      "example_questions": [
+        "How did you select the appropriate model size for your use case?",
+        "How do you optimize prompt length to reduce token usage?",
+        "How do you cache frequent LLM responses?",
+        "How do you monitor and optimize GPU utilization?"
+      ]
+    },
+    "pillar_5": {
+      "name": "Cost Optimization",
+      "focus": "Managing GenAI costs effectively",
+      "key_topics": [
+        "Model cost vs. performance trade-offs",
+        "Token usage optimization",
+        "Caching strategies to reduce API calls",
+        "Batch inference for cost efficiency",
+        "Reserved capacity vs. on-demand",
+        "Open-source vs. commercial models",
+        "Cost allocation and chargeback"
+      ],
+      "example_questions": [
+        "How do you track and allocate GenAI costs across teams?",
+        "What strategies do you use to reduce token consumption?",
+        "How do you decide between using larger/expensive vs. smaller/cheaper models?",
+        "How do you implement caching to reduce redundant LLM calls?"
+      ]
+    },
+    "pillar_6": {
+      "name": "Sustainability",
+      "focus": "Environmental impact of GenAI workloads",
+      "key_topics": [
+        "Carbon footprint of LLM training and inference",
+        "Energy-efficient model selection",
+        "Regional carbon intensity considerations",
+        "Model quantization for reduced compute",
+        "Resource scheduling to use renewable energy",
+        "Measuring AI sustainability metrics"
+      ],
+      "example_questions": [
+        "How do you measure the carbon footprint of your GenAI workloads?",
+        "What strategies do you use to minimize energy consumption?",
+        "How do you select AWS regions based on carbon intensity?",
+        "How do you balance performance with sustainability goals?"
+      ]
+    },
+    "pillar_7_genai_specific": {
+      "name": "Responsible AI",
+      "focus": "Ethical and responsible use of GenAI",
+      "key_topics": [
+        "Bias detection and mitigation",
+        "Transparency and explainability",
+        "Content moderation and safety",
+        "Human oversight and review",
+        "Fairness across user demographics",
+        "Attribution and copyright compliance",
+        "User consent and data rights"
+      ],
+      "example_questions": [
+        "How do you detect and mitigate bias in LLM outputs?",
+        "What content moderation strategies do you have in place?",
+        "How do you ensure transparency in AI-driven decisions?",
+        "What human oversight do you have for AI-generated content?",
+        "How do you handle attribution and copyright for AI-generated content?"
+      ]
+    }
+  },
+  "genai_lens_best_practices": {
+    "model_selection": {
+      "best_practice": "Choose appropriate model based on use case requirements",
+      "guidance": [
+        "Small models (7B-13B params): Faster, cheaper, good for specific tasks",
+        "Medium models (30B-70B params): Balance of capability and cost",
+        "Large models (175B+ params): Highest capability, highest cost",
+        "Consider fine-tuned models for domain-specific tasks",
+        "Evaluate open-source vs. commercial model trade-offs"
+      ],
+      "aws_services": [
+        "Amazon Bedrock (managed foundation models)",
+        "Amazon SageMaker (custom model training/hosting)",
+        "AWS Trainium/Inferentia (cost-optimized ML chips)"
+      ]
+    },
+    "prompt_engineering": {
+      "best_practice": "Design effective prompts and manage prompt templates",
+      "guidance": [
+        "Use clear, specific instructions",
+        "Provide examples (few-shot learning)",
+        "Iterate and version prompts",
+        "Test prompts across diverse inputs",
+        "Implement prompt libraries for reusability",
+        "Monitor prompt effectiveness over time"
+      ],
+      "tools": [
+        "Prompt template libraries",
+        "A/B testing for prompts",
+        "Prompt versioning systems",
+        "Evaluation frameworks"
+      ]
+    },
+    "rag_implementation": {
+      "best_practice": "Implement Retrieval Augmented Generation for accuracy",
+      "guidance": [
+        "Use vector databases for semantic search (OpenSearch, Pinecone)",
+        "Chunk documents appropriately (512-1024 tokens)",
+        "Implement hybrid search (keyword + semantic)",
+        "Optimize embedding models",
+        "Cache frequently accessed documents",
+        "Implement re-ranking for relevance"
+      ],
+      "aws_services": [
+        "Amazon Bedrock Knowledge Bases",
+        "Amazon OpenSearch Serverless (vector engine)",
+        "Amazon Kendra (enterprise search)"
+      ]
+    },
+    "guardrails": {
+      "best_practice": "Implement guardrails to ensure safe, appropriate outputs",
+      "guidance": [
+        "Content filtering (hate speech, violence, sexual content)",
+        "PII detection and redaction",
+        "Toxicity scoring",
+        "Topic moderation (blocked topics)",
+        "Output validation against policies",
+        "Human-in-the-loop review for sensitive use cases"
+      ],
+      "aws_services": [
+        "Amazon Bedrock Guardrails",
+        "Amazon Comprehend (PII detection)",
+        "AWS Rekognition (content moderation for images)"
+      ]
+    },
+    "cost_optimization_genai": {
+      "best_practice": "Optimize GenAI costs without sacrificing quality",
+      "strategies": [
+        {
+          "strategy": "Caching",
+          "description": "Cache LLM responses for frequent queries",
+          "savings": "50-80% reduction in redundant API calls"
+        },
+        {
+          "strategy": "Prompt optimization",
+          "description": "Reduce token count while maintaining clarity",
+          "savings": "20-40% reduction in token costs"
+        },
+        {
+          "strategy": "Model tiering",
+          "description": "Use smaller models for simple tasks, larger for complex",
+          "savings": "30-60% cost reduction"
+        },
+        {
+          "strategy": "Batch processing",
+          "description": "Group non-urgent requests for batch inference",
+          "savings": "40-70% cost reduction vs. real-time"
+        },
+        {
+          "strategy": "Reserved capacity",
+          "description": "Commit to usage for discounted rates",
+          "savings": "20-40% discount"
+        }
+      ]
+    },
+    "monitoring_genai": {
+      "best_practice": "Comprehensive monitoring for GenAI applications",
+      "metrics_to_track": [
+        {
+          "category": "Quality Metrics",
+          "metrics": [
+            "Output relevance score",
+            "Hallucination detection",
+            "Factual accuracy",
+            "User satisfaction (thumbs up/down)",
+            "Task success rate"
+          ]
+        },
+        {
+          "category": "Performance Metrics",
+          "metrics": [
+            "Latency (p50, p95, p99)",
+            "Throughput (requests/sec)",
+            "Token usage per request",
+            "Model availability",
+            "Error rate"
+          ]
+        },
+        {
+          "category": "Cost Metrics",
+          "metrics": [
+            "Cost per request",
+            "Token cost breakdown",
+            "Cache hit rate",
+            "Cost by use case/team"
+          ]
+        },
+        {
+          "category": "Safety Metrics",
+          "metrics": [
+            "Content filter trigger rate",
+            "PII exposure incidents",
+            "Prompt injection attempts",
+            "Toxicity score distribution"
+          ]
+        }
+      ],
+      "aws_services": [
+        "Amazon CloudWatch (metrics, logs, alarms)",
+        "AWS X-Ray (distributed tracing)",
+        "Amazon Bedrock Model Evaluation",
+        "Custom dashboards (QuickSight, Grafana)"
+      ]
+    }
+  },
+  "genai_lens_use_cases": {
+    "use_case_1": {
+      "name": "Customer Support Chatbot",
+      "description": "AI-powered chatbot for handling customer inquiries",
+      "relevant_questions": [
+        "How do you ensure chatbot responses are accurate and helpful?",
+        "How do you handle sensitive customer data (PII)?",
+        "What fallback mechanisms exist when chatbot can't answer?",
+        "How do you monitor chatbot performance and user satisfaction?",
+        "How do you prevent the chatbot from providing harmful advice?"
+      ],
+      "key_concerns": [
+        "Accuracy and hallucination prevention",
+        "PII protection",
+        "Escalation to human agents",
+        "Cost optimization (high volume)",
+        "Content moderation"
+      ]
+    },
+    "use_case_2": {
+      "name": "Code Generation Assistant",
+      "description": "AI tool to help developers write code",
+      "relevant_questions": [
+        "How do you ensure generated code is secure and follows best practices?",
+        "How do you handle intellectual property and licensing concerns?",
+        "How do you validate generated code before deployment?",
+        "How do you optimize costs for frequent code generation requests?",
+        "How do you provide context from your codebase (RAG)?"
+      ],
+      "key_concerns": [
+        "Code security (preventing vulnerable code)",
+        "Licensing and attribution",
+        "Code quality and standards",
+        "Context window management",
+        "Testing generated code"
+      ]
+    },
+    "use_case_3": {
+      "name": "Content Creation Platform",
+      "description": "AI-powered tool for generating marketing content, blog posts, etc.",
+      "relevant_questions": [
+        "How do you ensure content is original and not plagiarized?",
+        "How do you moderate content for brand safety?",
+        "How do you handle copyright and attribution?",
+        "How do you optimize costs for bulk content generation?",
+        "How do you maintain consistent brand voice?"
+      ],
+      "key_concerns": [
+        "Originality and plagiarism",
+        "Brand safety and moderation",
+        "Copyright compliance",
+        "Cost at scale",
+        "Quality consistency"
+      ]
+    },
+    "use_case_4": {
+      "name": "Document Analysis and Summarization",
+      "description": "AI system to analyze and summarize large documents",
+      "relevant_questions": [
+        "How do you handle large documents that exceed context windows?",
+        "How do you ensure summaries are accurate and don't miss key points?",
+        "How do you protect confidential information in documents?",
+        "How do you optimize costs for processing large volumes?",
+        "How do you provide traceability (which part of doc supports summary)?"
+      ],
+      "key_concerns": [
+        "Context window limitations",
+        "Accuracy and completeness",
+        "Data confidentiality",
+        "Cost optimization",
+        "Citation and traceability"
+      ]
+    },
+    "use_case_5": {
+      "name": "Personalized Recommendations",
+      "description": "AI system providing personalized product/content recommendations",
+      "relevant_questions": [
+        "How do you prevent bias in recommendations?",
+        "How do you protect user privacy while personalizing?",
+        "How do you measure recommendation quality?",
+        "How do you handle cold start problem (new users)?",
+        "How do you balance personalization with diversity?"
+      ],
+      "key_concerns": [
+        "Bias and fairness",
+        "Privacy protection",
+        "Recommendation quality",
+        "User experience",
+        "Filter bubbles"
+      ]
+    }
+  },
+  "integration_with_automated_platform": {
+    "discovery_phase": {
+      "genai_specific_questions": [
+        "Is your workload a GenAI application (using LLMs, foundation models)?",
+        "What GenAI use case(s) does your product serve?",
+        "Which LLM(s) or foundation models are you using?",
+        "Are you using RAG (Retrieval Augmented Generation)?",
+        "Do you need to assess responsible AI practices?"
+      ],
+      "agent_logic": "If client indicates GenAI workload, Discovery Agent recommends applying GenAI Lens in addition to core AWS WA Framework"
+    },
+    "assessment_phase": {
+      "genai_lens_application": {
+        "step_1": "Orchestrator Agent applies both AWS WA Framework AND GenAI Lens",
+        "step_2": "Assessment Agent evaluates GenAI-specific questions using AWS APIs",
+        "data_sources": [
+          "Amazon Bedrock usage metrics (CloudWatch)",
+          "AWS Bedrock Guardrails configuration",
+          "SageMaker endpoint metrics",
+          "Lambda functions calling LLM APIs",
+          "Cost Explorer (GenAI cost tracking)",
+          "CloudTrail (audit logs for AI decisions)"
+        ],
+        "step_3": "Validation Agent cross-checks against GenAI best practices"
+      }
+    },
+    "report_phase": {
+      "genai_specific_sections": [
+        {
+          "section": "GenAI Architecture Overview",
+          "content": "Diagram and description of LLM integration, RAG implementation, guardrails"
+        },
+        {
+          "section": "Model Selection Analysis",
+          "content": "Evaluation of chosen models against use case requirements, cost analysis"
+        },
+        {
+          "section": "Responsible AI Assessment",
+          "content": "Bias detection, content moderation, transparency measures"
+        },
+        {
+          "section": "GenAI Cost Breakdown",
+          "content": "Token usage, inference costs, optimization opportunities"
+        },
+        {
+          "section": "Prompt Engineering Review",
+          "content": "Prompt template quality, versioning practices, testing strategies"
+        },
+        {
+          "section": "Security & Privacy",
+          "content": "PII handling, prompt injection protection, output filtering"
+        },
+        {
+          "section": "GenAI Improvement Plan",
+          "content": "Prioritized recommendations specific to GenAI workload"
+        }
+      ]
+    },
+    "teaching_clients": {
+      "workshop_module": "GenAI Lens Deep Dive",
+      "duration": "30-45 minutes",
+      "agenda": [
+        {
+          "topic": "Why GenAI Lens?",
+          "duration": "5 minutes",
+          "content": [
+            "GenAI applications have unique challenges",
+            "Standard AWS WA Framework doesn't cover AI-specific concerns",
+            "GenAI Lens adds 40+ GenAI-specific questions",
+            "Helps identify AI-related risks early"
+          ]
+        },
+        {
+          "topic": "GenAI Lens Pillars",
+          "duration": "10 minutes",
+          "content": [
+            "Same 6 pillars as core framework PLUS Responsible AI",
+            "AI-specific focus within each pillar",
+            "Example: Security includes prompt injection, PII protection"
+          ]
+        },
+        {
+          "topic": "Key GenAI Risks",
+          "duration": "10 minutes",
+          "content": [
+            "Hallucinations and factual accuracy",
+            "Prompt injection attacks",
+            "Cost runaway from token usage",
+            "Bias and fairness issues",
+            "Privacy concerns (PII leakage)",
+            "Content moderation gaps"
+          ]
+        },
+        {
+          "topic": "GenAI Best Practices Demo",
+          "duration": "10 minutes",
+          "content": [
+            "Live demo: Apply GenAI Lens to sample workload",
+            "Show how questions differ from standard lens",
+            "Walk through example improvement plans"
+          ]
+        },
+        {
+          "topic": "Your GenAI Assessment",
+          "duration": "5-10 minutes",
+          "content": [
+            "Review pre-populated GenAI Lens answers for client's workload",
+            "Discuss identified gaps",
+            "Preview improvement recommendations"
+          ]
+        }
+      ]
+    }
+  },
+  "automation_strategies": {
+    "auto_detect_genai_workload": {
+      "description": "Discovery Agent automatically detects if workload uses GenAI",
+      "detection_signals": [
+        "Mentions of 'LLM', 'ChatGPT', 'Claude', 'GPT', 'foundation model'",
+        "Use of Amazon Bedrock, SageMaker with ML models",
+        "API calls to OpenAI, Anthropic, Cohere, etc.",
+        "RAG, vector database, embeddings mentioned",
+        "Use cases: chatbot, content generation, code assistant"
+      ],
+      "action": "If GenAI detected → Recommend applying GenAI Lens automatically"
+    },
+    "genai_specific_assessment": {
+      "description": "Assessment Agent uses GenAI-specific data sources",
+      "data_collection": [
+        {
+          "source": "Amazon Bedrock CloudWatch Metrics",
+          "metrics": [
+            "InvocationCount",
+            "InvocationLatency",
+            "InputTokenCount",
+            "OutputTokenCount",
+            "Errors"
+          ],
+          "use": "Assess performance, cost, reliability"
+        },
+        {
+          "source": "Bedrock Guardrails Configuration",
+          "check": "Are guardrails configured? Which filters enabled?",
+          "use": "Assess security and responsible AI"
+        },
+        {
+          "source": "SageMaker Endpoints",
+          "metrics": [
+            "Invocations",
+            "ModelLatency",
+            "CPUUtilization",
+            "GPUUtilization"
+          ],
+          "use": "Assess performance efficiency"
+        },
+        {
+          "source": "Cost Explorer",
+          "filter": "Bedrock, SageMaker service costs",
+          "use": "Assess cost optimization"
+        }
+      ]
+    },
+    "genai_improvement_recommendations": {
+      "description": "Report Agent generates GenAI-specific recommendations",
+      "recommendation_categories": [
+        {
+          "category": "Cost Optimization",
+          "examples": [
+            "Implement caching for frequent queries (50% cost reduction)",
+            "Optimize prompts to reduce token count (30% reduction)",
+            "Consider using smaller model for simple tasks (60% reduction)",
+            "Batch non-urgent requests (40% reduction)"
+          ]
+        },
+        {
+          "category": "Security",
+          "examples": [
+            "Enable Bedrock Guardrails for content filtering",
+            "Implement input validation to prevent prompt injection",
+            "Add PII detection and redaction",
+            "Enable audit logging for AI decisions"
+          ]
+        },
+        {
+          "category": "Performance",
+          "examples": [
+            "Implement response caching (80% latency improvement)",
+            "Optimize embedding model selection",
+            "Use streaming for better UX",
+            "Right-size SageMaker instance types"
+          ]
+        },
+        {
+          "category": "Responsible AI",
+          "examples": [
+            "Implement bias detection in outputs",
+            "Add human review for sensitive decisions",
+            "Enable content moderation",
+            "Provide transparency/explainability"
+          ]
+        }
+      ]
+    }
+  },
+  "genai_lens_example_questions": {
+    "operational_excellence": [
+      {
+        "question_id": "genai_ops_01",
+        "question": "How do you monitor the quality and accuracy of LLM outputs?",
+        "best_practices": [
+          "Implement automated quality scoring",
+          "Track hallucination rates",
+          "Monitor user feedback (thumbs up/down)",
+          "Use human evaluation for sample outputs",
+          "Set up alerts for quality degradation"
+        ]
+      },
+      {
+        "question_id": "genai_ops_02",
+        "question": "How do you version and manage prompts?",
+        "best_practices": [
+          "Use prompt template library",
+          "Version control for prompts (Git)",
+          "A/B test prompt variations",
+          "Track prompt performance metrics",
+          "Rollback capability for prompts"
+        ]
+      }
+    ],
+    "security": [
+      {
+        "question_id": "genai_sec_01",
+        "question": "How do you prevent prompt injection attacks?",
+        "best_practices": [
+          "Input validation and sanitization",
+          "Prompt injection detection rules",
+          "Separate user input from system instructions",
+          "Use Bedrock Guardrails",
+          "Monitor for suspicious patterns"
+        ]
+      },
+      {
+        "question_id": "genai_sec_02",
+        "question": "How do you protect customer PII when using LLMs?",
+        "best_practices": [
+          "PII detection before sending to LLM",
+          "Redaction or tokenization of PII",
+          "Use Amazon Comprehend for PII detection",
+          "Audit logs for PII exposure",
+          "Data residency controls"
+        ]
+      }
+    ],
+    "cost_optimization": [
+      {
+        "question_id": "genai_cost_01",
+        "question": "How do you optimize token usage and reduce costs?",
+        "best_practices": [
+          "Implement response caching",
+          "Optimize prompt length",
+          "Use smaller models for simple tasks",
+          "Batch processing for non-urgent requests",
+          "Monitor and alert on cost anomalies"
+        ]
+      },
+      {
+        "question_id": "genai_cost_02",
+        "question": "How do you track and allocate GenAI costs?",
+        "best_practices": [
+          "Tag resources by team/project",
+          "Use Cost Explorer with GenAI filters",
+          "Implement cost allocation dashboards",
+          "Set budget alerts",
+          "Chargeback to business units"
+        ]
+      }
+    ],
+    "responsible_ai": [
+      {
+        "question_id": "genai_responsible_01",
+        "question": "How do you detect and mitigate bias in AI outputs?",
+        "best_practices": [
+          "Test outputs across diverse demographics",
+          "Measure fairness metrics",
+          "Implement bias detection algorithms",
+          "Human review for sensitive use cases",
+          "Regular bias audits"
+        ]
+      },
+      {
+        "question_id": "genai_responsible_02",
+        "question": "How do you ensure transparency in AI-driven decisions?",
+        "best_practices": [
+          "Provide explanations for AI decisions",
+          "Show confidence scores",
+          "Enable user appeals process",
+          "Document AI system capabilities and limitations",
+          "Disclose when AI is being used"
+        ]
+      }
+    ]
+  },
+  "workshop_deliverables": {
+    "for_clients_with_genai_products": {
+      "deliverable_1": {
+        "name": "Dual Lens Assessment Report",
+        "description": "Report covering both AWS WA Framework AND GenAI Lens",
+        "sections": [
+          "Executive Summary (standard + GenAI highlights)",
+          "Core AWS WA Framework Assessment (6 pillars)",
+          "GenAI Lens Assessment (7 pillars including Responsible AI)",
+          "GenAI-Specific Risks and Recommendations",
+          "Cost Optimization for GenAI Workload",
+          "Responsible AI Action Plan"
+        ]
+      },
+      "deliverable_2": {
+        "name": "GenAI Best Practices Guide",
+        "description": "Customized guide for client's specific GenAI use case",
+        "content": [
+          "Model selection recommendations",
+          "Prompt engineering templates",
+          "RAG implementation guide",
+          "Guardrails configuration",
+          "Cost optimization strategies",
+          "Monitoring and observability setup"
+        ]
+      },
+      "deliverable_3": {
+        "name": "GenAI Improvement Roadmap",
+        "description": "Prioritized action plan for GenAI workload improvements",
+        "format": "90-day plan with quick wins, medium-term, long-term improvements"
+      }
+    }
+  },
+  "competitive_advantage": {
+    "unique_value_prop": "Only automated WAFR platform that includes GenAI Lens assessment for AI/ML workloads",
+    "market_positioning": [
+      "As GenAI adoption grows, clients need GenAI-specific assessments",
+      "Most consultants don't have GenAI expertise - your platform does",
+      "Automated GenAI assessment vs. manual (saves 10+ hours)",
+      "Official AWS GenAI best practices built-in"
+    ],
+    "target_segments": [
+      "SaaS companies adding AI features",
+      "Enterprises building internal AI tools",
+      "AI-first startups",
+      "Financial services (AI for fraud detection, customer service)",
+      "Healthcare (AI diagnostics, patient engagement)",
+      "E-commerce (AI recommendations, chatbots)"
+    ]
+  }
+}
+

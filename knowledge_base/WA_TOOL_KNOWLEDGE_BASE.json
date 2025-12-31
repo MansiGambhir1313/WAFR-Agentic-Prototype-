@@ -1,0 +1,943 @@
+{
+  "knowledge_base": {
+    "source": "AWS Well-Architected Tool Workshop",
+    "url": "https://catalog.workshops.aws/well-architected-tool/en-US/1-wa-tool-walkthrough",
+    "last_updated": "2025-12-17",
+    "version": "1.0",
+    "description": "Comprehensive knowledge base extracted from AWS Well-Architected Tool workshop covering tool walkthrough, programmatic access, profiles, lenses, and integrations"
+  },
+  "workshop_overview": {
+    "title": "AWS Well-Architected Tool Workshop",
+    "purpose": "Walk through the functionalities of the AWS Well-Architected Tool, guiding you through the process of creating a workload, understanding the foundational pillars, and applying industry-leading best practices",
+    "duration": "60 minutes",
+    "level": "200",
+    "cost": "Free - no costs for this lab",
+    "authors": [
+      {
+        "name": "Rodney Lester",
+        "role": "Principal Solutions Architect"
+      },
+      {
+        "name": "Phong Le",
+        "role": "Solutions Architect, AWS Well-Architected"
+      },
+      {
+        "name": "Mohamed Al Omar",
+        "role": "Solutions Architect (Contributor)"
+      }
+    ],
+    "goals": [
+      "Become familiar with the AWS Well-Architected Tool service",
+      "Learn where resources about the questions and best practices are located",
+      "Learn how to use milestones to track progress against high and medium risks over time",
+      "Learn how to generate a report or view the results of the review in the AWS Well-Architected Tool",
+      "Learn how to use the Profiles feature to tailor WAFRs to organization priorities",
+      "Learn how to use the Review templates feature to facilitate scalable, pre-filled responses"
+    ],
+    "prerequisites": [
+      {
+        "item": "AWS Account",
+        "description": "An AWS Account that you are able to use for testing, that is not used for production",
+        "url": "https://portal.aws.amazon.com/billing/signup#/start/email"
+      },
+      {
+        "item": "IAM Permissions",
+        "description": "IAM user or role with WellArchitectedConsoleFullAccess managed policy",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/userguide/iam-auth-access.html",
+        "policies": [
+          "WellArchitectedConsoleFullAccess (managed)",
+          "Customer managed policy alternative"
+        ],
+        "documentation_url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_awswell-architectedtool.html"
+      }
+    ]
+  },
+  "workload_management": {
+    "workload_concept": {
+      "definition": "A workload identifies a set of components that deliver business value. The workload is usually the level of detail that business and technology leaders communicate about.",
+      "url": "https://wa.aws.amazon.com/wat.concept.workload.en.html",
+      "scope": "Well-Architected Reviews are conducted per workload"
+    },
+    "creating_workload": {
+      "steps": [
+        {
+          "step": 1,
+          "action": "Click the 'Define Workload' button on the landing page"
+        },
+        {
+          "step": 2,
+          "action": "On the Define Workload interface, enter the required information"
+        }
+      ],
+      "required_fields": [
+        {
+          "field": "Name",
+          "example": "Workload for AWS Workshop",
+          "required": true
+        },
+        {
+          "field": "Description",
+          "example": "This is an example for the AWS Workshop",
+          "required": true
+        },
+        {
+          "field": "Review owner",
+          "example": "Your name",
+          "required": true
+        },
+        {
+          "field": "Environment",
+          "options": ["Production", "Pre-production"],
+          "example": "Pre-production",
+          "required": true
+        },
+        {
+          "field": "Regions",
+          "example": "US West (Oregon)/us-west-2",
+          "required": true,
+          "description": "Select AWS Regions where workload operates"
+        }
+      ],
+      "optional_fields": [
+        {
+          "field": "Application",
+          "required": false
+        },
+        {
+          "field": "Architectural Diagram",
+          "required": false
+        },
+        {
+          "field": "Industry Type",
+          "required": false
+        },
+        {
+          "field": "Industry",
+          "required": false
+        }
+      ],
+      "trusted_advisor_integration": {
+        "field": "Activate Trusted Advisor",
+        "default": false,
+        "description": "Integration with AWS Trusted Advisor for accelerated reviews",
+        "blog_post": "https://aws.amazon.com/blogs/architecture/accelerating-well-architected-framework-reviews-using-integrated-aws-trusted-advisor-insights/",
+        "documentation": "https://docs.aws.amazon.com/wellarchitected/latest/userguide/activate-ta-for-workload.html"
+      },
+      "additional_steps": [
+        {
+          "step": 3,
+          "action": "Click on the 'Next' button (Tags page)",
+          "note": "Skip adding tags if not needed"
+        },
+        {
+          "step": 4,
+          "action": "In Apply profile, click 'Next' button",
+          "note": "Can skip adding profile at this stage or apply an existing profile"
+        }
+      ]
+    }
+  },
+  "performing_reviews": {
+    "overview": "Reviews are conducted by answering questions across the six Well-Architected Framework pillars",
+    "pillars": [
+      "Operational Excellence",
+      "Security",
+      "Reliability",
+      "Performance Efficiency",
+      "Cost Optimization",
+      "Sustainability"
+    ],
+    "review_process": {
+      "steps": [
+        {
+          "step": 1,
+          "action": "From the workload detail page, click 'Start reviewing' button"
+        },
+        {
+          "step": 2,
+          "action": "Select the 'AWS Well-Architected Framework' lens to review"
+        },
+        {
+          "step": 3,
+          "action": "Collapse/expand pillars as needed using the collapsing/expanding icon"
+        },
+        {
+          "step": 4,
+          "action": "Select individual questions (e.g., REL 1. How do you manage service quotas and constraints?)"
+        },
+        {
+          "step": 5,
+          "action": "Answer questions using the Info links for context and guidance"
+        },
+        {
+          "step": 6,
+          "action": "Click 'Next' button at the bottom to proceed to next question"
+        },
+        {
+          "step": 7,
+          "action": "Select 'Save and exit' when ready to pause review"
+        }
+      ],
+      "reliability_pillar_example": {
+        "questions_range": "REL 1 to REL 13",
+        "first_question": "REL 1. How do you manage service quotas and constraints?",
+        "guidance": "Use the Info links to understand what answers mean and get more context on the questions"
+      },
+      "navigation": {
+        "expand_pillar": "Select the expanding icon to the left of the pillar name",
+        "collapse_pillar": "Select the collapsing icon on the left of the pillar name",
+        "next_question": "Click 'Next' button at bottom of answers",
+        "save_exit": "Click 'Save and exit' to pause review"
+      }
+    }
+  },
+  "profiles_feature": {
+    "overview": "The Profiles feature allows creation of profiles via pre-defined questions, aligning WAFR with organizational priorities and enabling focused, continuous improvement",
+    "benefits": [
+      {
+        "benefit": "Targeted Prioritization",
+        "description": "Create a profile that reflects current business goals and desired workload outcomes, generating Well-Architected questions specifically prioritized according to immediate objectives"
+      },
+      {
+        "benefit": "Customized Reviews",
+        "description": "Profile applies to both new and existing workloads, allowing customized review process that accounts for specificities of each application or service"
+      },
+      {
+        "benefit": "Efficient Use of Resources",
+        "description": "Focus on high-priority areas first, making efficient use of resources by addressing major concerns before moving to less critical questions"
+      },
+      {
+        "benefit": "Collaboration and Consistency",
+        "description": "Profiles can be shared within team or across organization, promoting alignment and consistency in cloud strategy"
+      },
+      {
+        "benefit": "Informed Decision-Making",
+        "description": "Concentrate on questions directly tied to business requirements, better positioned to make informed decisions"
+      }
+    ],
+    "creating_profile": {
+      "navigation": "AWS Console → Well-Architected Tool → Profiles",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Choose 'Create a profile'"
+        },
+        {
+          "step": 2,
+          "action": "Answer the profile questionnaire (4 questions)"
+        },
+        {
+          "step": 3,
+          "action": "Save the profile settings"
+        }
+      ],
+      "questionnaire": [
+        {
+          "question": "What is the current cloud adoption phase for the organization architecting or operating the workloads in this profile?",
+          "reference": "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/your-cloud-transformation-journey.html",
+          "framework": "Cloud Adoption Framework",
+          "phases": ["Envision", "Align", "Launch", "Scale"]
+        },
+        {
+          "question": "What is the business value that workloads in this profile represent for your team, organization, or company?"
+        },
+        {
+          "question": "What is the current architectural and operational lifecycle phase of the workloads in this profile?"
+        },
+        {
+          "question": "What are the improvement priorities for Well-Architected Framework Reviews (WAFRs) in this profile?",
+          "examples": ["Cost optimization", "Performance efficiency", "Security", "Reliability"]
+        }
+      ],
+      "example_profile": {
+        "adoption_phase": "Launch",
+        "business_value": "Business-critical workload",
+        "lifecycle_phase": "Initial production launch",
+        "priorities": ["Cost optimization", "Performance efficiency"]
+      }
+    },
+    "applying_profile": {
+      "to_new_workload": {
+        "description": "Option to apply profile is provided as part of creating workload wizard",
+        "reference": "Creating a workload section"
+      },
+      "to_existing_workload": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Click on 'Workloads', choose your workload"
+          },
+          {
+            "step": 2,
+            "action": "Scroll down to Profile section and choose 'Add Profile'"
+          },
+          {
+            "step": 3,
+            "action": "Select the profile created in previous section"
+          },
+          {
+            "step": 4,
+            "action": "Click 'Save'"
+          }
+        ]
+      },
+      "impact": {
+        "prioritized_questions": "AWS Well-Architected Tool places all prioritized questions based on context defined in profile",
+        "new_section": "A new section appears on top of the existing six Well-Architected framework pillars showing prioritized questions",
+        "review_workflow": "Begin review by focusing on prioritized questions first, then continue with remaining questions",
+        "improvement_plan": "Can filter improvement items by prioritized questions and by pillar"
+      },
+      "reviewing_with_profile": {
+        "steps": [
+          {
+            "step": 1,
+            "action": "Navigate to workload with applied profile"
+          },
+          {
+            "step": 2,
+            "action": "Select 'Continue reviewing'"
+          },
+          {
+            "step": 3,
+            "action": "Note the new list of 'Prioritised' questions based on the profile"
+          },
+          {
+            "step": 4,
+            "action": "Answer all prioritized questions first"
+          },
+          {
+            "step": 5,
+            "action": "Use filters in Improvement Plan section to focus on prioritized workload best practices"
+          }
+        ]
+      }
+    },
+    "sharing_profile": {
+      "description": "Profiles can be shared with another IAM user, IAM role, or other AWS accounts in your organization",
+      "purpose": "Promote consistency in cloud strategy and bolster collaboration across team members and stakeholders",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Create a profile share from the Profiles section in console"
+        },
+        {
+          "step": 2,
+          "action": "Provide the AWS account number you intend to share the profile with"
+        },
+        {
+          "step": 3,
+          "action": "Switch to the AWS account that received the share"
+        },
+        {
+          "step": 4,
+          "action": "Navigate to AWS Console → Well-Architected Tool → 'Share invitations'"
+        },
+        {
+          "step": 5,
+          "action": "View the shared profile and click 'Accept'"
+        },
+        {
+          "step": 6,
+          "action": "Review and confirm the invitation details then choose 'Accept'"
+        }
+      ]
+    }
+  },
+  "lenses": {
+    "overview": "Lenses are collections of questions focused on specific technology domains or industries",
+    "applying_lens": {
+      "description": "Apply specific lenses to workloads for targeted reviews",
+      "default_lens": "AWS Well-Architected Framework",
+      "additional_lenses": [
+        "Serverless",
+        "SaaS",
+        "Machine Learning",
+        "Data Analytics",
+        "IoT",
+        "Custom Lenses"
+      ]
+    },
+    "custom_lenses": {
+      "description": "Organizations can create custom lenses tailored to their specific needs",
+      "use_cases": [
+        "Industry-specific best practices",
+        "Organization-specific standards",
+        "Regulatory compliance requirements",
+        "Technology-specific guidelines"
+      ],
+      "workshop_section": "Custom Lenses in the AWS Well-Architected Tool"
+    }
+  },
+  "milestones": {
+    "concept": "Milestones capture the state of a workload at a specific point in time",
+    "purpose": "Track progress against high and medium risks over time",
+    "saving_milestone": {
+      "description": "Save a milestone after completing a review or making improvements",
+      "use_case": "Compare workload state across different time periods to measure improvement"
+    },
+    "milestone_workflow": {
+      "when_to_save": [
+        "After completing initial review",
+        "After implementing improvements",
+        "At regular intervals (quarterly, semi-annually)",
+        "Before major architecture changes",
+        "After major architecture changes"
+      ]
+    }
+  },
+  "reports": {
+    "viewing_report": {
+      "description": "View comprehensive report of Well-Architected Review results",
+      "location": "Workload detail page",
+      "content": [
+        "Risk summary (High, Medium, None)",
+        "Pillar-by-pillar breakdown",
+        "Answered vs unanswered questions",
+        "Best practice adherence",
+        "Improvement plan items"
+      ]
+    },
+    "downloading_report": {
+      "format": "PDF",
+      "content_includes": [
+        "Executive summary",
+        "Workload details",
+        "Risk analysis by pillar",
+        "Question responses",
+        "Improvement recommendations",
+        "Best practice resources"
+      ]
+    }
+  },
+  "review_templates": {
+    "overview": "Review templates facilitate scalable, pre-filled responses for efficient workload best practice assessments",
+    "benefits": [
+      "Standardize reviews across multiple workloads",
+      "Pre-fill common responses",
+      "Accelerate review process",
+      "Ensure consistency in answers"
+    ],
+    "use_cases": [
+      "Multiple similar workloads",
+      "Common architectural patterns",
+      "Standard organizational practices",
+      "Baseline configurations"
+    ]
+  },
+  "workload_sharing": {
+    "description": "Share workloads with other IAM users, roles, or AWS accounts",
+    "permissions": [
+      "Read-only access",
+      "Contributor access (can answer questions)",
+      "Owner access (full control)"
+    ],
+    "use_cases": [
+      "Collaborative reviews",
+      "Cross-team assessments",
+      "Third-party audits",
+      "Partner consultations"
+    ]
+  },
+  "programmatic_access": {
+    "aws_cli": {
+      "overview": "Use AWS Command Line Interface (AWS CLI) to access features of the AWS Well-Architected Tool programmatically",
+      "purpose": "Automate workload creation, reviews, milestones, and report generation",
+      "duration": "30 minutes",
+      "level": "200",
+      "author": "Eric Pullen, Senior Solutions Architect",
+      "prerequisites": [
+        "AWS Account for testing",
+        "IAM user or federated credentials with WellArchitectedConsoleFullAccess managed policy"
+      ],
+      "workflow_steps": [
+        {
+          "step": "Configure Environment",
+          "description": "Set up AWS CLI and credentials"
+        },
+        {
+          "step": "Create a Workload",
+          "description": "Use CLI to create workload programmatically"
+        },
+        {
+          "step": "Workload Lenses",
+          "description": "List and apply lenses via CLI"
+        },
+        {
+          "step": "Performing a review",
+          "description": "Answer questions programmatically"
+        },
+        {
+          "step": "Saving a Milestone",
+          "description": "Create milestones via CLI"
+        },
+        {
+          "step": "Accessing Reports",
+          "description": "Generate and download reports programmatically"
+        },
+        {
+          "step": "Workload change via SDK",
+          "description": "Use AWS SDK for programmatic workload management"
+        },
+        {
+          "step": "Cleanup",
+          "description": "Remove test workloads and resources"
+        }
+      ]
+    },
+    "aws_sdk": {
+      "description": "Use AWS SDKs (Python, JavaScript, Java, etc.) for programmatic workload management",
+      "capabilities": [
+        "Create and update workloads",
+        "Answer questions programmatically",
+        "Create milestones",
+        "Generate reports",
+        "List and filter workloads",
+        "Export review data"
+      ],
+      "service_name": "wellarchitected",
+      "api_reference": "https://docs.aws.amazon.com/wellarchitected/latest/APIReference/Welcome.html"
+    },
+    "cloudformation": {
+      "description": "Use custom resources in AWS CloudFormation to create and update Well-Architected Framework Reviews",
+      "workshop_section": "Using custom resources in AWS CloudFormation to create and update Well-Architected Framework Reviews",
+      "use_cases": [
+        "Infrastructure as Code for WAFR",
+        "Automated workload creation with CloudFormation stacks",
+        "Integrate WAFR into CI/CD pipelines"
+      ]
+    },
+    "automation_capabilities": [
+      "Bulk workload creation",
+      "Automated question answering",
+      "Scheduled milestone creation",
+      "Automated report generation and distribution",
+      "Integration with CI/CD pipelines",
+      "Custom dashboards and analytics"
+    ]
+  },
+  "integrations": {
+    "aws_trusted_advisor": {
+      "description": "Integration with AWS Trusted Advisor for accelerated Well-Architected Framework reviews",
+      "workshop_section": "Integration with AWS Compute Optimizer and AWS Trusted Advisor",
+      "benefits": [
+        "Automated insights from Trusted Advisor checks",
+        "Pre-populated answers based on actual AWS resource configuration",
+        "Faster review completion",
+        "Data-driven recommendations"
+      ],
+      "preview_feature": "Accelerating WAFRs using AWS Trusted Advisor"
+    },
+    "aws_compute_optimizer": {
+      "description": "Integration with AWS Compute Optimizer for performance and cost optimization recommendations",
+      "workshop_section": "Integration with AWS Compute Optimizer and AWS Trusted Advisor",
+      "benefits": [
+        "Right-sizing recommendations",
+        "Cost optimization insights",
+        "Performance improvement suggestions"
+      ]
+    },
+    "aws_systems_manager_opscenter": {
+      "description": "Manage workload risks with OpsCenter",
+      "workshop_section": "Manage Workload Risks with OpsCenter",
+      "capabilities": [
+        "Create OpsItems from high and medium risks",
+        "Track remediation progress",
+        "Integrate with incident management workflows",
+        "Centralized risk tracking"
+      ]
+    }
+  },
+  "custom_reports": {
+    "overview": "Build custom reports of AWS Well-Architected Reviews",
+    "workshop_section": "Build custom reports of AWS Well-Architected Reviews",
+    "capabilities": [
+      "Extract review data via API",
+      "Create custom visualizations",
+      "Build executive dashboards",
+      "Generate custom PDF reports",
+      "Aggregate data across multiple workloads",
+      "Track organizational trends"
+    ],
+    "use_cases": [
+      "Executive-level reporting",
+      "Multi-workload summaries",
+      "Compliance reporting",
+      "Trend analysis over time",
+      "Custom KPIs and metrics"
+    ]
+  },
+  "best_practices": {
+    "review_frequency": [
+      "Conduct reviews at major milestones",
+      "Before launching new workloads",
+      "After significant changes",
+      "Quarterly or semi-annually for ongoing operations",
+      "Before scaling operations"
+    ],
+    "collaboration": [
+      "Involve cross-functional teams",
+      "Include business stakeholders",
+      "Engage security and compliance teams",
+      "Share results with leadership",
+      "Document improvement plans"
+    ],
+    "continuous_improvement": [
+      "Track progress with milestones",
+      "Prioritize high and medium risks",
+      "Use profiles to focus on business priorities",
+      "Implement improvements iteratively",
+      "Measure impact of changes"
+    ],
+    "automation": [
+      "Use AWS CLI/SDK for scale",
+      "Integrate with CI/CD pipelines",
+      "Automate report generation",
+      "Schedule regular reviews",
+      "Use CloudFormation for IaC integration"
+    ]
+  },
+  "helpful_resources": {
+    "official_documentation": [
+      {
+        "title": "AWS Well-Architected Framework",
+        "url": "https://aws.amazon.com/architecture/well-architected/"
+      },
+      {
+        "title": "AWS Well-Architected Tool User Guide",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/userguide/"
+      },
+      {
+        "title": "AWS Well-Architected Tool API Reference",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/APIReference/"
+      },
+      {
+        "title": "IAM Authentication and Access for Well-Architected Tool",
+        "url": "https://docs.aws.amazon.com/wellarchitected/latest/userguide/iam-auth-access.html"
+      },
+      {
+        "title": "Service Authorization Reference",
+        "url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_awswell-architectedtool.html"
+      }
+    ],
+    "blog_posts": [
+      {
+        "title": "Accelerating Well-Architected Framework Reviews using Integrated AWS Trusted Advisor Insights",
+        "url": "https://aws.amazon.com/blogs/architecture/accelerating-well-architected-framework-reviews-using-integrated-aws-trusted-advisor-insights/"
+      }
+    ],
+    "whitepapers": [
+      {
+        "title": "Cloud Adoption Framework - Your Cloud Transformation Journey",
+        "url": "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/your-cloud-transformation-journey.html"
+      }
+    ],
+    "workshop_catalog": {
+      "title": "Workshop catalog in AWS Builder Center",
+      "url": "https://builder.aws.com/build/workshops"
+    }
+  },
+  "api_operations": {
+    "workload_management": [
+      "CreateWorkload",
+      "GetWorkload",
+      "UpdateWorkload",
+      "DeleteWorkload",
+      "ListWorkloads",
+      "TagResource",
+      "UntagResource",
+      "ListTagsForResource"
+    ],
+    "lens_management": [
+      "GetLens",
+      "ListLenses",
+      "AssociateLenses",
+      "DisassociateLenses",
+      "ListWorkloadLenses",
+      "CreateLensVersion",
+      "GetLensVersionDifference"
+    ],
+    "review_management": [
+      "GetAnswer",
+      "UpdateAnswer",
+      "ListAnswers",
+      "GetLensReview",
+      "GetLensReviewReport",
+      "UpdateLensReview"
+    ],
+    "milestone_management": [
+      "CreateMilestone",
+      "GetMilestone",
+      "ListMilestones"
+    ],
+    "profile_management": [
+      "CreateProfile",
+      "GetProfile",
+      "UpdateProfile",
+      "DeleteProfile",
+      "ListProfiles",
+      "AssociateProfiles",
+      "DisassociateProfiles",
+      "ListProfileShares",
+      "CreateProfileShare",
+      "DeleteProfileShare"
+    ],
+    "review_template_management": [
+      "CreateReviewTemplate",
+      "GetReviewTemplate",
+      "UpdateReviewTemplate",
+      "DeleteReviewTemplate",
+      "ListReviewTemplates",
+      "GetReviewTemplateAnswer",
+      "UpdateReviewTemplateAnswer",
+      "ListReviewTemplateAnswers"
+    ],
+    "sharing": [
+      "CreateWorkloadShare",
+      "GetWorkloadShare",
+      "UpdateWorkloadShare",
+      "DeleteWorkloadShare",
+      "ListWorkloadShares"
+    ]
+  },
+  "automation_patterns": {
+    "pattern_1": {
+      "name": "Automated Workload Creation",
+      "description": "Automatically create Well-Architected workloads when new application stacks are deployed",
+      "trigger": "CloudFormation stack creation",
+      "implementation": "Lambda function triggered by CloudFormation custom resource or EventBridge",
+      "api_calls": ["CreateWorkload", "AssociateLenses"]
+    },
+    "pattern_2": {
+      "name": "Scheduled Review Reminders",
+      "description": "Send reminders to teams to complete or update their Well-Architected reviews",
+      "trigger": "EventBridge scheduled rule",
+      "implementation": "Lambda function that lists workloads, checks last review date, sends SNS notifications",
+      "api_calls": ["ListWorkloads", "GetWorkload", "GetLensReview"]
+    },
+    "pattern_3": {
+      "name": "Automated Milestone Creation",
+      "description": "Automatically create milestones at regular intervals or after deployments",
+      "trigger": "EventBridge scheduled rule or deployment pipeline",
+      "implementation": "Lambda function that creates milestones for all workloads",
+      "api_calls": ["ListWorkloads", "CreateMilestone"]
+    },
+    "pattern_4": {
+      "name": "Risk Dashboard",
+      "description": "Build custom dashboard aggregating risks across all workloads",
+      "trigger": "On-demand or scheduled",
+      "implementation": "Lambda function that aggregates data, stores in DynamoDB, displays in QuickSight",
+      "api_calls": ["ListWorkloads", "GetLensReview", "ListAnswers"]
+    },
+    "pattern_5": {
+      "name": "Compliance Reporting",
+      "description": "Generate compliance reports showing adherence to organizational standards",
+      "trigger": "Scheduled or on-demand",
+      "implementation": "Lambda function that extracts data, generates PDF report, stores in S3",
+      "api_calls": ["ListWorkloads", "GetLensReviewReport", "GetAnswer"]
+    },
+    "pattern_6": {
+      "name": "Profile-Based Onboarding",
+      "description": "Apply organization-specific profiles to new workloads automatically",
+      "trigger": "Workload creation",
+      "implementation": "Lambda function that detects workload type and applies appropriate profile",
+      "api_calls": ["CreateWorkload", "AssociateProfiles"]
+    },
+    "pattern_7": {
+      "name": "OpsCenter Integration",
+      "description": "Create OpsCenter OpsItems for high and medium risks",
+      "trigger": "Review completion or milestone creation",
+      "implementation": "Lambda function that identifies risks and creates OpsItems",
+      "api_calls": ["GetLensReview", "ListAnswers", "CreateOpsItem (Systems Manager)"]
+    }
+  },
+  "data_models": {
+    "workload": {
+      "properties": [
+        "WorkloadId",
+        "WorkloadArn",
+        "WorkloadName",
+        "Description",
+        "Environment",
+        "ReviewOwner",
+        "AwsRegions",
+        "AccountIds",
+        "ArchitecturalDesign",
+        "IndustryType",
+        "Industry",
+        "Lenses",
+        "RiskCounts",
+        "PillarPriorities",
+        "ImprovementStatus",
+        "Tags",
+        "DiscoveryConfig"
+      ]
+    },
+    "lens": {
+      "types": [
+        "wellarchitected (AWS Well-Architected Framework)",
+        "serverless",
+        "saas",
+        "custom lenses"
+      ],
+      "properties": [
+        "LensAlias",
+        "LensArn",
+        "LensName",
+        "LensVersion",
+        "Description",
+        "Pillars",
+        "Questions"
+      ]
+    },
+    "answer": {
+      "properties": [
+        "QuestionId",
+        "QuestionTitle",
+        "QuestionDescription",
+        "HelpfulResourceUrl",
+        "ImprovementPlanUrl",
+        "Choices",
+        "SelectedChoices",
+        "IsApplicable",
+        "Risk",
+        "Notes",
+        "Reason"
+      ],
+      "risk_levels": ["UNANSWERED", "HIGH", "MEDIUM", "NONE", "NOT_APPLICABLE"]
+    },
+    "milestone": {
+      "properties": [
+        "MilestoneNumber",
+        "MilestoneName",
+        "RecordedAt",
+        "Workload"
+      ]
+    },
+    "profile": {
+      "properties": [
+        "ProfileArn",
+        "ProfileName",
+        "ProfileDescription",
+        "ProfileQuestions",
+        "CreatedAt",
+        "UpdatedAt",
+        "ShareInvitationId"
+      ]
+    }
+  },
+  "use_cases_for_automation": [
+    {
+      "use_case": "Multi-Account Organization",
+      "description": "Centrally manage Well-Architected reviews across 100+ workloads in multiple AWS accounts",
+      "automation_value": "Programmatically create workloads, apply organizational profiles, generate consolidated reports",
+      "key_apis": ["ListWorkloads", "CreateWorkload", "AssociateProfiles", "GetLensReviewReport"]
+    },
+    {
+      "use_case": "CI/CD Integration",
+      "description": "Integrate Well-Architected reviews into deployment pipeline",
+      "automation_value": "Automatically create workloads when apps are deployed, answer infrastructure-related questions based on IaC templates",
+      "key_apis": ["CreateWorkload", "UpdateAnswer", "CreateMilestone"]
+    },
+    {
+      "use_case": "Risk Management Platform",
+      "description": "Build custom platform that aggregates and tracks risks across all workloads",
+      "automation_value": "Create executive dashboards, automated risk reporting, integration with ticketing systems",
+      "key_apis": ["ListWorkloads", "GetLensReview", "ListAnswers", "CreateOpsItem"]
+    },
+    {
+      "use_case": "Consultancy/Partner Services",
+      "description": "Service providers conducting WAFRs for multiple clients",
+      "automation_value": "Standardized review process, automated report generation, client-specific profiles",
+      "key_apis": ["CreateWorkload", "CreateProfile", "AssociateProfiles", "GetLensReviewReport", "CreateWorkloadShare"]
+    },
+    {
+      "use_case": "Regulatory Compliance",
+      "description": "Maintain compliance evidence and audit trails",
+      "automation_value": "Scheduled reviews, milestone tracking, automated compliance reports",
+      "key_apis": ["CreateMilestone", "GetLensReviewReport", "ListMilestones", "GetAnswer"]
+    }
+  ],
+  "integration_with_automation_platform": {
+    "discovery_agent_integration": {
+      "description": "Discovery Agent can use WA Tool API to automatically create workloads",
+      "workflow": "After discovering workload details, create workload in WA Tool with pre-filled properties",
+      "api_call": "CreateWorkload with discovered metadata"
+    },
+    "assessment_agent_integration": {
+      "description": "Assessment Agent can programmatically answer questions based on AWS Config, Security Hub, and Trusted Advisor data",
+      "workflow": "For each pillar question, assess current state using AWS service APIs and update answers",
+      "api_calls": ["GetAnswer", "UpdateAnswer"]
+    },
+    "validation_agent_integration": {
+      "description": "Validation Agent can verify answers against actual AWS resource configuration",
+      "workflow": "Cross-check selected choices with AWS Config rules and resource configurations",
+      "api_calls": ["GetAnswer", "ListAnswers"]
+    },
+    "report_agent_integration": {
+      "description": "Report Agent can generate custom reports using WA Tool data",
+      "workflow": "Extract review data, combine with custom analytics, generate PDF reports",
+      "api_calls": ["GetLensReviewReport", "GetWorkload", "ListMilestones", "GetAnswer"]
+    },
+    "mcp_tool_integration": {
+      "wafr_knowledge_base_mcp": {
+        "description": "MCP server that provides RAG over WAFR documentation and best practices",
+        "integration": "Can be enhanced with WA Tool API to fetch actual workload data and combine with knowledge base"
+      },
+      "customer_history_mcp": {
+        "description": "MCP server for benchmarking against past assessments",
+        "integration": "Use WA Tool API to fetch historical milestone data for comparison",
+        "api_calls": ["ListMilestones", "GetMilestone", "GetLensReview"]
+      }
+    }
+  },
+  "sample_workflows": {
+    "workflow_1": {
+      "name": "End-to-End Automated WAFR",
+      "steps": [
+        {
+          "step": 1,
+          "agent": "Discovery Agent",
+          "action": "Gather workload information via conversation",
+          "output": "Workload metadata"
+        },
+        {
+          "step": 2,
+          "agent": "Discovery Agent",
+          "action": "Create workload in WA Tool using CreateWorkload API",
+          "output": "WorkloadId"
+        },
+        {
+          "step": 3,
+          "agent": "Orchestrator Agent",
+          "action": "Apply organizational profile using AssociateProfiles API",
+          "output": "Profile applied"
+        },
+        {
+          "step": 4,
+          "agent": "Assessment Agent",
+          "action": "For each prioritized question, assess and answer using UpdateAnswer API",
+          "output": "Answered questions"
+        },
+        {
+          "step": 5,
+          "agent": "Validation Agent",
+          "action": "Verify answers against AWS resource configuration",
+          "output": "Validated answers"
+        },
+        {
+          "step": 6,
+          "agent": "Report Agent",
+          "action": "Create milestone using CreateMilestone API",
+          "output": "MilestoneNumber"
+        },
+        {
+          "step": 7,
+          "agent": "Report Agent",
+          "action": "Generate report using GetLensReviewReport API and custom PDF generation",
+          "output": "PDF report delivered to client"
+        }
+      ]
+    }
+  }
+}
+

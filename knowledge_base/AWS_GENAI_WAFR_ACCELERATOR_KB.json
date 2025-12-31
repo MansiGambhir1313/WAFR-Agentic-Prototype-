@@ -1,0 +1,524 @@
+{
+  "knowledge_base": {
+    "source": "AWS Workshop - Accelerate Well-Architected Reviews using Generative AI",
+    "url": "https://catalog.workshops.aws/wellarchitected-genai/en-US/getting-started",
+    "description": "AWS's official solution for using GenAI (Amazon Bedrock + Claude) to automate WAFR reviews of Infrastructure as Code",
+    "github_repo": "https://github.com/aws-samples/well-architected-iac-analyzer",
+    "last_updated": "2025-12-17",
+    "version": "1.0",
+    "key_insight": "This is AWS's own approach to GenAI-powered WAFR automation - validates that your platform's approach is aligned with AWS's vision"
+  },
+  "executive_summary": {
+    "what": "Well-Architected IaC Analyzer - AWS's official tool using GenAI to review Infrastructure as Code (CloudFormation, Terraform, architecture diagrams) against WAFR best practices",
+    "how": "Amazon Bedrock (Claude 3.5 Sonnet v2) + RAG (Bedrock Knowledge Base with WAFR documentation) + Advanced prompt engineering",
+    "why": "Traditional WAFR reviews are time-intensive (4-8 hours), subjective, limited in scope, and point-in-time. GenAI accelerates and augments (but doesn't replace) human expertise",
+    "key_principle": "Acceleration and augmentation, not a replacement - final decisions require human judgment and contextual understanding"
+  },
+  "traditional_wafr_challenges": {
+    "challenge_1": {
+      "problem": "Time-intensive",
+      "details": "Reviews typically require 4-8 hours with multiple stakeholders",
+      "impact": "Difficult to scale, expensive, delays time-to-production"
+    },
+    "challenge_2": {
+      "problem": "Subjective interpretation",
+      "details": "Different reviewers may assess the same workload differently",
+      "impact": "Inconsistent results, hard to compare across workloads/time"
+    },
+    "challenge_3": {
+      "problem": "Limited scope",
+      "details": "Reviews often focus on high-level architecture rather than implementation details",
+      "impact": "Misses code-level issues, configuration problems"
+    },
+    "challenge_4": {
+      "problem": "Point-in-time assessment",
+      "details": "Results represent a snapshot that quickly becomes outdated as infrastructure evolves",
+      "impact": "No continuous monitoring, requires manual re-reviews"
+    }
+  },
+  "iac_analyzer_overview": {
+    "what_it_does": "Uses generative AI to evaluate infrastructure code against AWS Well-Architected best practices",
+    "supported_inputs": [
+      "CloudFormation templates (.yaml, .json)",
+      "Terraform configurations (.tf)",
+      "Architecture diagrams (images)",
+      "Other IaC artifacts"
+    ],
+    "output": "Actionable recommendations to improve architecture across 6 WAFR pillars",
+    "deployment_time": "15-20 minutes via CloudFormation",
+    "cost": "Pay-per-use (Bedrock API calls, ECS Fargate, S3, DynamoDB)"
+  },
+  "iac_analyzer_architecture": {
+    "ai_powered_analysis": {
+      "llm_service": "Amazon Bedrock",
+      "default_model": "Claude 3.5 Sonnet v2",
+      "model_id": "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+      "alternative_model": "Claude 3.7 Sonnet (enhanced reasoning)",
+      "cross_region_inference": true,
+      "note": "Uses cross-region inference to prevent throttling",
+      "techniques": [
+        "Advanced prompt engineering",
+        "Retrieval-Augmented Generation (RAG) via Bedrock Knowledge Base",
+        "Context-aware analysis"
+      ],
+      "knowledge_base": {
+        "content": "Latest AWS Well-Architected Framework documentation (all pillars + lenses)",
+        "update_frequency": "Automated weekly workflow fetches latest whitepapers",
+        "auto_refresh": true,
+        "benefit": "Always provides most current AWS architectural guidance"
+      }
+    },
+    "application_infrastructure": {
+      "compute": {
+        "service": "Amazon ECS with Fargate",
+        "benefit": "Serverless container orchestration, no servers to manage"
+      },
+      "storage": {
+        "service": "Amazon S3",
+        "use": "Secure storage of uploaded IaC files and architecture diagrams"
+      },
+      "database": {
+        "service": "DynamoDB",
+        "use": "Tracking review metadata and maintaining assessment history"
+      },
+      "load_balancer": {
+        "service": "Application Load Balancer",
+        "benefit": "High availability and traffic distribution"
+      },
+      "authentication": {
+        "service": "Amazon Cognito or OIDC-compliant identity provider",
+        "options": [
+          "No authentication (testing only)",
+          "Cognito (recommended for production)",
+          "External OIDC provider"
+        ]
+      },
+      "embedding_model": {
+        "service": "Amazon Titan Text Embeddings V2",
+        "availability": "Automatic access by default (as of Aug 2025)",
+        "use": "Vector embeddings for RAG"
+      }
+    }
+  },
+  "deployment_guide": {
+    "prerequisites": {
+      "aws_account": "Required",
+      "bedrock_model_access": {
+        "required_models": [
+          "Titan Text Embeddings V2 (automatic access)",
+          "Claude 3.5 Sonnet v2 (requires request for Anthropic models)"
+        ],
+        "region": "us-west-2 (Oregon) recommended",
+        "how_to_enable": "Navigate to Amazon Bedrock → Model access → Request access"
+      }
+    },
+    "deployment_steps": {
+      "step_1": {
+        "action": "Prepare environment",
+        "tasks": [
+          "Enable Bedrock model access in us-west-2",
+          "Request access to Claude 3.5 Sonnet v2",
+          "Verify Titan Text Embeddings V2 shows 'Access granted'"
+        ]
+      },
+      "step_2": {
+        "action": "Download CloudFormation template",
+        "url": "https://github.com/aws-samples/well-architected-iac-analyzer/blob/main/cfn_deployment_stacks/iac-analyzer-deployment-stack.yaml",
+        "file": "iac-analyzer-deployment-stack.yaml"
+      },
+      "step_3": {
+        "action": "Deploy via CloudFormation",
+        "console_url": "https://console.aws.amazon.com/cloudformation/home#/stacks/create?stackName=iac-analyzer-deployment-stack",
+        "stack_name": "iac-analyzer-deployment-stack",
+        "parameters": {
+          "bedrock_model_id": "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+          "authentication": "True/False",
+          "auth_type": "new-cognito (if authentication = True)"
+        }
+      },
+      "step_4": {
+        "action": "Wait for deployment",
+        "duration": "15-20 minutes",
+        "output": "FrontendURL in Outputs tab of WA-IaC-Analyzer-{region}-GenAIStack"
+      }
+    },
+    "authentication_options": {
+      "option_a": {
+        "name": "Quick Testing (No Authentication)",
+        "use_case": "Temporary testing environments",
+        "parameter": "Authentication = False",
+        "security": "❌ Not suitable for production - public endpoint",
+        "when_to_use": "Short-term testing only"
+      },
+      "option_b": {
+        "name": "Secure Deployment with Cognito",
+        "use_case": "Production or persistent deployments",
+        "parameters": {
+          "authentication": "True",
+          "auth_type": "new-cognito",
+          "required_setup": [
+            "Create Public Route 53 Hosted Zone",
+            "Provide ACM certificate ARN for domain",
+            "Configure Cognito settings (domain prefix, callback URLs, logout URL)"
+          ]
+        },
+        "security": "✅ Recommended for production",
+        "when_to_use": "All production deployments"
+      }
+    }
+  },
+  "iac_analyzer_considerations": {
+    "strengths": [
+      "Analyzes actual infrastructure code (not just conversations)",
+      "Consistent, repeatable analysis",
+      "Fast (minutes vs. hours for manual review)",
+      "Always up-to-date with latest WAFR guidance",
+      "Covers all 6 pillars systematically"
+    ],
+    "limitations": [
+      {
+        "limitation": "Code-level focus",
+        "details": "Evaluates what's explicitly defined in code but can't assess operational practices or runtime configurations",
+        "example": "Can see you defined backups in code, but can't verify they're actually running"
+      },
+      {
+        "limitation": "Evolving capabilities",
+        "details": "As a new technology, analysis capabilities continue to improve with each iteration",
+        "implication": "Results may improve over time as models get better"
+      },
+      {
+        "limitation": "Context awareness",
+        "details": "Tool may not fully understand unique business requirements or constraints that influence architectural decisions",
+        "example": "May recommend multi-region when client explicitly needs single-region for compliance"
+      },
+      {
+        "limitation": "Complementary tool",
+        "details": "Works best when combined with traditional Well-Architected reviews and human expertise",
+        "key_principle": "Acceleration and augmentation, not a replacement"
+      }
+    ]
+  },
+  "review_types": {
+    "type_1": {
+      "name": "Reviewing CloudFormation Template",
+      "input": "CloudFormation YAML or JSON template",
+      "process": "Upload template → AI analyzes resources, configurations, relationships → Generates recommendations per pillar",
+      "use_case": "Teams using CloudFormation for IaC"
+    },
+    "type_2": {
+      "name": "Reviewing Architecture Diagram",
+      "input": "Architecture diagram image (PNG, JPG, etc.)",
+      "process": "Upload diagram → AI uses vision capabilities to understand architecture → Generates recommendations",
+      "use_case": "Early design phase, whiteboard sessions, presentations",
+      "note": "Leverages Claude's vision capabilities for image understanding"
+    },
+    "type_3": {
+      "name": "Reviewing with Generative AI Lens",
+      "input": "IaC or diagram of GenAI application",
+      "process": "Same as above but applies GenAI Lens questions specifically",
+      "use_case": "Assessing GenAI/ML workloads (LLMs, foundation models)",
+      "special_focus": "Prompt injection, model selection, cost optimization, responsible AI"
+    }
+  },
+  "knowledge_base_setup": {
+    "bedrock_knowledge_base": {
+      "name": "KBWAIaCAnalyzowledgeBase",
+      "data_source": "wafr-reference-docs",
+      "content": [
+        "AWS Well-Architected Framework whitepapers (all 6 pillars)",
+        "Lens documentation (Serverless, SaaS, GenAI, etc.)",
+        "Best practice guides",
+        "Reference architectures"
+      ],
+      "sync_process": {
+        "manual": "Navigate to Bedrock Knowledge Bases → Select KB → Data source → Sync",
+        "duration": "3-4 minutes",
+        "automated": "Weekly workflow fetches latest docs and auto-syncs"
+      },
+      "embedding_model": "Titan Text Embeddings V2",
+      "vector_store": "Amazon OpenSearch Serverless (implicit)"
+    }
+  },
+  "integration_with_your_platform": {
+    "validation_of_approach": {
+      "aws_uses_same_stack": "Your platform uses same approach AWS does - Bedrock + Claude + RAG + WAFR docs",
+      "key_insight": "AWS's official solution validates your architectural choices",
+      "your_advantage": "You go beyond IaC analysis - you do conversational discovery + AWS API assessment + IaC analysis"
+    },
+    "complementary_capabilities": {
+      "aws_iac_analyzer": "Analyzes static IaC (CloudFormation, Terraform)",
+      "your_platform": {
+        "discovery_agent": "Conversational discovery of workload details",
+        "assessment_agent": "Live AWS API analysis (Config, Security Hub, Trusted Advisor)",
+        "iac_analysis": "Can integrate WA IaC Analyzer or build similar capability",
+        "report_agent": "Enhanced reports with cost estimates, improvement plans"
+      },
+      "combined_power": "Your platform can reference/integrate WA IaC Analyzer for IaC-specific analysis"
+    },
+    "key_learnings_for_your_platform": {
+      "learning_1": {
+        "principle": "Acceleration and augmentation, not replacement",
+        "application": "Your agents should always emphasize they enhance, not replace, human expertise",
+        "messaging": "Present recommendations as 'suggestions for review' not 'requirements'"
+      },
+      "learning_2": {
+        "principle": "Always up-to-date knowledge base",
+        "application": "Implement automated updates of WAFR docs in your Bedrock KB",
+        "implementation": "Weekly Lambda function to fetch latest whitepapers and sync"
+      },
+      "learning_3": {
+        "principle": "RAG is essential for accuracy",
+        "application": "Your Assessment Agent should always ground recommendations in official WAFR docs",
+        "implementation": "Every recommendation includes citation to specific WAFR doc section"
+      },
+      "learning_4": {
+        "principle": "Multiple input types supported",
+        "application": "Your platform can accept conversations, IaC files, AND architecture diagrams",
+        "implementation": "Add IaC upload + diagram upload to your frontend"
+      }
+    }
+  },
+  "teaching_clients_about_wa_iac_analyzer": {
+    "workshop_module": "AWS's GenAI-Powered WAFR Solution",
+    "duration": "15-20 minutes",
+    "agenda": [
+      {
+        "topic": "Why AWS Built This",
+        "duration": "3 minutes",
+        "content": [
+          "Traditional WAFR: 4-8 hours, subjective, point-in-time",
+          "GenAI solution: Minutes, consistent, can be continuous",
+          "AWS's own investment validates GenAI for WAFR"
+        ]
+      },
+      {
+        "topic": "How It Works",
+        "duration": "5 minutes",
+        "content": [
+          "Upload IaC (CloudFormation, Terraform) or architecture diagram",
+          "Claude 3.5 Sonnet analyzes against WAFR best practices",
+          "RAG ensures recommendations match official docs",
+          "Get pillar-by-pillar recommendations in minutes"
+        ]
+      },
+      {
+        "topic": "Demo (if applicable)",
+        "duration": "7 minutes",
+        "content": [
+          "Show WA IaC Analyzer interface",
+          "Upload sample CloudFormation template",
+          "Review generated recommendations",
+          "Compare to your platform's conversational approach"
+        ]
+      },
+      {
+        "topic": "Your Platform vs WA IaC Analyzer",
+        "duration": "5 minutes",
+        "content": [
+          "WA IaC Analyzer: Static code analysis",
+          "Your Platform: Conversational discovery + live AWS API analysis + IaC",
+          "Both use same foundation (Bedrock + Claude + WAFR docs)",
+          "Your platform is more comprehensive"
+        ]
+      }
+    ]
+  },
+  "competitive_positioning": {
+    "aws_official_solution": {
+      "name": "Well-Architected IaC Analyzer",
+      "focus": "Infrastructure as Code analysis",
+      "strengths": [
+        "Official AWS solution",
+        "Open source (can deploy yourself)",
+        "Analyzes actual code",
+        "Always up-to-date docs"
+      ],
+      "limitations": [
+        "Only analyzes static IaC",
+        "Can't assess runtime/operational practices",
+        "Requires IaC files (not all workloads have IaC)",
+        "Manual upload process"
+      ]
+    },
+    "your_platform": {
+      "name": "Automated WAFR Platform (Your Product)",
+      "focus": "End-to-end WAFR automation via conversation + API analysis",
+      "strengths": [
+        "Conversational (no IaC required)",
+        "Analyzes live AWS resources via APIs",
+        "Creates official WA Tool workloads",
+        "Comprehensive (discovery + assessment + validation + report)",
+        "Can include IaC analysis (integrate WA IaC Analyzer)",
+        "GenAI Lens support",
+        "Automated at scale"
+      ],
+      "positioning": "We use the same foundation as AWS's official solution (Bedrock + Claude + WAFR docs) but provide a more comprehensive, conversational experience"
+    }
+  },
+  "marketing_messages": {
+    "message_1": {
+      "claim": "Built on AWS's Official GenAI Stack",
+      "explanation": "We use Amazon Bedrock, Claude, and WAFR Knowledge Base - the same foundation as AWS's own Well-Architected IaC Analyzer",
+      "credibility": "If AWS trusts this stack for WAFR automation, so can you"
+    },
+    "message_2": {
+      "claim": "More Comprehensive Than IaC Analysis Alone",
+      "comparison": "AWS's IaC Analyzer reviews static code. We analyze live resources via AWS APIs + conduct conversational discovery + can include IaC analysis",
+      "benefit": "Works even if you don't have IaC, assesses actual runtime configuration"
+    },
+    "message_3": {
+      "claim": "Acceleration and Augmentation, Not Replacement",
+      "principle": "Following AWS's guidance: GenAI enhances human expertise, doesn't replace it",
+      "trust_building": "We provide recommendations for your review, not mandates"
+    },
+    "message_4": {
+      "claim": "Always Up-to-Date with Latest WAFR Guidance",
+      "implementation": "Automated weekly sync of WAFR docs (same as AWS's approach)",
+      "benefit": "You always get current best practices, not outdated advice"
+    }
+  },
+  "technical_implementation_insights": {
+    "prompt_engineering": {
+      "aws_approach": "Advanced prompt engineering techniques (specific techniques not disclosed)",
+      "your_approach": "Can learn from AWS's approach and implement similar",
+      "best_practices": [
+        "System prompt with WAFR expert persona",
+        "Few-shot examples of good recommendations",
+        "Structured output format (JSON)",
+        "Pillar-by-pillar analysis",
+        "Citation requirements (link to WAFR docs)"
+      ]
+    },
+    "rag_implementation": {
+      "aws_approach": "Bedrock Knowledge Base with WAFR docs + weekly auto-updates",
+      "your_approach": "Same - use Bedrock KB with WAFR docs",
+      "data_sources": [
+        "AWS Well-Architected Framework whitepapers (6 pillars)",
+        "Lens documentation (GenAI, Serverless, SaaS, etc.)",
+        "Best practice guides",
+        "Reference architectures"
+      ],
+      "update_automation": "Lambda function triggered weekly to fetch latest docs from AWS and sync KB"
+    },
+    "model_selection": {
+      "aws_choice": "Claude 3.5 Sonnet v2 by default, Claude 3.7 Sonnet for enhanced reasoning",
+      "reasoning": "Claude excels at technical analysis, code review, structured output",
+      "your_choice": "Follow AWS's lead - use Claude for technical accuracy",
+      "alternative": "Can use Claude 3 Opus for even higher quality (at higher cost)"
+    },
+    "architecture_patterns": {
+      "stateless_analysis": "Each analysis is independent (no session state required)",
+      "async_processing": "Upload → Queue → Process → Notify (for large IaC files)",
+      "storage_strategy": "S3 for IaC files, DynamoDB for review metadata/history",
+      "caching": "Can cache common IaC patterns/recommendations (not explicitly mentioned by AWS but logical)"
+    }
+  },
+  "roadmap_integration": {
+    "phase_1_immediate": {
+      "action": "Reference WA IaC Analyzer in documentation",
+      "message": "Our platform uses the same GenAI foundation as AWS's official Well-Architected IaC Analyzer",
+      "effort": "1 hour (update marketing materials)"
+    },
+    "phase_2_short_term": {
+      "action": "Add IaC upload capability to your platform",
+      "implementation": "Frontend: file upload → Backend: pass to Claude for analysis (same as WA IaC Analyzer approach)",
+      "effort": "2-3 days development",
+      "value": "Clients can get IaC analysis + conversational discovery in one platform"
+    },
+    "phase_3_medium_term": {
+      "action": "Add architecture diagram analysis",
+      "implementation": "Image upload → Claude vision API → Architecture assessment",
+      "effort": "3-5 days development",
+      "value": "Assess architectures even before code is written"
+    },
+    "phase_4_long_term": {
+      "action": "Deploy WA IaC Analyzer as complementary tool",
+      "implementation": "Deploy WA IaC Analyzer to your AWS account, integrate API calls from your platform",
+      "effort": "1-2 weeks",
+      "value": "Offer 'official AWS IaC analysis' as premium feature"
+    }
+  },
+  "key_resources": {
+    "github_repo": {
+      "url": "https://github.com/aws-samples/well-architected-iac-analyzer",
+      "what": "Complete source code for WA IaC Analyzer",
+      "value": "Can review implementation details, learn from AWS's approach"
+    },
+    "workshop": {
+      "url": "https://catalog.workshops.aws/wellarchitected-genai/en-US",
+      "sections": [
+        "Getting Started",
+        "Reviewing CloudFormation Template",
+        "Reviewing Architecture Diagram",
+        "Reviewing with GenAI Lens",
+        "Application Architecture",
+        "Conclusion"
+      ]
+    },
+    "related_resources": [
+      {
+        "name": "AWS Well-Architected Framework",
+        "url": "https://aws.amazon.com/architecture/well-architected/"
+      },
+      {
+        "name": "AWS Well-Architected Foundations (Skill Builder)",
+        "url": "https://skillbuilder.aws/learn/U89MJTNSM8/aws-wellarchitected-foundations/RCY5NFM8R9"
+      },
+      {
+        "name": "Well-Architected For Enterprises (Skill Builder)",
+        "url": "https://skillbuilder.aws/learn/PX2TFPX8W7/wellarchitected-for-enterprises/WU84HJKHE4"
+      }
+    ]
+  },
+  "comparison_matrix": {
+    "feature": "Capability",
+    "comparison": [
+      {
+        "feature": "Conversational Discovery",
+        "wa_iac_analyzer": "❌ No",
+        "your_platform": "✅ Yes (Discovery Agent)"
+      },
+      {
+        "feature": "IaC Analysis",
+        "wa_iac_analyzer": "✅ Yes (CloudFormation, Terraform)",
+        "your_platform": "⚠️ Can integrate"
+      },
+      {
+        "feature": "Architecture Diagram Analysis",
+        "wa_iac_analyzer": "✅ Yes (Claude vision)",
+        "your_platform": "⚠️ Can add"
+      },
+      {
+        "feature": "Live AWS Resource Analysis",
+        "wa_iac_analyzer": "❌ No (only static code)",
+        "your_platform": "✅ Yes (via AWS APIs)"
+      },
+      {
+        "feature": "Creates Official WA Tool Workload",
+        "wa_iac_analyzer": "❌ No",
+        "your_platform": "✅ Yes (via WA Tool API)"
+      },
+      {
+        "feature": "GenAI Lens Support",
+        "wa_iac_analyzer": "✅ Yes",
+        "your_platform": "✅ Yes"
+      },
+      {
+        "feature": "Automated at Scale",
+        "wa_iac_analyzer": "⚠️ Manual upload",
+        "your_platform": "✅ Yes (100+ reviews/month)"
+      },
+      {
+        "feature": "Deployment",
+        "wa_iac_analyzer": "Self-hosted (15-20 min CloudFormation)",
+        "your_platform": "SaaS (instant access)"
+      },
+      {
+        "feature": "Cost",
+        "wa_iac_analyzer": "Pay-per-use (your AWS account)",
+        "your_platform": "$99-$3,499 per review"
+      }
+    ]
+  }
+}
+
