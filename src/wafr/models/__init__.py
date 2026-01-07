@@ -7,9 +7,9 @@ This module contains data models for:
 - ValidationRecord: Final validation and approval records
 """
 
-from models.synthesized_answer import SynthesizedAnswer, SynthesisMethod
-from models.review_item import ReviewItem, ReviewStatus, ReviewDecision
-from models.validation_record import ValidationRecord
+from wafr.models.synthesized_answer import SynthesizedAnswer, SynthesisMethod
+from wafr.models.review_item import ReviewItem, ReviewStatus, ReviewDecision
+from wafr.models.validation_record import ValidationRecord
 
 __all__ = [
     "SynthesizedAnswer",

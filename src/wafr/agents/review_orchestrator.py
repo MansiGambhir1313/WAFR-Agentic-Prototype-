@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from agents.config import (
+from wafr.agents.config import (
     hitl_settings,
     HITL_AUTO_APPROVE_THRESHOLD,
     HITL_QUICK_REVIEW_THRESHOLD,
@@ -27,15 +27,15 @@ from agents.config import (
     HITL_RELIABILITY_MIN_APPROVAL,
     HITL_MAX_RESYNTHESIS_ATTEMPTS,
 )
-from agents.errors import (
+from wafr.agents.errors import (
     SessionNotFoundError,
     ReviewItemNotFoundError,
     FinalizationError,
     ReviewAlreadySubmittedError,
 )
-from models.review_item import ReviewDecision, ReviewItem, ReviewStatus
-from models.synthesized_answer import SynthesizedAnswer
-from models.validation_record import ValidationRecord
+from wafr.models.review_item import ReviewDecision, ReviewItem, ReviewStatus
+from wafr.models.synthesized_answer import SynthesizedAnswer
+from wafr.models.validation_record import ValidationRecord
 
 logger = logging.getLogger(__name__)
 

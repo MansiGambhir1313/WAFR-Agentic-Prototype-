@@ -10,9 +10,9 @@ from typing import Any, Dict, List, Optional
 
 from strands import Agent, tool
 
-from agents.config import DEFAULT_MODEL_ID
-from agents.model_config import get_strands_model
-from agents.wafr_context import load_wafr_schema
+from wafr.agents.config import DEFAULT_MODEL_ID
+from wafr.agents.model_config import get_strands_model
+from wafr.agents.wafr_context import load_wafr_schema
 
 # -----------------------------------------------------------------------------
 # Constants

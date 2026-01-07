@@ -9,7 +9,7 @@ import logging
 import boto3
 from botocore.exceptions import ClientError
 
-from agents.utils import (
+from wafr.agents.utils import (
     retry_with_backoff,
     extract_json_from_text,
     validate_insight,
@@ -17,9 +17,9 @@ from agents.utils import (
     smart_segment_transcript,
     batch_process
 )
-from agents.wafr_context import load_wafr_schema, get_wafr_context_summary
-from agents.config import DEFAULT_MODEL_ID
-from agents.model_config import get_strands_model
+from wafr.agents.wafr_context import load_wafr_schema, get_wafr_context_summary
+from wafr.agents.config import DEFAULT_MODEL_ID
+from wafr.agents.model_config import get_strands_model
 
 logger = logging.getLogger(__name__)
 

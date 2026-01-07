@@ -12,10 +12,10 @@ from typing import Any
 
 from strands import Agent, tool
 
-from agents.config import DEFAULT_MODEL_ID
-from agents.model_config import get_strands_model
-from agents.utils import batch_process, extract_json_from_text, retry_with_backoff
-from agents.wafr_context import get_question_context, load_wafr_schema
+from wafr.agents.config import DEFAULT_MODEL_ID
+from wafr.agents.model_config import get_strands_model
+from wafr.agents.utils import batch_process, extract_json_from_text, retry_with_backoff
+from wafr.agents.wafr_context import get_question_context, load_wafr_schema
 
 logger = logging.getLogger(__name__)
 

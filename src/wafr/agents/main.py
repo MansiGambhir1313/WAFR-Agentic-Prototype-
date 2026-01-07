@@ -13,7 +13,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from agents.orchestrator import create_orchestrator
+from wafr.agents.orchestrator import create_orchestrator
 
 
 # =============================================================================

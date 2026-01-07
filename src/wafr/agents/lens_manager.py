@@ -19,7 +19,7 @@ from typing import Any
 import boto3
 from botocore.exceptions import ClientError
 
-from agents.config import DEFAULT_MODEL_ID, BEDROCK_REGION
+from wafr.agents.config import DEFAULT_MODEL_ID, BEDROCK_REGION
 
 logger = logging.getLogger(__name__)
 

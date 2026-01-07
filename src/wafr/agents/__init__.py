@@ -13,20 +13,20 @@ Key Components:
 __version__ = "1.1.0"
 
 # Core agents
-from agents.answer_synthesis_agent import (
+from wafr.agents.answer_synthesis_agent import (
     AnswerSynthesisAgent,
     create_answer_synthesis_agent,
 )
 
 # HITL components
-from agents.review_orchestrator import (
+from wafr.agents.review_orchestrator import (
     ReviewOrchestrator,
     ReviewSession,
     create_review_orchestrator,
 )
 
 # Configuration
-from agents.config import (
+from wafr.agents.config import (
     settings,
     hitl_settings,
     HITL_AUTO_APPROVE_THRESHOLD,
@@ -35,7 +35,7 @@ from agents.config import (
 )
 
 # Error classes
-from agents.errors import (
+from wafr.agents.errors import (
     WAFRAgentError,
     SynthesisError,
     ReviewError,

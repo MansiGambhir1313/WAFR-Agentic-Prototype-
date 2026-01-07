@@ -4,7 +4,7 @@ Model configuration for Strands agents
 import logging
 from typing import Optional, Any
 
-from agents.config import DEFAULT_MODEL_ID, BEDROCK_REGION
+from wafr.agents.config import DEFAULT_MODEL_ID, BEDROCK_REGION
 
 logger = logging.getLogger(__name__)
 

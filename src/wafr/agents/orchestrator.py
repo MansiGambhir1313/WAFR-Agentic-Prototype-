@@ -97,7 +97,7 @@ class WafrOrchestrator:
             lens_context: Optional lens context for multi-lens support.
         """
         if wafr_schema is None:
-            from agents.wafr_context import load_wafr_schema
+            from wafr.agents.wafr_context import load_wafr_schema
             wafr_schema = load_wafr_schema()
 
         self.wafr_schema = wafr_schema
@@ -2016,9 +2016,9 @@ Return ONLY the JSON array, no other text."""
 # -----------------------------------------------------------------------------
 
 
-def _load_schema_from_file(schema_path: str) -> Dict:
+def _load_schema_from_file(schema_path: str) -> Dict[str, Any]:
     """Load schema from file with caching."""
-    def load():
+    def load() -> Dict[str, Any]:
         try:
             with open(schema_path, "r", encoding="utf-8") as f:
                 return json.load(f)

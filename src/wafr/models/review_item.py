@@ -7,7 +7,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional, Dict, Any
 
-from models.synthesized_answer import SynthesizedAnswer
+from wafr.models.synthesized_answer import SynthesizedAnswer
 
 
 class ReviewStatus(str, Enum):

@@ -12,10 +12,10 @@ from typing import Any, Dict, List, Optional
 import boto3
 from botocore.exceptions import ClientError
 
-from agents.config import BEDROCK_REGION, DEFAULT_MODEL_ID
-from agents.utils import retry_with_backoff, extract_json_from_text
-from agents.wafr_context import get_question_context, load_wafr_schema
-from models.synthesized_answer import (
+from wafr.agents.config import BEDROCK_REGION, DEFAULT_MODEL_ID
+from wafr.agents.utils import retry_with_backoff, extract_json_from_text
+from wafr.agents.wafr_context import get_question_context, load_wafr_schema
+from wafr.models.synthesized_answer import (
     SynthesizedAnswer,
     SynthesisMethod,
     EvidenceQuote,

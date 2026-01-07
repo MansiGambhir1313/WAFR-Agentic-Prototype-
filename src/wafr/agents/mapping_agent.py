@@ -14,16 +14,16 @@ import boto3
 from botocore.exceptions import ClientError
 from strands import Agent, tool
 
-from agents.config import BEDROCK_REGION, DEFAULT_MODEL_ID
-from agents.model_config import get_strands_model
-from agents.utils import (
+from wafr.agents.config import BEDROCK_REGION, DEFAULT_MODEL_ID
+from wafr.agents.model_config import get_strands_model
+from wafr.agents.utils import (
     batch_process,
     deduplicate_mappings,
     extract_json_from_text,
     retry_with_backoff,
     validate_mapping,
 )
-from agents.wafr_context import (
+from wafr.agents.wafr_context import (
     get_question_context,
     get_wafr_context_summary,
     load_wafr_schema,
