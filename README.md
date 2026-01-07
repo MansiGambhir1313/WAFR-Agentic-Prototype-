@@ -100,6 +100,233 @@ Orchestrator
 
 Each agent is specialized for a specific task and uses Claude Sonnet via Amazon Bedrock.
 
+### System Architecture Flow
+
+```mermaid
+graph TB
+    Start([Start: Input Transcript]) --> PDF[PDF Processing<br/>Optional]
+    PDF --> Understanding[Understanding Agent<br/>Extract Insights]
+    Understanding --> Mapping[Mapping Agent<br/>Map to WAFR Questions]
+    Mapping --> Confidence[Confidence Agent<br/>Validate Evidence]
+    Confidence --> Gap[Gap Detection Agent<br/>Identify Gaps]
+    Gap --> Synthesis[Answer Synthesis Agent<br/>Generate AI Answers]
+    Synthesis --> AutoPop[Auto-Populate<br/>Merge Answers]
+    AutoPop --> Scoring[Scoring Agent<br/>Grade Answers]
+    Scoring --> Report{Generate<br/>Report?}
+    Report -->|Yes| ReportGen[Report Agent<br/>Generate PDF]
+    Report -->|No| WATool{Create WA<br/>Workload?}
+    ReportGen --> WATool
+    WATool -->|Yes| WAToolAgent[WA Tool Agent<br/>Create Workload & PDF]
+    WATool -->|No| End([End: Results])
+    WAToolAgent --> End
+    
+    style Start fill:#90EE90
+    style End fill:#90EE90
+    style Understanding fill:#87CEEB
+    style Mapping fill:#87CEEB
+    style Confidence fill:#87CEEB
+    style Gap fill:#87CEEB
+    style Synthesis fill:#87CEEB
+    style Scoring fill:#87CEEB
+    style ReportGen fill:#FFD700
+    style WAToolAgent fill:#FFD700
+```
+
+### Detailed Processing Pipeline
+
+```mermaid
+flowchart TD
+    A[Input: Transcript + PDFs] --> B[Step 0: PDF Processing]
+    B --> C[Step 1: Understanding Agent]
+    C --> C1[Segment Transcript]
+    C1 --> C2[Parallel Processing]
+    C2 --> C3[Extract Insights]
+    C3 --> D[Step 2: Mapping Agent]
+    D --> D1[Map Insights to Questions]
+    D1 --> D2[Generate Answer Drafts]
+    D2 --> E[Step 3: Confidence Agent]
+    E --> E1[Validate Evidence]
+    E1 --> E2[Calculate Confidence Scores]
+    E2 --> F[Step 4: Gap Detection]
+    F --> F1[Compare All vs Answered]
+    F1 --> F2[Identify Gaps]
+    F2 --> G[Step 5: Answer Synthesis]
+    G --> G1[Generate AI Answers]
+    G1 --> G2[Assign Confidence]
+    G2 --> H[Step 6: Auto-Populate]
+    H --> H1[Merge Validated + Synthesized]
+    H1 --> I[Step 7: Scoring Agent]
+    I --> I1[Grade All Answers]
+    I1 --> I2[Calculate Risk Levels]
+    I2 --> J{Options}
+    J -->|Report| K[Step 8: Report Agent]
+    J -->|WA Tool| L[Step 9: WA Tool Agent]
+    K --> M[Generate PDF Report]
+    L --> N[Create Workload]
+    N --> O[Populate Answers]
+    O --> P[Generate Official PDF]
+    M --> Q[Output: Results]
+    P --> Q
+    
+    style A fill:#E6F3FF
+    style Q fill:#90EE90
+    style C fill:#FFE6E6
+    style D fill:#FFE6E6
+    style E fill:#FFE6E6
+    style F fill:#FFE6E6
+    style G fill:#FFE6E6
+    style I fill:#FFE6E6
+    style K fill:#FFF4E6
+    style L fill:#FFF4E6
+```
+
+### Agent Interaction Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Orchestrator
+    participant Understanding
+    participant Mapping
+    participant Confidence
+    participant GapDetection
+    participant Synthesis
+    participant Scoring
+    participant WATool
+    
+    User->>Orchestrator: Submit Transcript
+    Orchestrator->>Understanding: Extract Insights
+    Understanding-->>Orchestrator: Insights List
+    Orchestrator->>Mapping: Map to Questions
+    Mapping-->>Orchestrator: Question-Answer Mappings
+    Orchestrator->>Confidence: Validate Evidence
+    Confidence-->>Orchestrator: Validated Answers
+    Orchestrator->>GapDetection: Find Gaps
+    GapDetection-->>Orchestrator: Gap List
+    Orchestrator->>Synthesis: Generate Answers
+    Synthesis-->>Orchestrator: Synthesized Answers
+    Orchestrator->>Scoring: Grade All Answers
+    Scoring-->>Orchestrator: Scored Answers
+    Orchestrator->>WATool: Create Workload
+    WATool-->>Orchestrator: Workload ID
+    Orchestrator->>WATool: Populate Answers
+    WATool-->>Orchestrator: Success
+    Orchestrator->>WATool: Generate PDF
+    WATool-->>Orchestrator: PDF Report
+    Orchestrator-->>User: Complete Results
+```
+
+### Data Flow Diagram
+
+```mermaid
+graph LR
+    subgraph Input
+        T[Transcript]
+        P[PDFs]
+    end
+    
+    subgraph Processing
+        U[Understanding<br/>Agent]
+        M[Mapping<br/>Agent]
+        C[Confidence<br/>Agent]
+        G[Gap<br/>Detection]
+        S[Synthesis<br/>Agent]
+    end
+    
+    subgraph Output
+        R[PDF Report]
+        J[JSON Results]
+        W[WA Tool<br/>Workload]
+    end
+    
+    T --> U
+    P --> U
+    U -->|Insights| M
+    M -->|Mappings| C
+    C -->|Validated| G
+    G -->|Gaps| S
+    S -->|Synthesized| R
+    S -->|Synthesized| J
+    S -->|Synthesized| W
+    
+    style Input fill:#E6F3FF
+    style Processing fill:#FFE6E6
+    style Output fill:#90EE90
+```
+
+### Lens Detection Flow
+
+```mermaid
+flowchart TD
+    A[Transcript Input] --> B[Lens Detection Agent]
+    B --> C{Detect Lenses}
+    C -->|GenAI Keywords| D[Generative AI Lens]
+    C -->|Serverless Keywords| E[Serverless Lens]
+    C -->|ML Keywords| F[Machine Learning Lens]
+    C -->|Default| G[Well-Architected Lens]
+    D --> H[Load Lens Questions]
+    E --> H
+    F --> H
+    G --> H
+    H --> I[Process with<br/>Lens-Specific Context]
+    
+    style A fill:#E6F3FF
+    style B fill:#FFE6E6
+    style H fill:#90EE90
+    style I fill:#90EE90
+```
+
+### HRI Validation Flow
+
+```mermaid
+flowchart TD
+    A[All Answers Scored] --> B[Extract High-Risk Issues]
+    B --> C[For Each HRI]
+    C --> D[Claude Validation]
+    D --> E{Is HRI Tangible?}
+    E -->|Yes| F[Keep HRI<br/>Evidence-Backed]
+    E -->|No| G[Filter Out<br/>False Positive]
+    F --> H[Final HRI List]
+    G --> H
+    H --> I[Generate Report<br/>with Validated HRIs]
+    
+    style A fill:#E6F3FF
+    style D fill:#FFE6E6
+    style F fill:#90EE90
+    style G fill:#FFB6C1
+    style I fill:#90EE90
+```
+
+### Quick Reference: Decision Points
+
+```mermaid
+flowchart TD
+    Start([Start Processing]) --> Input{Input Type?}
+    Input -->|File| FileProc[Process File]
+    Input -->|Transcript| TranscriptProc[Process Transcript]
+    FileProc --> DetectLens{Lens Detection}
+    TranscriptProc --> DetectLens
+    DetectLens --> Pipeline[Run Pipeline]
+    Pipeline --> GapCheck{Gaps Found?}
+    GapCheck -->|Yes| Synthesis[Answer Synthesis]
+    GapCheck -->|No| Scoring
+    Synthesis --> Scoring[Scoring Agent]
+    Scoring --> ReportQ{Generate Report?}
+    ReportQ -->|Yes| Report[Report Agent]
+    ReportQ -->|No| WAToolQ{Create WA Workload?}
+    Report --> WAToolQ
+    WAToolQ -->|Yes| WATool[WA Tool Agent]
+    WAToolQ -->|No| End([End])
+    WATool --> End
+    
+    style Start fill:#90EE90
+    style End fill:#90EE90
+    style DetectLens fill:#FFD700
+    style GapCheck fill:#FFD700
+    style ReportQ fill:#FFD700
+    style WAToolQ fill:#FFD700
+```
+
 ## Configuration
 
 ### Environment Variables
