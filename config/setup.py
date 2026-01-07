@@ -12,7 +12,6 @@ with open("agents/requirements.txt", "r", encoding="utf-8") as fh:
 setup(
     name="wafr-agents",
     version="1.0.0",
-    author="NeuralEDGE AI Consulting",
     description="Multi-Agent System for Automated AWS Well-Architected Framework Reviews",
     long_description=long_description,
     long_description_content_type="text/markdown",

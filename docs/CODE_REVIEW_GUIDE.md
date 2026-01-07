@@ -3,7 +3,7 @@
 **Prepared for:** Code Review Meeting  
 **Date:** January 6, 2026  
 **System:** WAFR (Well-Architected Framework Review) Agent System  
-**Author:** ML / NeuralEDGE
+**Author:** ML
 
 > **Note:** This document references the current project structure. See [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md) for detailed system architecture and [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) for file organization.
 

@@ -73,14 +73,14 @@ WAFR-prototype/
 └── config/            # Configuration files
 ```
 
-See [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) for detailed structure documentation.
+See [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for detailed structure documentation.
 
 ## Documentation
 
-- **[RUN_WAFR_FULL.md](docs/RUN_WAFR_FULL.md)**: Complete guide to running the pipeline
-- **[AG_UI_INTEGRATION_GUIDE.md](docs/AG_UI_INTEGRATION_GUIDE.md)**: AG-UI integration documentation
 - **[SYSTEM_DESIGN.md](docs/SYSTEM_DESIGN.md)**: System architecture and design
-- **[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)**: Project organization guide
+- **[CODE_REVIEW_GUIDE.md](docs/CODE_REVIEW_GUIDE.md)**: Comprehensive code review guide
+- **[PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)**: Project organization guide
+- **[AG_UI_INTEGRATION_GUIDE.md](docs/AG_UI_INTEGRATION_GUIDE.md)**: AG-UI integration documentation
 
 ## Architecture
 
@@ -165,3 +165,4 @@ Copyright (c) 2024
 ## Support
 
 For issues, questions, or contributions, please refer to the documentation in the `docs/` directory.
+
