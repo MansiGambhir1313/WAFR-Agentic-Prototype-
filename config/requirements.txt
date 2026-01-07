@@ -1,0 +1,75 @@
+# WAFR Agentic System Dependencies
+# =================================
+
+# Agent Framework
+strands-agents>=0.1.0
+
+# AWS SDK
+boto3>=1.34.0
+botocore>=1.34.0
+
+# LLM SDKs
+anthropic>=0.18.0
+
+# Web Scraping & Parsing
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+requests-html>=0.10.0
+
+# PDF Processing
+pdfplumber>=0.10.0
+PyPDF2>=3.0.0
+Pillow>=10.0.0
+pdf2image>=1.16.0
+pytesseract>=0.3.10
+
+# Audio Processing (optional)
+openai-whisper>=20230314
+
+# Report Generation
+reportlab>=4.0.0
+markdown>=3.5.0
+
+# ================================================
+# AG-UI (Agent User Interaction Protocol)
+# ================================================
+
+# AG-UI Protocol SDK (Official)
+ag-ui-protocol>=0.1.0
+
+# FastAPI for SSE Server
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
+
+# SSE Support
+sse-starlette>=1.6.0
+
+# WebSocket Support
+websockets>=11.0.0
+
+# ================================================
+# AgentCore Integration (Optional)
+# ================================================
+
+# Uncomment when using AgentCore
+# bedrock-agentcore>=0.1.0
+# bedrock-agentcore-starter-toolkit>=0.1.21
+
+# ================================================
+# Testing & Development
+# ================================================
+
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+httpx>=0.25.0  # For testing FastAPI
+
+# ================================================
+# Utilities
+# ================================================
+
+python-dotenv>=1.0.0
+pyyaml>=6.0.0
+aiofiles>=23.2.0
+

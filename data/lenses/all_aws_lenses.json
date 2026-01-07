@@ -1,0 +1,181 @@
+[
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/wellarchitected",
+    "LensAlias": "wellarchitected",
+    "LensName": "AWS Well-Architected Framework",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The AWS Well-Architected Framework Lens provides a set of foundational questions for you to consider for all of your cloud architectures.",
+    "CreatedAt": "2019-09-16 23:25:58+05:30",
+    "UpdatedAt": "2025-09-20 04:46:28+05:30",
+    "LensVersion": "2025-02-25",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/connectedmobility",
+    "LensName": "Connected Mobility Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "Best practices for Connected Mobility workload",
+    "CreatedAt": "2024-03-22 01:20:26+05:30",
+    "UpdatedAt": "2024-03-22 01:20:26+05:30",
+    "LensVersion": "2024-03-26",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/containerbuild",
+    "LensName": "Container Build Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The Container Build Lens will focus specifically on the container design and build process. Topics such as best practices for container orchestration architecture design principals and general best practices in software development are considered out of scope for this lens. These topics are addressed in other AWS publications. See the Resources sections under Pillars of the Well-Architected Framework for more information.",
+    "CreatedAt": "2024-03-26 20:10:06+05:30",
+    "UpdatedAt": "2024-03-26 20:10:06+05:30",
+    "LensVersion": "2024-03-26",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/dataanalytics",
+    "LensName": "Data Analytics Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The Data Analytics Lens contains insights that AWS has gathered from real-world case studies, and helps you learn the key design elements of well-architected analytics workloads along with recommendations for improvement. The document is intended for IT architects, developers, and team members who build and operate analytics systems.",
+    "CreatedAt": "2024-03-26 19:15:33+05:30",
+    "UpdatedAt": "2024-03-26 19:15:33+05:30",
+    "LensVersion": "2024-03-26",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/devops",
+    "LensName": "DevOps Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The DevOps Lens for the AWS Well-Architected Framework follows the AWS DevOps Sagas as featured in the Well-Architected DevOps Guidance whitepaper. This lens provides a focused approach to integrating DevOps principles and practices into your organization and AWS workloads.",
+    "CreatedAt": "2024-03-22 00:55:40+05:30",
+    "UpdatedAt": "2024-03-22 00:55:40+05:30",
+    "LensVersion": "2024-03-26",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/financialservices",
+    "LensName": "Financial Services Industry Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The Financial Services Industry Lens identifies best practices for security, data privacy, and resiliency that are intended to address the requirements of financial institutions based on our experience working with financial institutions worldwide. It provides guidance on guardrails for technology teams to implement and confidently use AWS to build and deploy applications. This Lens describes the process of building transparency and auditability into your AWS environment. It also offers suggestions for controls to help you expedite adoption of new services into your environment while managing the cost of your IT services.",
+    "CreatedAt": "2024-06-27 20:02:05+05:30",
+    "UpdatedAt": "2024-06-27 20:02:05+05:30",
+    "LensVersion": "2024-06-27",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/genai",
+    "LensName": "Generative AI Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "Best practices for developing generative AI workloads on AWS",
+    "CreatedAt": "2025-04-17 02:43:06+05:30",
+    "UpdatedAt": "2025-04-17 02:43:06+05:30",
+    "LensVersion": "2025-04-17",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/government",
+    "LensName": "Government Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The Government Lens helps people understand the special context and requirements of government and how to best deliver meaningful service and policy outcomes on AWS. This lens drives architectural qualities that layer government-specific best practices for progressive enhancement as a service design assurance function. For example, government customers can use the new service outcomes chapter to guide design and operating model considerations, as an indicator of readiness for government service launches, and to inform AWS Enterprise Support event management.",
+    "CreatedAt": "2024-03-22 00:25:30+05:30",
+    "UpdatedAt": "2024-03-22 00:25:30+05:30",
+    "LensVersion": "2024-03-26",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/healthcare",
+    "LensName": "Healthcare Industry Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "Best practices and guidance for how to design, deploy, and manage your healthcare workloads in the AWS Cloud.",
+    "CreatedAt": "2024-06-27 22:11:12+05:30",
+    "UpdatedAt": "2024-06-27 22:11:12+05:30",
+    "LensVersion": "2024-06-27",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/iot",
+    "LensName": "IoT Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "Best practices for managing your Internet of Things (IoT) workloads in AWS.",
+    "CreatedAt": "2023-11-17 23:22:32+05:30",
+    "UpdatedAt": "2023-11-17 23:22:32+05:30",
+    "LensVersion": "2023-11-26",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/machinelearning",
+    "LensName": "Machine Learning Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "Best practices for managing your Machine Learning resources/workloads in AWS",
+    "CreatedAt": "2023-11-18 02:08:50+05:30",
+    "UpdatedAt": "2023-11-18 02:08:50+05:30",
+    "LensVersion": "2023-11-26",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/mavaluecreation",
+    "LensName": "Mergers and Acquisitions Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The Mergers and Acquisitions Lens provides a set of additional questions to consider when looking for ways to drive company growth, such as for private equity mergers and acquisitions activity.",
+    "CreatedAt": "2024-06-27 21:49:18+05:30",
+    "UpdatedAt": "2024-06-27 21:49:18+05:30",
+    "LensVersion": "2024-06-27",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/migration",
+    "LensName": "Migration Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The Migration Lens for the Well-Architected Framework is a collection of customer-proven design principles and best practices that you can apply to your migration program across the three migration phases: Assess, Mobilize, and Migrate.",
+    "CreatedAt": "2024-03-22 01:09:47+05:30",
+    "UpdatedAt": "2024-03-22 01:09:47+05:30",
+    "LensVersion": "2024-03-26",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/sap",
+    "LensName": "SAP Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The SAP Lens for the AWS Well-Architected Framework is a collection of customer-proven design principles and best practices for ensuring SAP workloads on AWS are well-architected. Use this lens as a supplement to the AWS Well-Architected Framework.",
+    "CreatedAt": "2023-11-18 02:21:49+05:30",
+    "UpdatedAt": "2023-11-18 02:21:49+05:30",
+    "LensVersion": "2023-11-26",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/serverless",
+    "LensAlias": "serverless",
+    "LensName": "Serverless Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The AWS Serverless Application Lens provides a set of additional questions for you to consider for your serverless applications.",
+    "CreatedAt": "2020-02-07 08:45:43+05:30",
+    "UpdatedAt": "2025-09-20 04:46:32+05:30",
+    "LensVersion": "2020-02-04",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  },
+  {
+    "LensArn": "arn:aws:wellarchitected::aws:lens/softwareasaservice",
+    "LensAlias": "softwareasaservice",
+    "LensName": "SaaS Lens",
+    "LensType": "AWS_OFFICIAL",
+    "Description": "The AWS SaaS Lens provides a set of additional questions for you to consider for your Software-as-a-Service (SaaS) applications.",
+    "CreatedAt": "2020-11-24 21:59:26+05:30",
+    "UpdatedAt": "2025-09-20 04:46:25+05:30",
+    "LensVersion": "2020-12-03",
+    "Owner": "AWS",
+    "LensStatus": "PUBLISHED"
+  }
+]

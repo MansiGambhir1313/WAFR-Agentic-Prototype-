@@ -1,0 +1,24 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "wellarchitected:GetLens",
+                "wellarchitected:ListLenses",
+                "wellarchitected:GetWorkload",
+                "wellarchitected:CreateWorkload",
+                "wellarchitected:UpdateAnswer",
+                "wellarchitected:GetAnswer",
+                "wellarchitected:ListAnswers",
+                "wellarchitected:GetLensReview",
+                "wellarchitected:ListWorkloads",
+                "wellarchitected:CreateMilestone",
+                "wellarchitected:GetLensReviewReport",
+                "wellarchitected:ListLensReviewImprovements",
+                "wellarchitected:DeleteWorkload"
+            ],
+            "Resource": "*"
+        }
+    ]
+}

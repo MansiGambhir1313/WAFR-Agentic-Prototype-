@@ -1,20 +1,30 @@
-# Dependencies
-node_modules/
+# Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
+*.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
 venv/
 env/
 ENV/
-
-# Build outputs
-dist/
-build/
-*.zip
-.cdk.staging/
-cdk.out/
+.venv
 
 # IDE
 .vscode/
@@ -23,47 +33,41 @@ cdk.out/
 *.swo
 *~
 
+# Output files
+output/
+*.log
+*.pdf
+wafr_results_*.json
+wafr_report_*.pdf
+
+# AWS
+.aws/
+*.pem
+
 # Environment
 .env
 .env.local
-.env.*.local
-
-# Logs
-*.log
-logs/
-debug.log
-
-# AWS
-.aws-sam/
-.sam/
-
-# Testing
-.coverage
-.pytest_cache/
-htmlcov/
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Frontend
-frontend/dist/
-frontend/.vite/
+# Temporary files
+*.tmp
+*.bak
+*.cache
 
-# Generated files and results
-*.pdf
-wafr_report_*.pdf
-*_results.json
-*_wafr_results.json
-full_pipeline_results.json
-all_aws_lenses.json
-genai_lens_details.json
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
 
-# Test/example files
-transcript_*.txt
-transcript_input.txt
+# Documentation builds
+docs/_build/
 
-# Generated documentation (keep manual docs)
-# CODE_QUALITY_REPORT.md - keep this
-# FINAL_CODE_QUALITY_SUMMARY.md - keep this
+# Jupyter
+.ipynb_checkpoints/
 
+# Project specific
+data/transcripts/*.txt
+!data/transcripts/.gitkeep
