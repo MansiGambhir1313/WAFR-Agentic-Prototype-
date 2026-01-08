@@ -276,27 +276,6 @@ flowchart TD
     style I fill:#90EE90
 ```
 
-### HRI Validation Flow
-
-```mermaid
-flowchart TD
-    A[All Answers Scored] --> B[Extract High-Risk Issues]
-    B --> C[For Each HRI]
-    C --> D[Claude Validation]
-    D --> E{Is HRI Tangible?}
-    E -->|Yes| F[Keep HRI<br/>Evidence-Backed]
-    E -->|No| G[Filter Out<br/>False Positive]
-    F --> H[Final HRI List]
-    G --> H
-    H --> I[Generate Report<br/>with Validated HRIs]
-    
-    style A fill:#E6F3FF
-    style D fill:#FFE6E6
-    style F fill:#90EE90
-    style G fill:#FFB6C1
-    style I fill:#90EE90
-```
-
 ### Quick Reference: Decision Points
 
 ```mermaid
